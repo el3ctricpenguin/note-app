@@ -11,6 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 where: { id: Number(id) },
             });
             res.json(todo);
+            break;
         }
         case "PATCH": {
             const todo: Todo | null = await prisma.todo.findUnique({
@@ -21,10 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 data: { completed: !todo?.completed },
             });
             res.json(todoEdited);
+            break;
         }
         case "DELETE": {
             const todo: Todo = await prisma.todo.delete({ where: { id: Number(id) } });
             res.json(todo);
+            break;
         }
     }
 }

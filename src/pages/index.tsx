@@ -10,7 +10,7 @@ export default function Home() {
     const [todos, setTodos] = useState<Todo[]>([]);
 
     const fetchTodos = async () => {
-        const response = await fetch(`${apiUrl}/todo`);
+        const response = await fetch(`${apiUrl}/todo`, { method: "GET" });
         const todos = await response.json();
         console.log(todos);
         setTodos(todos);
@@ -40,7 +40,7 @@ export default function Home() {
     };
 
     const deleteTodo = async (id: Number) => {
-        console.log(`delete #${Number}`);
+        console.log(`delete #${id}`);
         const response = await fetch(`${apiUrl}/todo/${id}`, {
             method: "DELETE",
         });
@@ -52,6 +52,19 @@ export default function Home() {
         await fetchTodos();
     };
 
+    const updateTodo = async (id: Number) => {
+        console.log(`update #${id}`);
+        const response = await fetch(`${apiUrl}/todo/${id}`, {
+            method: "PATCH",
+        });
+        return await response.json();
+    };
+
+    const handleCheck = async (id: Number) => {
+        await updateTodo(id);
+        await fetchTodos();
+    };
+
     return (
         <Box w="100vw" h="100vh" bgColor="gray.50" p={20}>
             <VStack align="start" spacing={2}>
@@ -59,7 +72,13 @@ export default function Home() {
                 <VStack divider={<Divider />} spacing={0} borderRadius={6} bgColor="gray.100" w="100%">
                     {todos.map((todo, i) => (
                         <HStack key={i} justify="space-between" p={2} w="100%" _hover={{ bgColor: "whiteAlpha.700" }}>
-                            <Checkbox isChecked={todo.completed} onChange={() => console.log("update complete")} size="md">
+                            <Checkbox
+                                isChecked={todo.completed}
+                                onChange={() => {
+                                    handleCheck(todo.id);
+                                }}
+                                size="md"
+                            >
                                 {todo.title}
                             </Checkbox>
                             <Button
@@ -78,7 +97,9 @@ export default function Home() {
                     <HStack>
                         <Input
                             value={inputValue || ""}
-                            onChange={(e) => setInputValue(e.target.value)}
+                            onChange={(e) => {
+                                setInputValue(e.target.value);
+                            }}
                             placeholder="Input todo"
                             size="sm"
                         />
