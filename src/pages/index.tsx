@@ -38,6 +38,19 @@ export default function Home() {
         setInputValue("");
     };
 
+    const deleteTodo = async (id: Number) => {
+        console.log(`delete #${Number}`);
+        const response = await fetch(`${apiUrl}/todo/${id}`, {
+            method: "DELETE",
+        });
+        return await response.json();
+    };
+
+    const handleDelete = async (id: Number) => {
+        await deleteTodo(id);
+        await fetchTodos();
+    };
+
     return (
         <Box w="100vw" h="100vh" bgColor="gray.50" p={20}>
             <VStack align="start" spacing={2}>
@@ -48,7 +61,13 @@ export default function Home() {
                             <Checkbox isChecked={todo.completed} onChange={() => console.log("update complete")} size="md">
                                 {todo.title}
                             </Checkbox>
-                            <Button onClick={() => console.log("delete")} colorScheme="red" size="sm">
+                            <Button
+                                onClick={async () => {
+                                    handleDelete(todo.id);
+                                }}
+                                colorScheme="red"
+                                size="sm"
+                            >
                                 Delete
                             </Button>
                         </HStack>
