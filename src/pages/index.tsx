@@ -32,7 +32,8 @@ export default function Home() {
         return await response.json();
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
+        e.preventDefault();
         await createTodo(inputValue);
         await fetchTodos();
         setInputValue("");
@@ -73,7 +74,7 @@ export default function Home() {
                         </HStack>
                     ))}
                 </VStack>
-                <FormControl>
+                <FormControl as="form" onSubmit={handleSubmit}>
                     <HStack>
                         <Input
                             value={inputValue || ""}
@@ -81,7 +82,7 @@ export default function Home() {
                             placeholder="Input todo"
                             size="sm"
                         />
-                        <Button colorScheme="green" size="sm" type="submit" onClick={handleSubmit}>
+                        <Button colorScheme="green" size="sm" type="submit">
                             Submit
                         </Button>
                     </HStack>
