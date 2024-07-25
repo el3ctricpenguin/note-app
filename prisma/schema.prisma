@@ -13,3 +13,10 @@ datasource db {
   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
+
+model Todo{
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  completed Boolean  @default(false)
+}
