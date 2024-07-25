@@ -1,19 +1,20 @@
 import { Box, Button, Checkbox, Divider, FormControl, Heading, HStack, Input, VStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { Todo } from "@prisma/client";
+import { useEffect, useState } from "react";
 
-type Todo = {
-    id: number;
-    title: string;
-    completed: boolean;
-};
-
-const todos: Todo[] = [
-    { id: 1, title: "todo1", completed: false },
-    { id: 2, title: "todo2", completed: false },
-    { id: 3, title: "todo3", completed: true },
-];
 export default function Home() {
     const [inputValue, setInputValue] = useState<string>("");
+    const [todos, setTodos] = useState<Todo[]>([]);
+
+    useEffect(() => {
+        const fetchTodos = async () => {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/todo`);
+            const todos = await response.json();
+            console.log(todos);
+            setTodos(todos);
+        };
+        fetchTodos();
+    }, []);
 
     return (
         <Box w="100vw" h="100vh" bgColor="gray.50" p={20}>
