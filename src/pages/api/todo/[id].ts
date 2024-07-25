@@ -22,5 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
             res.json(todoEdited);
         }
+        case "DELETE": {
+            const todo: Todo = await prisma.todo.delete({ where: { id: Number(id) } });
+            res.json(todo);
+        }
     }
 }
