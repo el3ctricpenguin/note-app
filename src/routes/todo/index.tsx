@@ -1,8 +1,7 @@
+import { apiUrl } from "@/config";
 import { Box, Button, Checkbox, Divider, FormControl, Heading, HStack, Input, VStack } from "@chakra-ui/react";
 import { Todo } from "@prisma/client";
 import { FormEvent, useEffect, useState } from "react";
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function TodoPage() {
     const [inputValue, setInputValue] = useState<string>("");
