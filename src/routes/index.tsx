@@ -2,10 +2,7 @@ import { Badge, Box, Card, CardBody, Heading, HStack, Image, LinkBox, LinkOverla
 
 export default function Home() {
     return (
-        <Box w="100vw" h="100vh" bgColor="gray.50" p={{ base: 5, sm: 10, md: 20 }}>
-            <Heading my={4} as="h1" size="2xl">
-                note-app
-            </Heading>
+        <>
             <LinkBox>
                 <Card variant="elevated" direction={{ base: "column", sm: "row" }} borderRadius={8} overflow="hidden">
                     <Image
@@ -33,6 +30,6 @@ export default function Home() {
                     </HStack>
                 </Card>
             </LinkBox>
-        </Box>
+        </>
     );
 }
