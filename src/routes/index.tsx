@@ -1,4 +1,5 @@
 import { Badge, Box, Card, CardBody, Heading, HStack, Image, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 export default function Home() {
     return (
@@ -13,7 +14,7 @@ export default function Home() {
                         maxW={{ base: "100%", sm: "200px" }}
                     />
                     <CardBody>
-                        <LinkOverlay href="/todo">
+                        <LinkOverlay href="/todo" as={NextLink}>
                             <Text fontSize="2xl" fontWeight="bold">
                                 TODO
                             </Text>
