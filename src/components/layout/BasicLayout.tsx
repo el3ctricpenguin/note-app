@@ -7,8 +7,8 @@ export default function BasicLayout({ children }: { children: ReactElement }) {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
         <Box w="100vw" h="100vh" bgColor="brand.gray.100" p={{ base: 5, sm: 10, md: 20 }}>
-            <HStack justify="space-between">
-                <Heading my={4} as="h1" size="2xl">
+            <HStack my={4} justify="space-between">
+                <Heading as="h1" size="2xl">
                     <NextLink href="/">note-app</NextLink>
                 </Heading>
                 <IconButton
@@ -16,6 +16,7 @@ export default function BasicLayout({ children }: { children: ReactElement }) {
                     icon={colorMode == "light" ? <SunIcon /> : <MoonIcon />}
                     onClick={toggleColorMode}
                     size="sm"
+                    mt={3}
                 />
             </HStack>
             {children}
