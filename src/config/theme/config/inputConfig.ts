@@ -8,6 +8,9 @@ export const inputConfig = defineMultiStyleConfig({
         filled: definePartsStyle({
             field: {
                 bgColor: "brand.gray.100",
+                _focusVisible: {
+                    borderColor: "brand.gray.1000",
+                },
                 _hover: { bgColor: "brand.gray.100" },
                 _dark: {
                     bgColor: "brand.gray.200",

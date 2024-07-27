@@ -3,8 +3,8 @@ import { TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
 import { SearchIcon } from "@chakra-ui/icons";
-import { FormControl, Heading, IconButton, Input, InputGroup, InputRightAddon, Text, useToast, VStack } from "@chakra-ui/react";
-import { FormEvent, useState } from "react";
+import { FormControl, Heading, Input, InputGroup, InputRightElement, useToast, VStack } from "@chakra-ui/react";
+import { useState } from "react";
 import useSWR from "swr";
 
 export default function FilmSearch() {
@@ -23,20 +23,6 @@ export default function FilmSearch() {
         `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
         fetcher
     );
-    console.log("isLoading", isLoading);
-    console.log("error", error);
-    console.log();
-
-    function handleSubmit(e: FormEvent<HTMLDivElement>) {
-        e.preventDefault();
-        toast({
-            title: `search ${searchText}`,
-            status: "info",
-            variant: "solid",
-            duration: 1000,
-            isClosable: true,
-        });
-    }
 
     return (
         <>
@@ -44,12 +30,7 @@ export default function FilmSearch() {
                 film-note:search
             </Heading>
             <VStack spacing={2}>
-                <FormControl
-                    as="form"
-                    onSubmit={(e) => {
-                        handleSubmit(e);
-                    }}
-                >
+                <FormControl>
                     <InputGroup>
                         <Input
                             placeholder="映画名"
@@ -59,9 +40,9 @@ export default function FilmSearch() {
                                 setSearchText(e.target.value);
                             }}
                         />
-                        <InputRightAddon p={0}>
-                            <IconButton aria-label="Search" icon={<SearchIcon />} borderLeftRadius={0} type="submit" />
-                        </InputRightAddon>
+                        <InputRightElement pointerEvents="none">
+                            <SearchIcon aspectRatio={1} />
+                        </InputRightElement>
                     </InputGroup>
                 </FormControl>
                 <VStack w="100%">
