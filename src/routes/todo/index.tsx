@@ -1,9 +1,11 @@
 import { apiUrl } from "@/config";
-import { Box, Button, Checkbox, Divider, FormControl, Heading, HStack, Input, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Divider, FormControl, Heading, HStack, Input, useColorMode, VStack } from "@chakra-ui/react";
 import { Todo } from "@prisma/client";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function TodoPage() {
+    const { colorMode } = useColorMode();
+
     const [inputValue, setInputValue] = useState<string>("");
     const [todos, setTodos] = useState<Todo[]>([]);
 
@@ -66,9 +68,24 @@ export default function TodoPage() {
     return (
         <VStack align="start" spacing={2}>
             <Heading>Todo</Heading>
-            <VStack divider={<Divider />} spacing={0} borderRadius={6} bgColor="gray.100" w="100%">
+            <VStack
+                divider={<Divider />}
+                spacing={0}
+                borderRadius={6}
+                bgColor="brand.gray.100"
+                w="100%"
+                borderWidth={1}
+                borderColor="brand.gray.300"
+            >
                 {todos.map((todo, i) => (
-                    <HStack key={i} justify="space-between" p={2} w="100%" _hover={{ bgColor: "whiteAlpha.700" }}>
+                    <HStack
+                        key={i}
+                        justify="space-between"
+                        p={2}
+                        pl={3}
+                        w="100%"
+                        _hover={{ bgColor: colorMode == "light" ? "whiteAlpha.700" : "whiteAlpha.200" }}
+                    >
                         <Checkbox
                             isChecked={todo.completed}
                             onChange={() => {
@@ -83,6 +100,8 @@ export default function TodoPage() {
                                 handleDelete(todo.id);
                             }}
                             colorScheme="red"
+                            color="white"
+                            bgColor="red.500"
                             size="sm"
                         >
                             Delete
@@ -100,7 +119,7 @@ export default function TodoPage() {
                         placeholder="Input todo"
                         size="sm"
                     />
-                    <Button colorScheme="green" size="sm" type="submit">
+                    <Button size="sm" type="submit" color="white" bgColor="green.500" _hover={{ bgColor: "green.600" }}>
                         Submit
                     </Button>
                 </HStack>
