@@ -1,7 +1,7 @@
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import { EditIcon } from "@chakra-ui/icons";
 import { Card, CardBody, VStack, HStack, Image, Text } from "@chakra-ui/react";
-import { FilmRating } from "@/components/Cards/FilmRating";
+import { FilmRating } from "@/components/cards/FilmRating";
 
 interface filmProps {
     rating: number;
@@ -25,7 +25,7 @@ interface filmProps {
 
 export const FilmCard = ({ film }: { film: filmProps }) => {
     return (
-        <Card overflow="hidden" w="100%" direction="row">
+        <Card overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg">
             <Image
                 h="100"
                 aspectRatio="2/3"

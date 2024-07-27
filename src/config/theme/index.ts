@@ -1,5 +1,7 @@
 import { ColorMode, extendTheme } from "@chakra-ui/react";
 import { colors } from "@/config/theme/colors";
+import { inputConfig } from "./config/inputConfig";
+import { textareaConfig } from "./config/textareaConfig";
 
 const createTheme = (colorMode: ColorMode) =>
     extendTheme({
@@ -19,6 +21,10 @@ const createTheme = (colorMode: ColorMode) =>
             "4xl": "2rem", // 32px
         },
         colors: colorMode === "light" ? colors.light : colors.dark,
+        components: {
+            Input: inputConfig,
+            Textarea: textareaConfig,
+        },
     });
 
 export const theme = {

@@ -1,5 +1,5 @@
-import { FilmCard } from "@/components/Cards/FilmCard";
-import { Heading, VStack } from "@chakra-ui/react";
+import { FilmCard } from "@/components/cards/FilmCard";
+import { FormControl, Heading, Input, Textarea, VStack } from "@chakra-ui/react";
 
 export default function FilmNote() {
     const film = {
@@ -27,8 +27,22 @@ export default function FilmNote() {
     };
     return (
         <>
-            <Heading size="xl">film-note</Heading>
-            <Heading size="lg">視聴記録</Heading>
+            <Heading size="xl" mb={4}>
+                film-note
+            </Heading>
+            <Heading size="lg" my={1}>
+                映画登録
+            </Heading>
+            <FormControl mb={4}>
+                <VStack spacing={2}>
+                    <Input placeholder="視聴した日付" type="date" value="" variant="filled" />
+                    <Input placeholder="映画名" variant="filled"></Input>
+                    <Textarea placeholder="メモ" variant="filled"></Textarea>
+                </VStack>
+            </FormControl>
+            <Heading size="lg" my={1}>
+                視聴記録
+            </Heading>
             <VStack>
                 <Heading size="md" w="100%">
                     7/25
