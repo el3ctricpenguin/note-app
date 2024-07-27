@@ -1,5 +1,6 @@
 import { FilmCard } from "@/components/cards/FilmCard";
-import { FormControl, Heading, Input, Textarea, VStack } from "@chakra-ui/react";
+import { FormControl, Heading, Input, Link, Textarea, VStack } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 export default function FilmNote() {
     const film = {
@@ -20,7 +21,13 @@ export default function FilmNote() {
     return (
         <>
             <Heading size="xl" mb={4}>
-                film-note
+                <Link as={NextLink} href="/film" mr={4}>
+                    film-note
+                </Link>
+                /
+                <Link as={NextLink} href="/film/search">
+                    search
+                </Link>
             </Heading>
             <Heading size="lg" my={1}>
                 映画登録

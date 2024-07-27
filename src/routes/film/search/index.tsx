@@ -6,6 +6,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { FormControl, Heading, Input, InputGroup, InputRightElement, useToast, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import useSWR from "swr";
+import NextLink from "next/link";
 
 export default function FilmSearch() {
     const placeholderFilm = {
@@ -27,7 +28,7 @@ export default function FilmSearch() {
     return (
         <>
             <Heading size="xl" mb={4}>
-                film-note:search
+                <NextLink href="/film">film-note</NextLink>/<NextLink href="/film/search">search</NextLink>
             </Heading>
             <VStack spacing={2}>
                 <FormControl>

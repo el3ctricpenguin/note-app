@@ -31,7 +31,7 @@ export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId }
                         {title ? title : "-"} {startYear && `(${startYear})`}
                         {filmId && (
                             <Link href={TMDB_FILM_PAGE_URL + "/" + filmId} target="_blank" cursor="pointer">
-                                <ExternalLinkIcon mb={1} />
+                                <ExternalLinkIcon mb={1} ml={2} />
                             </Link>
                         )}
                     </Text>
