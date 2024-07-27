@@ -1,6 +1,6 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { TMDB_API_KEY } from "@/config";
-import { TMDB_API_URL } from "@/config/constants";
+import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
 import { SearchIcon } from "@chakra-ui/icons";
 import { FormControl, Heading, IconButton, Input, InputGroup, InputRightAddon, Text, useToast, VStack } from "@chakra-ui/react";
@@ -20,7 +20,7 @@ export default function FilmSearch() {
     const [searchText, setSearchText] = useState<string>("");
 
     const { data, error, isLoading } = useSWR(
-        `${TMDB_API_URL}search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
+        `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
         fetcher
     );
     console.log("isLoading", isLoading);
@@ -67,15 +67,17 @@ export default function FilmSearch() {
                 <VStack>
                     {data?.results
                         .filter((_: any, i: number) => i < 5)
-                        .map((film: any, i: any) => <Text key={i}>{film.original_title}</Text>)}
+                        .map((film: any, i: any) => (
+                            <FilmCard
+                                key={i}
+                                rating={placeholderFilm.rating}
+                                title={film.original_title}
+                                startYear={film.release_date.split("-")[0]}
+                                posterUrl={TMDB_IMAGE_API_URL_MD + film.poster_path}
+                                originCountries={placeholderFilm.originCountries}
+                            />
+                        ))}
                 </VStack>
-                <FilmCard
-                    rating={placeholderFilm.rating}
-                    title={placeholderFilm.title}
-                    startYear={placeholderFilm.startYear}
-                    posterUrl={placeholderFilm.posterUrl}
-                    originCountries={placeholderFilm.originCountries}
-                />
             </VStack>
         </>
     );
