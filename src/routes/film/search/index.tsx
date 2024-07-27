@@ -73,8 +73,8 @@ export default function FilmSearch() {
                                 title={film.original_title}
                                 startYear={film.release_date.split("-")[0]}
                                 posterUrl={TMDB_IMAGE_API_URL_MD + film.poster_path}
-                                originCountries={placeholderFilm.originCountries}
                                 overview={film.overview}
+                                filmId={film.id}
                             />
                         ))}
                 </VStack>
