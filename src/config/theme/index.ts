@@ -25,6 +25,13 @@ const createTheme = (colorMode: ColorMode) =>
             Input: inputConfig,
             Textarea: textareaConfig,
         },
+        styles: {
+            global: {
+                body: {
+                    bgColor: "brand.gray.0",
+                },
+            },
+        },
     });
 
 export const theme = {
