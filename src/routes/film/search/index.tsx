@@ -1,4 +1,4 @@
-import { FilmCard } from "@/components/cards/FilmCard";
+import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
@@ -64,17 +64,17 @@ export default function FilmSearch() {
                         </InputRightAddon>
                     </InputGroup>
                 </FormControl>
-                <VStack>
+                <VStack w="100%">
                     {data?.results
                         .filter((_: any, i: number) => i < 5)
                         .map((film: any, i: any) => (
-                            <FilmCard
+                            <FilmSearchCard
                                 key={i}
-                                rating={placeholderFilm.rating}
                                 title={film.original_title}
                                 startYear={film.release_date.split("-")[0]}
                                 posterUrl={TMDB_IMAGE_API_URL_MD + film.poster_path}
                                 originCountries={placeholderFilm.originCountries}
+                                overview={film.overview}
                             />
                         ))}
                 </VStack>

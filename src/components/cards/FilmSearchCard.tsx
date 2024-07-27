@@ -4,15 +4,15 @@ import { Card, CardBody, VStack, HStack, Image, Text, Skeleton } from "@chakra-u
 import { FilmRating } from "@/components/cards/FilmRating";
 import { useState } from "react";
 
-interface FilmCardProps {
-    rating?: number;
+interface FilmSearchCardProps {
     title?: string;
     startYear?: number;
     posterUrl?: string;
     originCountries?: string[];
+    overview?: string;
 }
 
-export const FilmCard = ({ rating, title, startYear, posterUrl, originCountries }: FilmCardProps) => {
+export const FilmSearchCard = ({ title, startYear, posterUrl, originCountries, overview }: FilmSearchCardProps) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     return (
         <Card overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg">
@@ -27,16 +27,13 @@ export const FilmCard = ({ rating, title, startYear, posterUrl, originCountries 
                 />
             </Skeleton>
             <CardBody>
-                <VStack spacing={2}>
+                <VStack spacing={2} align="start">
                     <Text fontSize="xl" fontWeight="bold" w="100%">
                         {title ? title : "-"} {startYear && `(${startYear})`} {originCountries && getFlagEmoji(originCountries[0])}
                     </Text>
-                    <FilmRating rating={rating ? rating : 0} />
+                    <Text noOfLines={1}>{overview}</Text>
                 </VStack>
             </CardBody>
-            <HStack position="absolute" top={4} right={4}>
-                <EditIcon />
-            </HStack>
         </Card>
     );
 };
