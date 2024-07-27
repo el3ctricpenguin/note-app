@@ -1,7 +1,11 @@
 import { FilmCard } from "@/components/cards/FilmCard";
+import { TMDB_API_KEY } from "@/config";
+import { TMDB_API_URL } from "@/config/constants";
+import { fetcher } from "@/features/utils/fetcher";
 import { SearchIcon } from "@chakra-ui/icons";
 import { FormControl, Heading, IconButton, Input, InputGroup, InputRightAddon, Text, useToast, VStack } from "@chakra-ui/react";
 import { FormEvent, useState } from "react";
+import useSWR from "swr";
 
 export default function FilmSearch() {
     const placeholderFilm = {
@@ -14,6 +18,14 @@ export default function FilmSearch() {
     const toast = useToast();
 
     const [searchText, setSearchText] = useState<string>("");
+
+    const { data, error, isLoading } = useSWR(
+        `${TMDB_API_URL}search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
+        fetcher
+    );
+    console.log("isLoading", isLoading);
+    console.log("error", error);
+    console.log();
 
     function handleSubmit(e: FormEvent<HTMLDivElement>) {
         e.preventDefault();
@@ -30,9 +42,6 @@ export default function FilmSearch() {
         <>
             <Heading size="xl" mb={4}>
                 film-note:search
-            </Heading>
-            <Heading size="lg" my={1}>
-                映画登録
             </Heading>
             <VStack spacing={2}>
                 <FormControl
@@ -56,7 +65,9 @@ export default function FilmSearch() {
                     </InputGroup>
                 </FormControl>
                 <VStack>
-                    <Text>searchText: {searchText}</Text>
+                    {data?.results
+                        .filter((_: any, i: number) => i < 5)
+                        .map((film: any, i: any) => <Text key={i}>{film.original_title}</Text>)}
                 </VStack>
                 <FilmCard
                     rating={placeholderFilm.rating}
