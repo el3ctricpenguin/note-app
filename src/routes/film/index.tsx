@@ -4,26 +4,18 @@ import { FormControl, Heading, Input, Textarea, VStack } from "@chakra-ui/react"
 export default function FilmNote() {
     const film = {
         rating: 4,
-        title: {
-            primary_title: "Thirteen Days",
-            original_title: null,
-            start_year: 2000,
-            runtime_minutes: 145,
-            plot: "In October 1962, the Kennedy administration struggles to contain the Cuban Missile Crisis.",
-            posters: [
-                {
-                    url: "https://m.media-amazon.com/images/M/MV5BZDM5NzBkZWMtZDY2Ny00OGMxLTgzMDUtZDZkNzRhM2M5MDIxL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
-                    width: 1009,
-                    height: 1500,
-                },
-            ],
-            origin_countries: [
-                {
-                    code: "US",
-                    name: "United States",
-                },
-            ],
-        },
+        title: "Thirteen Days",
+        startYear: 2000,
+        posterUrl:
+            "https://m.media-amazon.com/images/M/MV5BZDM5NzBkZWMtZDY2Ny00OGMxLTgzMDUtZDZkNzRhM2M5MDIxL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
+        originCountries: ["US"],
+    };
+    const placeholderFilm = {
+        rating: undefined,
+        title: undefined,
+        startYear: undefined,
+        posterUrl: undefined,
+        originCountries: undefined,
     };
     return (
         <>
@@ -35,8 +27,15 @@ export default function FilmNote() {
             </Heading>
             <FormControl mb={4}>
                 <VStack spacing={2}>
-                    <Input placeholder="視聴した日付" type="date" value="" variant="filled" />
                     <Input placeholder="映画名" variant="filled"></Input>
+                    <FilmCard
+                        rating={placeholderFilm.rating}
+                        title={placeholderFilm.title}
+                        startYear={placeholderFilm.startYear}
+                        posterUrl={placeholderFilm.posterUrl}
+                        originCountries={placeholderFilm.originCountries}
+                    />
+                    <Input placeholder="視聴した日付" type="date" value="" variant="filled" />
                     <Textarea placeholder="メモ" variant="filled"></Textarea>
                 </VStack>
             </FormControl>
@@ -47,7 +46,13 @@ export default function FilmNote() {
                 <Heading size="md" w="100%">
                     7/25
                 </Heading>
-                <FilmCard film={film} />
+                <FilmCard
+                    rating={film.rating}
+                    title={film.title}
+                    startYear={film.startYear}
+                    posterUrl={film.posterUrl}
+                    originCountries={film.originCountries}
+                />
             </VStack>
         </>
     );
