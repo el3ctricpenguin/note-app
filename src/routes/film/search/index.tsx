@@ -19,7 +19,6 @@ export default function FilmSearch() {
     const toast = useToast();
 
     const [searchText, setSearchText] = useState<string>("");
-
     const { data, error, isLoading } = useSWR(
         `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
         fetcher
@@ -42,7 +41,7 @@ export default function FilmSearch() {
                             }}
                         />
                         <InputRightElement pointerEvents="none">
-                            <SearchIcon aspectRatio={1} />
+                            <SearchIcon mr={2} />
                         </InputRightElement>
                     </InputGroup>
                 </FormControl>

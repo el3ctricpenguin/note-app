@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Card, CardBody, VStack, Image, Text, Skeleton, Link } from "@chakra-ui/react";
+import { Card, CardBody, VStack, Image, Text, Skeleton, Link, LinkBox, LinkOverlay } from "@chakra-ui/react";
 import { useState } from "react";
 import { TMDB_FILM_PAGE_URL } from "@/config/constants";
 
@@ -9,12 +9,23 @@ interface FilmSearchCardProps {
     posterUrl?: string;
     overview?: string;
     filmId?: number;
+    disableRadius?: boolean;
+    onClick?: () => void;
 }
 
-export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId }: FilmSearchCardProps) => {
+export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId, disableRadius, onClick }: FilmSearchCardProps) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     return (
-        <Card overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg">
+        <Card
+            overflow="hidden"
+            w="100%"
+            direction="row"
+            bgColor="brand.cardBg"
+            borderRadius={disableRadius ? 0 : "md"}
+            as={LinkBox}
+            onClick={onClick}
+            cursor="pointer"
+        >
             <Skeleton isLoaded={isImgLoaded}>
                 <Image
                     h="100"
@@ -27,7 +38,7 @@ export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId }
             </Skeleton>
             <CardBody>
                 <VStack spacing={2} align="start">
-                    <Text fontSize="xl" fontWeight="bold" w="100%">
+                    <Text as={LinkOverlay} onClick={onClick} fontSize="xl" fontWeight="bold" w="100%">
                         {title ? title : "-"} {startYear && `(${startYear})`}
                         {filmId && (
                             <Link href={TMDB_FILM_PAGE_URL + "/" + filmId} target="_blank" cursor="pointer">
