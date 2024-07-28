@@ -1,19 +1,21 @@
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
-import { EditIcon } from "@chakra-ui/icons";
-import { Card, CardBody, VStack, HStack, Image, Text, Skeleton } from "@chakra-ui/react";
+import { EditIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link } from "@chakra-ui/react";
 import { FilmRating } from "@/components/cards/FilmRating";
+import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 import { useState } from "react";
 import { TMDB_API_KEY } from "@/config";
-import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
+import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
 import useSWR from "swr";
 
 interface FilmCardProps {
-    rating?: number;
     filmId: string;
+    rating?: number;
+    setRating?: (i: number) => void;
 }
 
-export const FilmCard = ({ rating, filmId }: FilmCardProps) => {
+export const FilmCard = ({ filmId, rating, setRating }: FilmCardProps) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     const { data, error, isLoading } = useSWR(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`, fetcher);
     return (
@@ -34,12 +36,19 @@ export const FilmCard = ({ rating, filmId }: FilmCardProps) => {
                         {data
                             ? `${data.title} ${data.release_date && `(${data.release_date.split("-")[0]})`} ${getFlagEmoji(data.origin_country[0])}`
                             : "-"}
+                        <Link href={TMDB_FILM_PAGE_URL + "/" + filmId} target="_blank" cursor="pointer">
+                            <ExternalLinkIcon mb={1} ml={2} />
+                        </Link>
                     </Text>
-                    <FilmRating rating={rating ? rating : 0} />
+                    {setRating ? (
+                        <FilmRatingEditable rating={rating ? rating : 0} setRating={setRating} />
+                    ) : (
+                        <FilmRating rating={rating ? rating : 0} />
+                    )}
                 </VStack>
             </CardBody>
             <HStack position="absolute" top={4} right={4}>
-                <EditIcon />
+                {/* <EditIcon /> */}
             </HStack>
         </Card>
     );

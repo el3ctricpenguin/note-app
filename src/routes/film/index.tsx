@@ -4,28 +4,26 @@ import { TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
 import { SearchIcon } from "@chakra-ui/icons";
-import { Divider, FormControl, Heading, Input, InputGroup, InputRightElement, Link, Textarea, VStack } from "@chakra-ui/react";
+import {
+    Divider,
+    FormControl,
+    Heading,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Link,
+    Textarea,
+    VStack,
+    Text,
+    Button,
+    useToast,
+} from "@chakra-ui/react";
+import dayjs from "dayjs";
 import NextLink from "next/link";
 import { useState } from "react";
 import useSWR from "swr";
 
 export default function FilmNote() {
-    const filmData = {
-        rating: 4,
-        title: "Thirteen Days",
-        startYear: 2000,
-        posterUrl:
-            "https://m.media-amazon.com/images/M/MV5BZDM5NzBkZWMtZDY2Ny00OGMxLTgzMDUtZDZkNzRhM2M5MDIxL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
-        originCountries: ["US"],
-    };
-    const placeholderFilm = {
-        rating: undefined,
-        title: undefined,
-        startYear: undefined,
-        posterUrl: undefined,
-        originCountries: undefined,
-    };
-
     const [searchText, setSearchText] = useState<string>("");
     const { data, error, isLoading } = useSWR(
         `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
@@ -43,7 +41,14 @@ export default function FilmNote() {
     };
 
     const [filmId, setFilmId] = useState<string>("");
-    console.log("filmId", filmId);
+    const [rating, setRating] = useState<number>(0);
+
+    const today = dayjs().format("YYYY-MM-DD");
+    const [watchedDate, setWatchedDate] = useState<string>(today);
+
+    const [watchNote, setWatchNote] = useState<string>("");
+
+    const toast = useToast();
 
     return (
         <>
@@ -104,9 +109,41 @@ export default function FilmNote() {
                                 ))}
                         </VStack>
                     )}
-                    <FilmCard rating={placeholderFilm.rating} filmId={filmId} />
-                    <Input placeholder="視聴した日付" type="date" value="" variant="filled" />
-                    <Textarea placeholder="メモ" variant="filled"></Textarea>
+                    <FilmCard rating={rating} setRating={setRating} filmId={filmId} />
+                    <Input
+                        placeholder="視聴した日付"
+                        type="date"
+                        variant="filled"
+                        value={watchedDate}
+                        onChange={(e) => {
+                            setWatchedDate(e.target.value);
+                        }}
+                    />
+                    <Textarea
+                        placeholder="メモ"
+                        variant="filled"
+                        value={watchNote}
+                        onChange={(e) => {
+                            setWatchNote(e.target.value);
+                        }}
+                    />
+                    <Button
+                        w="100%"
+                        color="brand.gray.0"
+                        bgColor="brand.gray.1000"
+                        _hover={{ color: "brand.gray.0", bgColor: "brand.gray.1000", opacity: 0.75 }}
+                        onClick={() => {
+                            toast({
+                                title: "film registered",
+                                description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
+                                status: "success",
+                                duration: 3000,
+                                isClosable: true,
+                            });
+                        }}
+                    >
+                        登録
+                    </Button>
                 </VStack>
             </FormControl>
             <Heading size="lg" my={1}>
@@ -116,7 +153,7 @@ export default function FilmNote() {
                 <Heading size="md" w="100%">
                     7/25
                 </Heading>
-                <FilmCard rating={filmData.rating} filmId={"11973"} />
+                <FilmCard rating={4} filmId={"11973"} />
             </VStack>
         </>
     );
