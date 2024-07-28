@@ -52,7 +52,11 @@ export const FilmCard = ({ filmId, rating, setRating }: FilmCardProps) => {
                     </Box>
 
                     {rating == undefined ? (
-                        ""
+                        data ? (
+                            <Text noOfLines={1}>{data.overview}</Text>
+                        ) : (
+                            ""
+                        )
                     ) : setRating ? (
                         <FilmRatingEditable rating={rating} setRating={setRating} />
                     ) : (
