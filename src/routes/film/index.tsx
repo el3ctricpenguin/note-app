@@ -18,12 +18,24 @@ import {
     Button,
     useToast,
 } from "@chakra-ui/react";
+import { WatchedFilm } from "@prisma/client";
 import dayjs from "dayjs";
 import NextLink from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import useSWR from "swr";
 
 export default function FilmNote() {
+    const [watchedFilms, setWatchedFilms] = useState<WatchedFilm[]>([]);
+    const fetchWatchedFilms = async () => {
+        const response = await fetch(`${apiUrl}/film/watched`, { method: "GET" });
+        const watchedFilms = await response.json();
+        console.log(watchedFilms);
+        setWatchedFilms(watchedFilms);
+    };
+    useEffect(() => {
+        fetchWatchedFilms();
+    }, []);
+
     const [searchText, setSearchText] = useState<string>("");
     const { data, error, isLoading } = useSWR(
         `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
@@ -52,7 +64,7 @@ export default function FilmNote() {
 
     const createWatchedFilm = async (filmId: string, watchedDate: string, rating: number, watchNote: string): Promise<[any, number]> => {
         console.log(`create watched film: ${filmId}`);
-        const isoWatchedDate = dayjs(watchedDate + "T00:00:00").toISOString();
+        const isoWatchedDate = dayjs(watchedDate).toISOString();
 
         const response = await fetch(`${apiUrl}/film/watched`, {
             method: "POST",
@@ -81,6 +93,7 @@ export default function FilmNote() {
             setRating(0);
             setWatchedDate(today);
             setWatchNote("");
+            await fetchWatchedFilms();
         }
         if (status == 500) {
             toast({
@@ -185,7 +198,9 @@ export default function FilmNote() {
                 <Heading size="md" w="100%">
                     7/25
                 </Heading>
-                <FilmCard rating={4} filmId={"11973"} />
+                {watchedFilms.map((film, i) => (
+                    <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} />
+                ))}
             </VStack>
         </>
     );

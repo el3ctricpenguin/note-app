@@ -5,10 +5,10 @@ const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     switch (req.method) {
-        // case "GET":
-        //     const todos: Todo[] = await prisma.todo.findMany({ orderBy: { id: "asc" } });
-        //     res.json(todos);
-        //     break;
+        case "GET":
+            const watchedFilms: WatchedFilm[] = await prisma.watchedFilm.findMany({ orderBy: { watchedDate: "desc" } });
+            res.json(watchedFilms);
+            break;
         case "POST":
             try {
                 const { filmId, watchedDate, rating, note } = req.body;
