@@ -3,9 +3,9 @@ import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
-import { GroupedFilms } from "@/types";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
+    Button,
     Divider,
     FormControl,
     Heading,
@@ -14,26 +14,25 @@ import {
     InputRightElement,
     Link,
     Textarea,
-    VStack,
-    Text,
-    Button,
     useToast,
+    VStack,
 } from "@chakra-ui/react";
+import { Watchlist } from "@prisma/client";
 import dayjs from "dayjs";
 import NextLink from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import useSWR from "swr";
 
-export default function FilmNote() {
-    const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
-    const fetchWatchedFilms = async () => {
-        const response = await fetch(`${apiUrl}/film/watched/by-date`, { method: "GET" });
-        const watchedFilms = await response.json();
-        console.log(watchedFilms);
-        setWatchedFilms(watchedFilms);
+export default function FilmWatchlist() {
+    const [watchlist, setWatchlist] = useState<Watchlist[]>([]);
+    const fetchWatchlist = async () => {
+        const response = await fetch(`${apiUrl}/film/watchlist`, { method: "GET" });
+        const watchlistFilms = await response.json();
+        console.log(watchlistFilms);
+        setWatchlist(watchlistFilms);
     };
     useEffect(() => {
-        fetchWatchedFilms();
+        fetchWatchlist();
     }, []);
 
     const [searchText, setSearchText] = useState<string>("");
@@ -53,32 +52,27 @@ export default function FilmNote() {
     };
 
     const [filmId, setFilmId] = useState<string>("");
-    const [rating, setRating] = useState<number>(0);
-
-    const today = dayjs().format("YYYY-MM-DD");
-    const [watchedDate, setWatchedDate] = useState<string>(today);
-
-    const [watchNote, setWatchNote] = useState<string>("");
+    const [recommendedBy, setRecommendedBy] = useState<string>("");
+    const [watchlistNote, setWatchlistNote] = useState<string>("");
 
     const toast = useToast();
 
-    const createWatchedFilm = async (filmId: string, watchedDate: string, rating: number, watchNote: string): Promise<[any, number]> => {
-        console.log(`create watched film: ${filmId}`);
-        const isoWatchedDate = dayjs(watchedDate).toISOString();
+    const createWatchlist = async (filmId: string, recommendedBy: string, note: string, isWatched: boolean): Promise<[any, number]> => {
+        console.log(`create watchlist: ${filmId}`);
 
-        const response = await fetch(`${apiUrl}/film/watched`, {
+        const response = await fetch(`${apiUrl}/film/watchlist`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ filmId, watchedDate: isoWatchedDate, rating, watchNote }),
+            body: JSON.stringify({ filmId, recommendedBy, note, isWatched }),
         });
         return [await response.json(), response.status];
     };
 
     const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
         e.preventDefault();
-        const [response, status] = await createWatchedFilm(filmId, watchedDate, rating, watchNote);
+        const [response, status] = await createWatchlist(filmId, recommendedBy, watchlistNote, false);
         console.log(response);
 
         if (status == 201) {
@@ -90,11 +84,10 @@ export default function FilmNote() {
                 isClosable: true,
             });
             setFilmId("");
-            setRating(0);
-            setWatchedDate(today);
-            setWatchNote("");
+            setRecommendedBy("");
+            setWatchlistNote("");
             setSearchText("");
-            await fetchWatchedFilms();
+            await fetchWatchlist();
         }
         if (status == 500) {
             toast({
@@ -118,7 +111,7 @@ export default function FilmNote() {
                 </Link>
             </Heading>
             <Heading size="lg" my={1}>
-                映画登録
+                ウォッチリスト登録
             </Heading>
             <FormControl mb={4} as="form" onSubmit={handleSubmit}>
                 <VStack spacing={2}>
@@ -168,22 +161,21 @@ export default function FilmNote() {
                                 ))}
                         </VStack>
                     )}
-                    <FilmCard rating={rating} setRating={setRating} filmId={filmId} />
+                    <FilmCard filmId={filmId} />
                     <Input
-                        placeholder="視聴した日付"
-                        type="date"
+                        placeholder="おすすめ元"
                         variant="filled"
-                        value={watchedDate}
+                        value={recommendedBy}
                         onChange={(e) => {
-                            setWatchedDate(e.target.value);
+                            setRecommendedBy(e.target.value);
                         }}
                     />
                     <Textarea
                         placeholder="メモ"
                         variant="filled"
-                        value={watchNote}
+                        value={watchlistNote}
                         onChange={(e) => {
-                            setWatchNote(e.target.value);
+                            setWatchlistNote(e.target.value);
                         }}
                     />
                     <Button
@@ -198,18 +190,11 @@ export default function FilmNote() {
                 </VStack>
             </FormControl>
             <Heading size="lg" my={1}>
-                視聴記録
+                ウォッチリスト
             </Heading>
             <VStack>
-                {Object.entries(watchedFilmsByDate).map(([date, films]) => (
-                    <>
-                        <Heading size="md" w="100%">
-                            {dayjs(date).format("MM/DD")}
-                        </Heading>
-                        {films.map((film, i) => (
-                            <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} />
-                        ))}
-                    </>
+                {watchlist.map((film, i) => (
+                    <FilmCard key={i} filmId={film.filmId.toString()} />
                 ))}
             </VStack>
         </>
