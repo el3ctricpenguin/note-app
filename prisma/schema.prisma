@@ -28,3 +28,12 @@ model WatchedFilm {
   rating      Int // 0 means none
   note        String?
 }
+
+model Watchlist {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  filmId         Int
+  recommended_by String?
+  note           String?
+  isWatched      Boolean
+}
