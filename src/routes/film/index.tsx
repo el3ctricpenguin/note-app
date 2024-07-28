@@ -1,6 +1,6 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
-import { TMDB_API_KEY } from "@/config";
+import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import NextLink from "next/link";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import useSWR from "swr";
 
 export default function FilmNote() {
@@ -50,6 +50,49 @@ export default function FilmNote() {
 
     const toast = useToast();
 
+    const createWatchedFilm = async (filmId: string, watchedDate: string, rating: number, watchNote: string): Promise<[any, number]> => {
+        console.log(`create watched film: ${filmId}`);
+        const isoWatchedDate = dayjs(watchedDate + "T00:00:00").toISOString();
+
+        const response = await fetch(`${apiUrl}/film/watched`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ filmId, watchedDate: isoWatchedDate, rating, watchNote }),
+        });
+        return [await response.json(), response.status];
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const [response, status] = await createWatchedFilm(filmId, watchedDate, rating, watchNote);
+        console.log(response);
+
+        if (status == 201) {
+            toast({
+                title: "film registered",
+                description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+            setFilmId("");
+            setRating(0);
+            setWatchedDate(today);
+            setWatchNote("");
+        }
+        if (status == 500) {
+            toast({
+                title: "film register failed",
+                description: `${response.error}`,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
+
     return (
         <>
             <Heading size="xl" mb={4}>
@@ -60,7 +103,7 @@ export default function FilmNote() {
             <Heading size="lg" my={1}>
                 映画登録
             </Heading>
-            <FormControl mb={4}>
+            <FormControl mb={4} as="form" onSubmit={handleSubmit}>
                 <VStack spacing={2}>
                     <InputGroup>
                         <Input
@@ -125,19 +168,11 @@ export default function FilmNote() {
                         }}
                     />
                     <Button
+                        type="submit"
                         w="100%"
                         color="brand.gray.0"
                         bgColor="brand.gray.1000"
                         _hover={{ color: "brand.gray.0", bgColor: "brand.gray.1000", opacity: 0.75 }}
-                        onClick={() => {
-                            toast({
-                                title: "film registered",
-                                description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
-                                status: "success",
-                                duration: 3000,
-                                isClosable: true,
-                            });
-                        }}
                     >
                         登録
                     </Button>
