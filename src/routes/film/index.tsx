@@ -3,6 +3,7 @@ import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
+import { GroupedFilms } from "@/types";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
     Divider,
@@ -18,16 +19,15 @@ import {
     Button,
     useToast,
 } from "@chakra-ui/react";
-import { WatchedFilm } from "@prisma/client";
 import dayjs from "dayjs";
 import NextLink from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import useSWR from "swr";
 
 export default function FilmNote() {
-    const [watchedFilms, setWatchedFilms] = useState<WatchedFilm[]>([]);
+    const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
     const fetchWatchedFilms = async () => {
-        const response = await fetch(`${apiUrl}/film/watched`, { method: "GET" });
+        const response = await fetch(`${apiUrl}/film/watched/by-date`, { method: "GET" });
         const watchedFilms = await response.json();
         console.log(watchedFilms);
         setWatchedFilms(watchedFilms);
@@ -84,7 +84,7 @@ export default function FilmNote() {
         if (status == 201) {
             toast({
                 title: "film registered",
-                description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
+                // description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
                 status: "success",
                 duration: 3000,
                 isClosable: true,
@@ -110,7 +110,7 @@ export default function FilmNote() {
         <>
             <Heading size="xl" mb={4}>
                 <Link as={NextLink} href="/film" mr={4}>
-                    film-note
+                    /film
                 </Link>
             </Heading>
             <Heading size="lg" my={1}>
@@ -195,11 +195,15 @@ export default function FilmNote() {
                 視聴記録
             </Heading>
             <VStack>
-                <Heading size="md" w="100%">
-                    7/25
-                </Heading>
-                {watchedFilms.map((film, i) => (
-                    <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} />
+                {Object.entries(watchedFilmsByDate).map(([date, films]) => (
+                    <>
+                        <Heading size="md" w="100%">
+                            {dayjs(date).format("MM/DD")}
+                        </Heading>
+                        {films.map((film, i) => (
+                            <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} />
+                        ))}
+                    </>
                 ))}
             </VStack>
         </>
