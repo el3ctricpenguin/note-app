@@ -1,6 +1,6 @@
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import { EditIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link } from "@chakra-ui/react";
+import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link, Box } from "@chakra-ui/react";
 import { FilmRating } from "@/components/cards/FilmRating";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 import { useState } from "react";
@@ -33,11 +33,11 @@ export const FilmCard = ({ filmId, rating, setRating }: FilmCardProps) => {
             </Skeleton>
             <CardBody>
                 <VStack spacing={2}>
-                    <Text fontSize="xl" fontWeight="bold" w="100%">
-                        {data && (
+                    <Box fontSize="xl" fontWeight="bold" w="100%">
+                        {data ? (
                             <HStack justify="left" spacing={2}>
                                 <Text noOfLines={1} wordBreak="break-all" maxW="calc(100% - 120px)">
-                                    {data ? `${data.title}` : "-"}
+                                    {data.title ? `${data.title}` : "-"}
                                 </Text>
                                 <Text>
                                     {data.release_date && `(${data.release_date.split("-")[0]})`} {getFlagEmoji(data.origin_country[0])}
@@ -46,12 +46,17 @@ export const FilmCard = ({ filmId, rating, setRating }: FilmCardProps) => {
                                     <ExternalLinkIcon mb={1} />
                                 </Link>
                             </HStack>
+                        ) : (
+                            <Text>-</Text>
                         )}
-                    </Text>
-                    {setRating ? (
-                        <FilmRatingEditable rating={rating ? rating : 0} setRating={setRating} />
+                    </Box>
+
+                    {rating == undefined ? (
+                        ""
+                    ) : setRating ? (
+                        <FilmRatingEditable rating={rating} setRating={setRating} />
                     ) : (
-                        <FilmRating rating={rating ? rating : 0} />
+                        <FilmRating rating={rating} />
                     )}
                 </VStack>
             </CardBody>
