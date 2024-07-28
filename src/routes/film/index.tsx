@@ -56,9 +56,6 @@ export default function FilmNote() {
                 <Link as={NextLink} href="/film" mr={4}>
                     film-note
                 </Link>
-                <Link as={NextLink} href="/film/search">
-                    /search
-                </Link>
             </Heading>
             <Heading size="lg" my={1}>
                 映画登録
