@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Card, CardBody, VStack, Image, Text, Skeleton, Link, LinkBox, LinkOverlay } from "@chakra-ui/react";
+import { Card, CardBody, VStack, Image, Text, Skeleton, Link, LinkBox, LinkOverlay, HStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { TMDB_FILM_PAGE_URL } from "@/config/constants";
 
@@ -40,12 +40,17 @@ export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId, 
             <CardBody>
                 <VStack spacing={2} align="start">
                     <Text as={LinkOverlay} onClick={onClick} fontSize="xl" fontWeight="bold" w="100%">
-                        {title ? title : "-"} {startYear && `(${startYear})`}
-                        {filmId && (
-                            <Link href={TMDB_FILM_PAGE_URL + "/" + filmId} target="_blank" cursor="pointer">
-                                <ExternalLinkIcon mb={1} ml={2} />
-                            </Link>
-                        )}
+                        <HStack justify="left" spacing={2}>
+                            <Text noOfLines={1} wordBreak="break-all" maxW="calc(100% - 80px)">
+                                {title ? title : "-"}
+                            </Text>
+                            <Text>{startYear && `(${startYear})`}</Text>
+                            {filmId && (
+                                <Link href={TMDB_FILM_PAGE_URL + "/" + filmId} target="_blank" cursor="pointer">
+                                    <ExternalLinkIcon mb={1} />
+                                </Link>
+                            )}
+                        </HStack>
                     </Text>
                     <Text noOfLines={1}>{overview}</Text>
                 </VStack>

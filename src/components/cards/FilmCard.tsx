@@ -18,6 +18,7 @@ interface FilmCardProps {
 export const FilmCard = ({ filmId, rating, setRating }: FilmCardProps) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     const { data, error, isLoading } = useSWR(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`, fetcher);
+    // console.log(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`);
     return (
         <Card overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg">
             <Skeleton isLoaded={!data || isImgLoaded}>
@@ -33,12 +34,19 @@ export const FilmCard = ({ filmId, rating, setRating }: FilmCardProps) => {
             <CardBody>
                 <VStack spacing={2}>
                     <Text fontSize="xl" fontWeight="bold" w="100%">
-                        {data
-                            ? `${data.title} ${data.release_date && `(${data.release_date.split("-")[0]})`} ${getFlagEmoji(data.origin_country[0])}`
-                            : "-"}
-                        <Link href={TMDB_FILM_PAGE_URL + "/" + filmId} target="_blank" cursor="pointer">
-                            <ExternalLinkIcon mb={1} ml={2} />
-                        </Link>
+                        {data && (
+                            <HStack justify="left" spacing={2}>
+                                <Text noOfLines={1} wordBreak="break-all" maxW="calc(100% - 120px)">
+                                    {data ? `${data.title}` : "-"}
+                                </Text>
+                                <Text>
+                                    {data.release_date && `(${data.release_date.split("-")[0]})`} {getFlagEmoji(data.origin_country[0])}
+                                </Text>
+                                <Link href={TMDB_FILM_PAGE_URL + "/" + filmId} target="_blank" cursor="pointer">
+                                    <ExternalLinkIcon mb={1} />
+                                </Link>
+                            </HStack>
+                        )}
                     </Text>
                     {setRating ? (
                         <FilmRatingEditable rating={rating ? rating : 0} setRating={setRating} />

@@ -49,7 +49,7 @@ export default function FilmNote() {
     const handleBlur = () => {
         setTimeout(() => {
             setIsFocused(false);
-        }, 1);
+        }, 10);
     };
 
     const [filmId, setFilmId] = useState<string>("");
@@ -93,6 +93,7 @@ export default function FilmNote() {
             setRating(0);
             setWatchedDate(today);
             setWatchNote("");
+            setSearchText("");
             await fetchWatchedFilms();
         }
         if (status == 500) {
@@ -137,12 +138,14 @@ export default function FilmNote() {
                         <VStack
                             w="100%"
                             spacing={0}
-                            divider={<Divider borderColor="brand.gray.400" />}
+                            divider={<Divider borderColor="brand.gray.400" opacity={1} />}
                             position="absolute"
                             top={10}
                             zIndex={5}
                             borderRadius="md"
                             overflow="hidden"
+                            border="1px"
+                            borderColor="brand.gray.400"
                         >
                             {data?.results
                                 .filter((_: any, i: number) => i < 5)
