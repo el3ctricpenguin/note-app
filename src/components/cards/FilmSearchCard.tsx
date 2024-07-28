@@ -25,6 +25,7 @@ export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId, 
             as={LinkBox}
             onClick={onClick}
             cursor="pointer"
+            _hover={{ bgColor: "brand.cardBgHover" }}
         >
             <Skeleton isLoaded={isImgLoaded}>
                 <Image

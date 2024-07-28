@@ -16,6 +16,7 @@ export const colors = {
                 1000: "#000000",
             },
             cardBg: "#FFF",
+            cardBgHover: "#f5f5f5",
         },
     },
     dark: {
@@ -34,7 +35,8 @@ export const colors = {
                 900: "#fafafa",
                 1000: "#fff",
             },
-            cardBg: "#3B3B3B", // gray.200
+            cardBg: "#424242", // gray.200
+            cardBgHover: "#616161", // gray.300
         },
     },
 };
