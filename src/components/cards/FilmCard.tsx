@@ -13,14 +13,15 @@ interface FilmCardProps {
     filmId: string;
     rating?: number;
     setRating?: (i: number) => void;
+    onClick?: () => void;
 }
 
-export const FilmCard = ({ filmId, rating, setRating }: FilmCardProps) => {
+export const FilmCard = ({ filmId, rating, setRating, onClick }: FilmCardProps) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     const { data, error, isLoading } = useSWR(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`, fetcher);
     // console.log(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`);
     return (
-        <Card overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg">
+        <Card overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg" onClick={onClick} cursor={onClick && "pointer"}>
             <Skeleton isLoaded={!data || isImgLoaded}>
                 <Image
                     h="100"
