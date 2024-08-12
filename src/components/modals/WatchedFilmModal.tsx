@@ -71,7 +71,6 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
         if (watchedFilm) {
             if (watchedFilm.id !== watchedFilmId) {
                 fetchWatchedFilm();
-                setNote("");
             } else {
                 fetchFilmData(watchedFilm?.filmId);
             }
@@ -191,11 +190,17 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                     <Editable
                                         defaultValue={watchedFilm?.note ? watchedFilm?.note : ""}
                                         onSubmit={handleEditNoteSubmit}
+                                        selectAllOnFocus={false}
+
                                         // onBlurで一時的な値を保存 (submitしない)してチェックボタン押した時だけ送信するように変更
                                     >
                                         <HStack>
                                             <EditablePreview />
-                                            <EditableTextarea onChange={(e) => setNote(e.target.value)} h={150} />
+                                            <EditableTextarea
+                                                onFocus={(e) => setNote(e.target.value)}
+                                                onChange={(e) => setNote(e.target.value)}
+                                                h={150}
+                                            />
                                             <EditableControls />
                                         </HStack>
                                     </Editable>
