@@ -1,5 +1,6 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
+import { WatchedFilmModal } from "@/components/modals/WatchedFilmModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
@@ -18,6 +19,7 @@ import {
     Text,
     Button,
     useToast,
+    useDisclosure,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import NextLink from "next/link";
@@ -106,6 +108,9 @@ export default function FilmNote() {
             });
         }
     };
+
+    const [watchedFilmId, setWatchedFilmId] = useState<number>();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
         <>
@@ -207,11 +212,22 @@ export default function FilmNote() {
                             {dayjs(date).format("MM/DD")}
                         </Heading>
                         {films.map((film, i) => (
-                            <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} />
+                            <FilmCard
+                                key={i}
+                                rating={film.rating}
+                                filmId={film.filmId.toString()}
+                                onClick={() => {
+                                    setWatchedFilmId(film.id);
+                                    setTimeout(() => {
+                                        onOpen();
+                                    }, 50);
+                                }}
+                            />
                         ))}
                     </>
                 ))}
             </VStack>
+            {watchedFilmId && <WatchedFilmModal watchedFilmId={watchedFilmId} isOpen={isOpen} onClose={onClose} />}
         </>
     );
 }
