@@ -34,7 +34,7 @@ export const FilmCard = ({ filmId, rating, setRating, onClick }: FilmCardProps) 
                 />
             </Skeleton>
             <CardBody>
-                <VStack spacing={{ base: 0, sm: 2 }} align="left">
+                <VStack spacing={{ base: rating == undefined ? 0 : 2, sm: 2 }} align="left">
                     <Box fontSize="xl" fontWeight="bold" w="100%">
                         {data ? (
                             <HStack justify="left" spacing={2}>
