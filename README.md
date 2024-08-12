@@ -102,6 +102,12 @@ npm start
 pm2 stop note-app
 ```
 
+リポジトリのpull
+
+```
+git pull
+```
+
 再ビルド
 
 ```

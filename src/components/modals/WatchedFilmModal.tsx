@@ -189,7 +189,6 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                     <Editable
                                         defaultValue={watchedFilm?.note ? watchedFilm?.note : ""}
                                         onSubmit={handleEditNoteSubmit}
-                                        submitOnBlur={false}
                                         // onBlurで一時的な値を保存 (submitしない)してチェックボタン押した時だけ送信するように変更
                                     >
                                         <HStack>
