@@ -25,7 +25,7 @@ import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { useCallback, useEffect, useState } from "react";
 import { WatchedFilm } from "@prisma/client";
-import { AttachmentIcon, BellIcon, RepeatClockIcon, ExternalLinkIcon, EditIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { AttachmentIcon, StarIcon, RepeatClockIcon, ExternalLinkIcon, EditIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import dayjs from "dayjs";
 import { FilmRating } from "../cards/FilmRating";
@@ -174,7 +174,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                             </Tr>
                             <Tr>
                                 <Td px={0} verticalAlign="top" py={3}>
-                                    <BellIcon mr={2} />
+                                    <StarIcon mr={2} />
                                     評価
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3} pt={4}>
@@ -191,8 +191,8 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                         defaultValue={watchedFilm?.note ? watchedFilm?.note : ""}
                                         onSubmit={handleEditNoteSubmit}
                                         selectAllOnFocus={false}
-
                                         // onBlurで一時的な値を保存 (submitしない)してチェックボタン押した時だけ送信するように変更
+                                        // Overlayクリックでのモーダル終了時に注意ダイアログ出すのもあり
                                     >
                                         <HStack>
                                             <EditablePreview />
