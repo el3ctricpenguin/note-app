@@ -71,8 +71,10 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
         if (watchedFilm) {
             if (watchedFilm.id !== watchedFilmId) {
                 fetchWatchedFilm();
+                setNote("");
+            } else {
+                fetchFilmData(watchedFilm?.filmId);
             }
-            fetchFilmData(watchedFilm?.filmId);
         } else {
             fetchWatchedFilm();
         }
@@ -158,7 +160,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                     </VStack>
                 </HStack>
             </Skeleton>
-            {watchedFilm && filmData && (
+            {watchedFilm && watchedFilm.id == watchedFilmId && filmData && (
                 <TableContainer>
                     <Table variant="unstyled" colorScheme="whiteAlpha" my={4}>
                         <Tbody>
