@@ -33,6 +33,7 @@ export default function Home() {
                             overflow="hidden"
                             key={i}
                             minH="120px"
+                            bgColor="brand.cardBg"
                         >
                             <Image
                                 src={app.imageURL}
