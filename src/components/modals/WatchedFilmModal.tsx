@@ -195,7 +195,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                     >
                                         <HStack>
                                             <EditablePreview />
-                                            <EditableTextarea onChange={(e) => setNote(e.target.value)} />
+                                            <EditableTextarea onChange={(e) => setNote(e.target.value)} h={150} />
                                             <EditableControls />
                                         </HStack>
                                     </Editable>
