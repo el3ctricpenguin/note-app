@@ -68,82 +68,80 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     return (
         <BasicModal title="" isOpen={isOpen} onClose={onClose}>
-            <ModalBody>
-                <Skeleton isLoaded={!filmData || isImgLoaded}>
-                    <HStack>
-                        <Image
-                            h="150"
-                            aspectRatio="2/3"
-                            alt="film poster"
-                            src={filmData ? TMDB_IMAGE_API_URL_MD + filmData.poster_path : ""}
-                            fallbackSrc="https://placehold.co/500x750?text=*-*&font=raleway"
-                            onLoad={() => setIsImgLoaded(true)}
-                        />
-                        <VStack px={2} align="start">
-                            <VStack spacing={0} align="flex-start">
-                                <Tooltip label={filmData && `${filmData.original_title}`}>
-                                    <Text fontWeight="bold" noOfLines={2}>
-                                        {filmData && `${filmData.original_title}`}
-                                    </Text>
-                                </Tooltip>
-                                <HStack>
-                                    <Text fontWeight="bold">
-                                        {filmData && `(${filmData.release_date.split("-")[0]}) ${getFlagEmoji(filmData.origin_country[0])}`}
-                                    </Text>
-                                    <Link href={TMDB_FILM_PAGE_URL + "/" + watchlist?.filmId} target="_blank" cursor="pointer">
-                                        <ExternalLinkIcon mb={1} />
-                                    </Link>
-                                </HStack>
-                            </VStack>
-                            <Text noOfLines={3}>{filmData && filmData.overview}</Text>
+            <Skeleton isLoaded={!filmData || isImgLoaded}>
+                <HStack>
+                    <Image
+                        h="150"
+                        aspectRatio="2/3"
+                        alt="film poster"
+                        src={filmData ? TMDB_IMAGE_API_URL_MD + filmData.poster_path : ""}
+                        fallbackSrc="https://placehold.co/500x750?text=*-*&font=raleway"
+                        onLoad={() => setIsImgLoaded(true)}
+                    />
+                    <VStack px={2} align="start">
+                        <VStack spacing={0} align="flex-start">
+                            <Tooltip label={filmData && `${filmData.original_title}`}>
+                                <Text fontWeight="bold" noOfLines={2}>
+                                    {filmData && `${filmData.original_title}`}
+                                </Text>
+                            </Tooltip>
+                            <HStack>
+                                <Text fontWeight="bold">
+                                    {filmData && `(${filmData.release_date.split("-")[0]}) ${getFlagEmoji(filmData.origin_country[0])}`}
+                                </Text>
+                                <Link href={TMDB_FILM_PAGE_URL + "/" + watchlist?.filmId} target="_blank" cursor="pointer">
+                                    <ExternalLinkIcon mb={1} />
+                                </Link>
+                            </HStack>
                         </VStack>
-                    </HStack>
-                </Skeleton>
-                {watchlist && filmData && (
-                    <TableContainer>
-                        <Table variant="unstyled" colorScheme="whiteAlpha" my={4}>
-                            <Tbody>
-                                <Tr>
-                                    <Td px={0} py={3}>
-                                        <RepeatClockIcon mr={2} />
-                                        追加日
-                                    </Td>
-                                    <Td px={0} pl={4} py={3}>
-                                        {dayjs(watchlist?.createdAt).format("YYYY-MM-DD")}
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td px={0} verticalAlign="top" py={3}>
-                                        <BellIcon mr={2} />
-                                        おすすめ元
-                                    </Td>
-                                    <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                                        {watchlist?.recommendedBy}
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td px={0} verticalAlign="top" py={3}>
-                                        <AttachmentIcon mr={2} />
-                                        メモ
-                                    </Td>
-                                    <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                                        {watchlist?.note}
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td px={0} verticalAlign="top" py={3}>
-                                        <ViewIcon mr={2} />
-                                        視聴済み
-                                    </Td>
-                                    <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                                        <Checkbox isChecked={watchlist?.isWatched} h={5} />
-                                    </Td>
-                                </Tr>
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
-                )}
-            </ModalBody>
+                        <Text noOfLines={3}>{filmData && filmData.overview}</Text>
+                    </VStack>
+                </HStack>
+            </Skeleton>
+            {watchlist && filmData && (
+                <TableContainer>
+                    <Table variant="unstyled" colorScheme="whiteAlpha" my={4}>
+                        <Tbody>
+                            <Tr>
+                                <Td px={0} py={3}>
+                                    <RepeatClockIcon mr={2} />
+                                    追加日
+                                </Td>
+                                <Td px={0} pl={4} py={3}>
+                                    {dayjs(watchlist?.createdAt).format("YYYY-MM-DD")}
+                                </Td>
+                            </Tr>
+                            <Tr>
+                                <Td px={0} verticalAlign="top" py={3}>
+                                    <BellIcon mr={2} />
+                                    おすすめ元
+                                </Td>
+                                <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
+                                    {watchlist?.recommendedBy}
+                                </Td>
+                            </Tr>
+                            <Tr>
+                                <Td px={0} verticalAlign="top" py={3}>
+                                    <AttachmentIcon mr={2} />
+                                    メモ
+                                </Td>
+                                <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
+                                    {watchlist?.note}
+                                </Td>
+                            </Tr>
+                            <Tr>
+                                <Td px={0} verticalAlign="top" py={3}>
+                                    <ViewIcon mr={2} />
+                                    視聴済み
+                                </Td>
+                                <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
+                                    <Checkbox isChecked={watchlist?.isWatched} h={5} />
+                                </Td>
+                            </Tr>
+                        </Tbody>
+                    </Table>
+                </TableContainer>
+            )}
         </BasicModal>
     );
 };

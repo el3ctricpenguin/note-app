@@ -1,5 +1,11 @@
 import {
     Button,
+    Drawer,
+    DrawerBody,
+    DrawerCloseButton,
+    DrawerContent,
+    DrawerHeader,
+    DrawerOverlay,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -26,10 +32,17 @@ export const BasicModal = ({ children, title, isOpen, onClose, closeOnOverlayCli
             <ModalContent {...modalContentProps}>
                 <ModalHeader>{title}</ModalHeader>
                 <ModalCloseButton />
-                {children}
+                <ModalBody>{children}</ModalBody>
             </ModalContent>
         </Modal>
     ) : (
-        <></>
+        <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" autoFocus={false}>
+            <DrawerOverlay />
+            <DrawerContent maxH="80%" px={0}>
+                <DrawerCloseButton />
+                <DrawerHeader>{title}</DrawerHeader>
+                <DrawerBody>{children}</DrawerBody>
+            </DrawerContent>
+        </Drawer>
     );
 };
