@@ -66,7 +66,9 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                 </Link>
                             </HStack>
                         </VStack>
-                        <Text noOfLines={3}>{filmData && filmData.overview}</Text>
+                        <Tooltip label={filmData && filmData.overview}>
+                            <Text noOfLines={3}>{filmData && filmData.overview}</Text>
+                        </Tooltip>
                     </VStack>
                 </HStack>
             </Skeleton>
