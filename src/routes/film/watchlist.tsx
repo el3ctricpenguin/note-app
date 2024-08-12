@@ -1,5 +1,6 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
+import { WatchlistModal } from "@/components/modals/WatchlistModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
@@ -14,11 +15,11 @@ import {
     InputRightElement,
     Link,
     Textarea,
+    useDisclosure,
     useToast,
     VStack,
 } from "@chakra-ui/react";
 import { Watchlist } from "@prisma/client";
-import dayjs from "dayjs";
 import NextLink from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import useSWR from "swr";
@@ -99,6 +100,9 @@ export default function FilmWatchlist() {
             });
         }
     };
+
+    const [watchlistId, setWatchlistId] = useState<number>();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
         <>
@@ -194,9 +198,19 @@ export default function FilmWatchlist() {
             </Heading>
             <VStack>
                 {watchlist.map((film, i) => (
-                    <FilmCard key={i} filmId={film.filmId.toString()} />
+                    <FilmCard
+                        key={i}
+                        filmId={film.filmId.toString()}
+                        onClick={() => {
+                            setWatchlistId(film.id);
+                            setTimeout(() => {
+                                onOpen();
+                            }, 50);
+                        }}
+                    />
                 ))}
             </VStack>
+            {watchlistId && <WatchlistModal watchlistId={watchlistId} isOpen={isOpen} onClose={onClose} />}
         </>
     );
 }
