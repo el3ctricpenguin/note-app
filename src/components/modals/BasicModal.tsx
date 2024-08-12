@@ -25,7 +25,7 @@ interface BasicModalProps {
     modalContentProps?: ModalContentProps;
 }
 export const BasicModal = ({ children, title, isOpen, onClose, closeOnOverlayClick, modalContentProps }: BasicModalProps) => {
-    const [isDesktop] = useMediaQuery("(min-width: 768px)");
+    const [isDesktop] = useMediaQuery("(min-width: 480px)");
     return isDesktop ? (
         <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={closeOnOverlayClick} autoFocus={false}>
             <ModalOverlay />
