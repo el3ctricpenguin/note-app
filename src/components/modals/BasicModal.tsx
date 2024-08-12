@@ -1,5 +1,4 @@
 import {
-    Button,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
@@ -11,7 +10,6 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalContentProps,
-    ModalFooter,
     ModalHeader,
     ModalOverlay,
     useMediaQuery,
@@ -27,7 +25,13 @@ interface BasicModalProps {
 export const BasicModal = ({ children, title, isOpen, onClose, closeOnOverlayClick, modalContentProps }: BasicModalProps) => {
     const [isDesktop] = useMediaQuery("(min-width: 480px)");
     return isDesktop ? (
-        <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={closeOnOverlayClick} autoFocus={false}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            closeOnOverlayClick={closeOnOverlayClick}
+            autoFocus={false}
+            size={{ base: "lg", xl: "2xl", "2xl": "4xl" }}
+        >
             <ModalOverlay />
             <ModalContent {...modalContentProps}>
                 <ModalHeader>{title}</ModalHeader>
