@@ -73,7 +73,7 @@ export default function FilmNote() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ filmId, watchedDate: isoWatchedDate, rating, watchNote }),
+            body: JSON.stringify({ filmId, watchedDate: isoWatchedDate, rating, note: watchNote }),
         });
         return [await response.json(), response.status];
     };
