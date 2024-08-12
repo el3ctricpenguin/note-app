@@ -93,3 +93,29 @@ npx prisma migrate dev --name init
 ```
 npm start
 ```
+
+## 更新方法
+
+サービスの停止
+
+```
+pm2 stop note-app
+```
+
+再ビルド
+
+```
+npm run build
+```
+
+DBのmigration (必要であれば)
+
+```
+npx prisma migrate deploy
+```
+
+サービスの開始
+
+```
+pm2 start note-app
+```
