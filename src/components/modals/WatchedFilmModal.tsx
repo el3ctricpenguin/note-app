@@ -14,10 +14,6 @@ import {
     Editable,
     EditablePreview,
     EditableTextarea,
-    ButtonGroup,
-    Flex,
-    IconButton,
-    useEditableControls,
     useToast,
 } from "@chakra-ui/react";
 import { BasicModal } from "./BasicModal";
@@ -25,25 +21,11 @@ import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { useCallback, useEffect, useState } from "react";
 import { WatchedFilm } from "@prisma/client";
-import { AttachmentIcon, StarIcon, RepeatClockIcon, ExternalLinkIcon, EditIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { AttachmentIcon, StarIcon, RepeatClockIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import dayjs from "dayjs";
-import { FilmRating } from "../cards/FilmRating";
-
-function EditableControls() {
-    const { isEditing, getSubmitButtonProps, getCancelButtonProps, getEditButtonProps } = useEditableControls();
-
-    return isEditing ? (
-        <ButtonGroup justifyContent="center" size="sm">
-            <IconButton icon={<CheckIcon />} {...getSubmitButtonProps()} aria-label="submit" />
-            <IconButton icon={<CloseIcon />} {...getCancelButtonProps()} aria-label="cancel" />
-        </ButtonGroup>
-    ) : (
-        <Flex justifyContent="center">
-            <IconButton size="sm" icon={<EditIcon />} {...getEditButtonProps()} aria-label="edit" />
-        </Flex>
-    );
-}
+import { FilmRating } from "@/components/cards/FilmRating";
+import EditableControls from "@/components/form/EditableControls";
 
 interface WatchedFilmModalProps {
     watchedFilmId: number;
