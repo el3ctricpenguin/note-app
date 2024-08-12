@@ -2,6 +2,7 @@ import { ColorMode, extendTheme } from "@chakra-ui/react";
 import { colors } from "@/config/theme/colors";
 import { inputConfig } from "./config/inputConfig";
 import { textareaConfig } from "./config/textareaConfig";
+import { modalConfig } from "./config/modalConfig";
 
 const createTheme = (colorMode: ColorMode) =>
     extendTheme({
@@ -32,6 +33,7 @@ const createTheme = (colorMode: ColorMode) =>
         components: {
             Input: inputConfig,
             Textarea: textareaConfig,
+            Modal: modalConfig,
         },
         styles: {
             global: {
