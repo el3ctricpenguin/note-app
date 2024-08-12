@@ -1,37 +1,10 @@
-import {
-    Button,
-    List,
-    ListIcon,
-    ListItem,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalContentProps,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Skeleton,
-    Image,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Tr,
-    Input,
-    Checkbox,
-    Text,
-    HStack,
-    Link,
-    VStack,
-    Tooltip,
-} from "@chakra-ui/react";
+import { Skeleton, Image, Table, TableContainer, Tbody, Td, Tr, Checkbox, Text, HStack, Link, VStack, Tooltip } from "@chakra-ui/react";
 import { BasicModal } from "./BasicModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { useCallback, useEffect, useState } from "react";
 import { Watchlist } from "@prisma/client";
-import { AttachmentIcon, BellIcon, RepeatClockIcon, CheckCircleIcon, NotAllowedIcon, ExternalLinkIcon, ViewIcon } from "@chakra-ui/icons";
+import { AttachmentIcon, InfoOutlineIcon, RepeatClockIcon, ExternalLinkIcon, ViewIcon } from "@chakra-ui/icons";
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import dayjs from "dayjs";
 interface WatchlistModalProps {
@@ -115,7 +88,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                             </Tr>
                             <Tr>
                                 <Td px={0} verticalAlign="top" py={3}>
-                                    <BellIcon mr={2} />
+                                    <InfoOutlineIcon mr={2} />
                                     おすすめ元
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
