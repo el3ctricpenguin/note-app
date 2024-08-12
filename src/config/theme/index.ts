@@ -9,6 +9,14 @@ const createTheme = (colorMode: ColorMode) =>
             initialColorMode: "light",
             useSystemColorMode: false,
         },
+        breakpoints: {
+            base: "0em",
+            sm: "30em",
+            md: "48em",
+            lg: "62em",
+            xl: "80em",
+            "2xl": "96em",
+        },
         fontSizes: {
             "2xs": "0.5rem", // 8px
             xs: "0.625rem", // 10px

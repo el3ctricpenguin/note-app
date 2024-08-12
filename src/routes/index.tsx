@@ -1,4 +1,4 @@
-import { Badge, Box, Card, CardBody, Heading, HStack, Image, LinkBox, LinkOverlay, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Badge, Card, CardBody, HStack, Image, LinkBox, LinkOverlay, SimpleGrid, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
     ];
     return (
         <>
-            <SimpleGrid minChildWidth="sm" spacing={4}>
+            <SimpleGrid spacing={4} columns={{ base: 1, md: 2, "2xl": 3 }}>
                 {apps.map((app, i) => {
                     return (
                         <Card
