@@ -12,8 +12,18 @@ npm i
 
 ### 開発時
 
+サーバー実行
+
 ```
 npm run dev
+```
+
+DB migrate
+
+DB管理画面
+
+```
+npx prisma studio
 ```
 
 ### デプロイ時
