@@ -18,10 +18,12 @@
     "dayjs": "^1.11.12",
     "framer-motion": "^11.3.12",
     "next": "14.2.5",
+    "next-auth": "^5.0.0-beta.25",
     "prisma": "^5.17.0",
     "react": "^18",
     "react-dom": "^18",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.4.1",
