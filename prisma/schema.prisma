@@ -37,3 +37,9 @@ model Watchlist {
   note          String?
   isWatched     Boolean
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
