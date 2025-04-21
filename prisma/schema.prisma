@@ -39,7 +39,7 @@ model Watchlist {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  password String
+  id             Int    @id @default(autoincrement())
+  username       String @unique
+  hashedPassword String
 }
