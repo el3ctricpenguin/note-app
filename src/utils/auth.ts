@@ -16,5 +16,7 @@ export async function getUserFromDB(username: string, plainPassword: string): Pr
         id: user.id,
         username: user.username,
         hashedPassword: user.hashedPassword,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
     };
 }
