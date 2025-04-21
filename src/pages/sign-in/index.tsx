@@ -1,5 +1,6 @@
-import { Button, FormControl, FormLabel, Heading, Input, VStack, FormErrorMessage } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Heading, Input, VStack, FormErrorMessage, Link } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
+import NextLink from "next/link";
 import { useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -51,7 +52,12 @@ export default function SignIn() {
     return (
         <>
             <Heading size="xl" mb={4}>
-                /sign-in
+                <Link _hover={{ textDecoration: "none" }} cursor="normal" mr={4}>
+                    /sign-in
+                </Link>
+                <Link as={NextLink} href="/sign-up">
+                    /sign-up
+                </Link>
             </Heading>
             <FormControl as="form" onSubmit={handleSubmit(credentialsAction)}>
                 <VStack spacing={4} align="start">

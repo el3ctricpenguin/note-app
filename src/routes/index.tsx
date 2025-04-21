@@ -26,6 +26,9 @@ export default function Home() {
                 <Link as={NextLink} href="/sign-in" mr={4}>
                     /sign-in
                 </Link>
+                <Link as={NextLink} href="/sign-up">
+                    /sign-up
+                </Link>
             </Heading>
             <SimpleGrid spacing={4} columns={{ base: 1, md: 2, "2xl": 3 }}>
                 {apps.map((app, i) => {
