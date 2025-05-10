@@ -1,3 +1,5 @@
+"use client";
+
 import { ThemeProvider, ThemeProviderProps, useColorMode } from "@chakra-ui/react";
 import { theme } from ".";
 

@@ -1,4 +1,6 @@
-import { ColorMode, Drawer, extendTheme } from "@chakra-ui/react";
+"use client";
+
+import { ColorMode, extendTheme } from "@chakra-ui/react";
 import { colors } from "@/config/theme/colors";
 import { inputConfig } from "./config/inputConfig";
 import { textareaConfig } from "./config/textareaConfig";
