@@ -1,5 +1,3 @@
-"use client";
-
 import { MoonIcon, StarIcon, SunIcon } from "@chakra-ui/icons";
 import { Box, Divider, Heading, HStack, IconButton, useColorMode, VStack } from "@chakra-ui/react";
 import NextLink from "next/link";
