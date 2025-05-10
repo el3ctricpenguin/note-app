@@ -1,9 +1,8 @@
 import { MoonIcon, StarIcon, SunIcon } from "@chakra-ui/icons";
 import { Box, Divider, Heading, HStack, IconButton, useColorMode, VStack } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { ReactElement } from "react";
 
-export default function BasicLayout({ children }: { children: ReactElement }) {
+export default function BasicLayout({ children }: { children: React.ReactNode }) {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
         <Box w="100%" h="100%" bgColor="brand.gray.0" p={{ base: 5, sm: 10, md: 20 }}>
