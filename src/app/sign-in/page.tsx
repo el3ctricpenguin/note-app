@@ -7,7 +7,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { sleep } from "@/features/utils/sleep";
-import { useRouter } from "next/navigation";
 import AuthHeader from "@/components/layout/AuthHeader";
 
 const signInSchema = z.object({
@@ -18,7 +17,6 @@ const signInSchema = z.object({
 type FormData = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
-    const router = useRouter();
     const toast = useToast();
     const {
         handleSubmit,
@@ -44,7 +42,7 @@ export default function SignIn() {
 
             toast({ title: "ログインに成功しました", status: "success" });
             await sleep(2);
-            router.push("/");
+            window.location.href = "/";
         } catch (error) {
             console.error("Sign in error:", error);
             toast({ title: "ログインに失敗しました", status: "error" });

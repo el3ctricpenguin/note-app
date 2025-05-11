@@ -4,8 +4,7 @@ import React, { use, useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { Button, FormControl, FormLabel, Heading, Input, VStack, FormErrorMessage, Link, useToast } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, VStack, FormErrorMessage, useToast } from "@chakra-ui/react";
 import { sleep } from "@/features/utils/sleep";
 import AuthHeader from "@/components/layout/AuthHeader";
 
@@ -27,7 +26,6 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUpPage: React.FC = () => {
     const toast = useToast();
-    const router = useRouter();
 
     const {
         register,
@@ -53,7 +51,7 @@ const SignUpPage: React.FC = () => {
 
             toast({ title: "ユーザー登録に成功しました", status: "success" });
             await sleep(2);
-            router.push("/");
+            window.location.href = "/";
         } catch (error) {
             console.error("Sign up error:", error);
             toast({ title: "ユーザー登録に失敗しました", status: "error" });
