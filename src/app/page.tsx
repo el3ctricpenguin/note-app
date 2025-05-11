@@ -1,7 +1,10 @@
-import { Badge, Card, CardBody, Heading, HStack, Image, Link, LinkBox, LinkOverlay, SimpleGrid, Text } from "@chakra-ui/react";
+"use client";
+
+import AuthHeader from "@/components/layout/AuthHeader";
+import { Badge, Card, CardBody, HStack, Image, LinkBox, LinkOverlay, SimpleGrid, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-export default function Home() {
+const IndexPage: React.FC = () => {
     const apps = [
         {
             name: "TODO",
@@ -22,14 +25,7 @@ export default function Home() {
     ];
     return (
         <>
-            <Heading size="xl" mb={4}>
-                <Link as={NextLink} href="/sign-in" mr={4}>
-                    /sign-in
-                </Link>
-                <Link as={NextLink} href="/sign-up">
-                    /sign-up
-                </Link>
-            </Heading>
+            <AuthHeader />
             <SimpleGrid spacing={4} columns={{ base: 1, md: 2, "2xl": 3 }}>
                 {apps.map((app, i) => {
                     return (
@@ -77,4 +73,6 @@ export default function Home() {
             </SimpleGrid>
         </>
     );
-}
+};
+
+export default IndexPage;
