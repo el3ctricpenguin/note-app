@@ -1,9 +1,11 @@
 import { MoonIcon, StarIcon, SunIcon } from "@chakra-ui/icons";
-import { Box, Divider, Heading, HStack, IconButton, useColorMode, VStack } from "@chakra-ui/react";
+import { Box, Divider, Heading, HStack, IconButton, Spacer, Text, useColorMode, VStack } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useSession } from "../content/SessionProvider";
 
 export default function BasicLayout({ children }: { children: React.ReactNode }) {
     const { colorMode, toggleColorMode } = useColorMode();
+    const session = useSession();
     return (
         <Box w="100%" h="100%" bgColor="brand.gray.0" p={{ base: 5, sm: 10, md: 20 }}>
             <HStack my={4} justify="space-between">
@@ -25,9 +27,13 @@ export default function BasicLayout({ children }: { children: React.ReactNode })
             {children}
             <VStack mt={4}>
                 <Divider borderColor="brand.gray.900" />
-                <HStack spacing={0.5} justify="end" w="100%">
-                    <StarIcon w={3} />
-                    <StarIcon w={3} />
+                <HStack w="100%">
+                    <Text>{session && `logged in: ${session.username}`}</Text>
+                    <Spacer />
+                    <HStack spacing={0.5}>
+                        <StarIcon w={3} />
+                        <StarIcon w={3} />
+                    </HStack>
                 </HStack>
             </VStack>
         </Box>
