@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Button, FormControl, FormLabel, Heading, Input, VStack, FormErrorMessage, Link, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { sleep } from "@/features/utils/sleep";
+import AuthHeader from "@/components/layout/AuthHeader";
 
 const signUpSchema = z
     .object({
@@ -64,14 +65,7 @@ const SignUpPage: React.FC = () => {
 
     return (
         <>
-            <Heading size="xl" mb={4}>
-                <Link as={NextLink} href="/sign-in" mr={4}>
-                    /sign-in
-                </Link>
-                <Link _hover={{ textDecoration: "none" }} cursor="normal">
-                    /sign-up
-                </Link>
-            </Heading>
+            <AuthHeader />
             <FormControl as="form" onSubmit={onSubmit}>
                 <VStack spacing={3} align="start">
                     <FormControl id="sign-up-username" isInvalid={!!errors.username}>

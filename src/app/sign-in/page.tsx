@@ -1,7 +1,6 @@
 "use client";
 
-import { Button, FormControl, FormLabel, Heading, Input, VStack, FormErrorMessage, Link } from "@chakra-ui/react";
-import NextLink from "next/link";
+import { Button, FormControl, FormLabel, Input, VStack, FormErrorMessage } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { sleep } from "@/features/utils/sleep";
 import { useRouter } from "next/navigation";
+import AuthHeader from "@/components/layout/AuthHeader";
 
 const signInSchema = z.object({
     username: z.string().min(1, "ユーザー名は必須です"),
@@ -55,15 +55,8 @@ export default function SignIn() {
 
     return (
         <>
-            <Heading size="xl" mb={4}>
-                <Link _hover={{ textDecoration: "none" }} cursor="normal" mr={4}>
-                    /sign-in
-                </Link>
-                <Link as={NextLink} href="/sign-up">
-                    /sign-up
-                </Link>
-            </Heading>
             <FormControl as="form" onSubmit={onSubmit}>
+                <AuthHeader />
                 <VStack spacing={4} align="start">
                     <FormControl id="credentials-username" isInvalid={!!errors.username}>
                         <FormLabel fontSize="lg">ユーザー名</FormLabel>
