@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "theme": "chakra-cli tokens src/config/theme.ts"
+    "theme": "chakra-cli tokens src/config/theme/index.ts"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
