@@ -1,10 +1,13 @@
-import React from "react";
+"use client";
+
+import React, { use, useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Button, FormControl, FormLabel, Heading, Input, VStack, FormErrorMessage, Link, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { sleep } from "@/features/utils/sleep";
 
 const signUpSchema = z
     .object({
@@ -34,40 +37,30 @@ const SignUpPage: React.FC = () => {
         resolver: zodResolver(signUpSchema),
     });
 
-    const onSubmit = async (data: SignUpFormData) => {
+    const [isPending, setPending] = useState(false);
+
+    const onSubmit = handleSubmit(async (data) => {
         try {
+            setPending(true);
             const response = await fetch("/api/sign-up", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    username: data.username,
-                    password: data.password,
-                }),
+                body: JSON.stringify({ username: data.username, password: data.password }),
             });
+            const responseBody = await response.json();
 
-            if (response.ok) {
-                toast({
-                    title: "ユーザー登録に成功しました",
-                    status: "success",
-                });
-                router.push("/sign-in");
-            } else {
-                const errorData = await response.json();
-                toast({
-                    title: "ユーザー登録に失敗しました",
-                    status: "error",
-                    description: errorData.message,
-                });
-            }
+            if (!response.ok) throw new Error(responseBody.error);
+
+            toast({ title: "ユーザー登録に成功しました", status: "success" });
+            await sleep(2);
+            router.push("/");
         } catch (error) {
-            console.error("Sign-up error:", error);
-            toast({
-                title: "ユーザー登録に失敗しました",
-                status: "error",
-                description: `${error}`,
-            });
+            console.error("Sign up error:", error);
+            toast({ title: "ユーザー登録に失敗しました", status: "error" });
+        } finally {
+            setPending(false);
         }
-    };
+    });
 
     return (
         <>
@@ -79,24 +72,39 @@ const SignUpPage: React.FC = () => {
                     /sign-up
                 </Link>
             </Heading>
-            <FormControl as="form" onSubmit={handleSubmit(onSubmit)}>
-                <VStack spacing={4} align="start">
+            <FormControl as="form" onSubmit={onSubmit}>
+                <VStack spacing={3} align="start">
                     <FormControl id="sign-up-username" isInvalid={!!errors.username}>
-                        <FormLabel fontSize="lg">ユーザー名</FormLabel>
-                        <Input type="text" {...register("username")} />
+                        <FormLabel fontSize="lg" mb={1}>
+                            ユーザー名
+                        </FormLabel>
+                        <Input type="text" {...register("username")} variant="filled" />
                         <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
                     </FormControl>
                     <FormControl id="sign-up-password" isInvalid={!!errors.password}>
-                        <FormLabel fontSize="lg">パスワード</FormLabel>
-                        <Input type="password" {...register("password")} />
+                        <FormLabel fontSize="lg" mb={1}>
+                            パスワード
+                        </FormLabel>
+                        <Input type="password" {...register("password")} variant="filled" />
                         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
                     </FormControl>
                     <FormControl id="sign-up-confirm-password" isInvalid={!!errors.confirmPassword}>
-                        <FormLabel fontSize="lg">パスワード確認</FormLabel>
-                        <Input type="password" {...register("confirmPassword")} />
+                        <FormLabel fontSize="lg" mb={1}>
+                            パスワード確認
+                        </FormLabel>
+                        <Input type="password" {...register("confirmPassword")} variant="filled" />
                         <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
                     </FormControl>
-                    <Button type="submit">登録</Button>
+                    <Button
+                        type="submit"
+                        color="brand.gray.0"
+                        bgColor="brand.gray.1000"
+                        _hover={{ color: "brand.gray.0", bgColor: "brand.gray.1000", opacity: 0.75 }}
+                        isLoading={isPending}
+                        loadingText="登録中"
+                    >
+                        登録
+                    </Button>
                 </VStack>
             </FormControl>
         </>
