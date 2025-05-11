@@ -1,7 +1,7 @@
 import { MoonIcon, StarIcon, SunIcon } from "@chakra-ui/icons";
 import { Box, Divider, Heading, HStack, IconButton, Spacer, Text, useColorMode, VStack } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useSession } from "../content/SessionProvider";
+import { useSession } from "../context/SessionProvider";
 
 export default function BasicLayout({ children }: { children: React.ReactNode }) {
     const { colorMode, toggleColorMode } = useColorMode();

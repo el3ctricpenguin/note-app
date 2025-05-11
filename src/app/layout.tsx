@@ -1,6 +1,6 @@
 import { getSession } from "@/lib/session";
 import LayoutClient from "./layout-client";
-import SessionProvider from "@/components/content/SessionProvider";
+import SessionProvider from "@/components/context/SessionProvider";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     const session = await getSession();
