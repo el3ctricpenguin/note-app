@@ -57,14 +57,18 @@ export default function SignIn() {
         <>
             <FormControl as="form" onSubmit={onSubmit}>
                 <AuthHeader />
-                <VStack spacing={4} align="start">
+                <VStack spacing={3} align="start">
                     <FormControl id="credentials-username" isInvalid={!!errors.username}>
-                        <FormLabel fontSize="lg">ユーザー名</FormLabel>
+                        <FormLabel fontSize="lg" mb={1}>
+                            ユーザー名
+                        </FormLabel>
                         <Input type="text" {...register("username")} variant="filled" />
                         <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
                     </FormControl>
                     <FormControl id="credentials-password" isInvalid={!!errors.password}>
-                        <FormLabel fontSize="lg">パスワード</FormLabel>
+                        <FormLabel fontSize="lg" mb={1}>
+                            パスワード
+                        </FormLabel>
                         <Input type="password" {...register("password")} variant="filled" />
                         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
                     </FormControl>

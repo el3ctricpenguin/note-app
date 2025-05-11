@@ -6,7 +6,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Button, FormControl, FormLabel, Heading, Input, VStack, FormErrorMessage, Link, useToast } from "@chakra-ui/react";
-import NextLink from "next/link";
 import { sleep } from "@/features/utils/sleep";
 import AuthHeader from "@/components/layout/AuthHeader";
 
