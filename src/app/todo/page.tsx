@@ -1,5 +1,7 @@
+"use client";
+
 import { apiUrl } from "@/config";
-import { Box, Button, Checkbox, Divider, FormControl, Heading, HStack, Input, useColorMode, VStack } from "@chakra-ui/react";
+import { Button, Checkbox, Divider, FormControl, Heading, HStack, Input, useColorMode, VStack } from "@chakra-ui/react";
 import { Todo } from "@prisma/client";
 import { FormEvent, useEffect, useState } from "react";
 
