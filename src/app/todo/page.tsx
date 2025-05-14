@@ -69,7 +69,7 @@ export default function TodoPage() {
 
     return (
         <VStack align="start" spacing={2}>
-            <Heading>Todo</Heading>
+            <Heading pointerEvents="none">/todo</Heading>
             <VStack
                 divider={<Divider />}
                 spacing={0}
