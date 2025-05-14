@@ -1,3 +1,5 @@
+"use client";
+
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { WatchedFilmModal } from "@/components/modals/WatchedFilmModal";
@@ -16,7 +18,6 @@ import {
     Link,
     Textarea,
     VStack,
-    Text,
     Button,
     useToast,
     useDisclosure,

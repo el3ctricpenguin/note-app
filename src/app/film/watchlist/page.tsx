@@ -1,3 +1,5 @@
+"use client";
+
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { WatchlistModal } from "@/components/modals/WatchlistModal";
