@@ -1,6 +1,7 @@
 "use client";
 
 import { apiUrl } from "@/config";
+import { disabledLinkStyle } from "@/config/theme/styles";
 import { Button, Checkbox, Divider, FormControl, Heading, HStack, Input, useColorMode, VStack } from "@chakra-ui/react";
 import { Todo } from "@prisma/client";
 import { FormEvent, useEffect, useState } from "react";
@@ -69,7 +70,7 @@ export default function TodoPage() {
 
     return (
         <VStack align="start" spacing={2}>
-            <Heading pointerEvents="none">/todo</Heading>
+            <Heading {...disabledLinkStyle}>/todo</Heading>
             <VStack
                 divider={<Divider />}
                 spacing={0}

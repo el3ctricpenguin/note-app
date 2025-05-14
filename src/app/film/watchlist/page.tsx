@@ -5,6 +5,7 @@ import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { WatchlistModal } from "@/components/modals/WatchlistModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
+import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { fetcher } from "@/features/utils/fetcher";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
@@ -109,10 +110,10 @@ export default function FilmWatchlist() {
     return (
         <>
             <Heading size="xl" mb={4}>
-                <Link as={NextLink} href="/film" mr={4}>
+                <Link as={NextLink} href="/film" mr={4} {...enabledLinkStyle}>
                     /film
                 </Link>
-                <Link as={NextLink} href="/film/watchlist" mr={4}>
+                <Link as={NextLink} href="/film/watchlist" mr={4} {...disabledLinkStyle}>
                     /watchlist
                 </Link>
             </Heading>

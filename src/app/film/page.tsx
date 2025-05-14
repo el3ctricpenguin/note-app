@@ -5,6 +5,7 @@ import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { WatchedFilmModal } from "@/components/modals/WatchedFilmModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
+import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { fetcher } from "@/features/utils/fetcher";
 import { GroupedFilms } from "@/types";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -116,10 +117,10 @@ export default function FilmNote() {
     return (
         <>
             <Heading size="xl" mb={4}>
-                <Link as={NextLink} href="/film" mr={4}>
+                <Link as={NextLink} href="/film" mr={4} {...disabledLinkStyle}>
                     /film
                 </Link>
-                <Link as={NextLink} href="/film/watchlist" mr={4}>
+                <Link as={NextLink} href="/film/watchlist" mr={4} {...enabledLinkStyle}>
                     /watchlist
                 </Link>
             </Heading>
