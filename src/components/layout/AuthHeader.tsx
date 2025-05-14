@@ -1,19 +1,7 @@
 import { Heading, HStack, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useSession } from "@/components/context/SessionProvider";
-
-const disabledLinkStyle = {
-    pointerEvents: "none",
-    cursor: "none",
-    color: "brand.gray.400",
-} as const;
-
-const enabledLinkStyle = {
-    pointerEvents: "auto",
-    cursor: "pointer",
-    color: "brand.gray.1000",
-    _hover: { textDecoration: "none" },
-} as const;
+import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 
 const signOut = async () => {
     const response = await fetch("/api/sign-out", { method: "DELETE" });
