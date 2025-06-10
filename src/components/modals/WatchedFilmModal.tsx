@@ -15,6 +15,7 @@ import {
     EditablePreview,
     EditableTextarea,
     useToast,
+    EditableInput,
 } from "@chakra-ui/react";
 import { BasicModal } from "./BasicModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
@@ -62,6 +63,8 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
     }, [watchedFilmId, fetchWatchedFilm, watchedFilm, fetchFilmData]);
 
     const [note, setNote] = useState("");
+    const [watchedDate, setWatchedDate] = useState("");
+
     const toast = useToast();
     const updateWatchedFilm = async (
         watchedFilmId: string,
@@ -79,12 +82,13 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ note: note }),
+            body: JSON.stringify({ filmId, watchedDate: isoWatchedDate, rating, note }),
         });
         return [await response.json(), response.status];
     };
-    const handleEditNoteSubmit = async () => {
-        const [response, status] = await updateWatchedFilm(watchedFilmId.toString(), undefined, undefined, undefined, note);
+
+    const handleEditFilmSubmit = async (filmId?: string, watchedDate?: string, rating?: number, note?: string) => {
+        const [response, status] = await updateWatchedFilm(watchedFilmId.toString(), filmId, watchedDate, rating, note);
         console.log(response);
 
         if (status == 201) {
@@ -148,10 +152,26 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                             <Tr>
                                 <Td px={0} py={3}>
                                     <RepeatClockIcon mr={2} />
-                                    追加日
+                                    視聴日
                                 </Td>
                                 <Td px={0} pl={4} py={3}>
-                                    {dayjs(watchedFilm?.watchedDate).format("YYYY-MM-DD")}
+                                    <Editable
+                                        defaultValue={dayjs(watchedFilm?.watchedDate).format("YYYY-MM-DD") ?? ""}
+                                        onSubmit={() => handleEditFilmSubmit(undefined, watchedDate, undefined, undefined)}
+                                        selectAllOnFocus={false}
+                                        submitOnBlur={false}
+                                    >
+                                        <HStack>
+                                            <EditablePreview />
+                                            <EditableInput
+                                                type="date"
+                                                onChange={(e) => {
+                                                    setWatchedDate(e.target.value);
+                                                }}
+                                            />
+                                            <EditableControls />
+                                        </HStack>
+                                    </Editable>
                                 </Td>
                             </Tr>
                             <Tr>
@@ -170,8 +190,8 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3} w="full">
                                     <Editable
-                                        defaultValue={watchedFilm?.note ? watchedFilm?.note : ""}
-                                        onSubmit={handleEditNoteSubmit}
+                                        defaultValue={watchedFilm?.note ?? ""}
+                                        onSubmit={() => handleEditFilmSubmit(undefined, undefined, undefined, note)}
                                         selectAllOnFocus={false}
                                         // onBlurで一時的な値を保存 (submitしない)してチェックボタン押した時だけ送信するように変更
                                         // Overlayクリックでのモーダル終了時に注意ダイアログ出すのもあり
