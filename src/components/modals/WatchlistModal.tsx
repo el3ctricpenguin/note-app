@@ -151,7 +151,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                                         submitOnBlur={false}
                                     >
                                         <HStack>
-                                            <EditablePreview />
+                                            <EditablePreview wordBreak="break-all" />
                                             <EditableTextarea
                                                 onFocus={(e) => setRecommendedBy(e.target.value)}
                                                 onChange={(e) => setRecommendedBy(e.target.value)}

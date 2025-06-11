@@ -59,6 +59,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
             } else {
                 fetchFilmData(watchedFilm?.filmId);
             }
+            setRating(watchedFilm.rating ?? 0);
         } else {
             fetchWatchedFilm();
         }
@@ -114,12 +115,6 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
             });
         }
     };
-
-    useEffect(() => {
-        if (watchedFilm) {
-            setRating(watchedFilm.rating ?? 0);
-        }
-    }, [watchedFilm]);
 
     return (
         <BasicModal title="" isOpen={isOpen} onClose={onClose}>
@@ -239,7 +234,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                         // Overlayクリックでのモーダル終了時に注意ダイアログ出すのもあり
                                     >
                                         <HStack>
-                                            <EditablePreview />
+                                            <EditablePreview wordBreak="break-all" />
                                             <EditableTextarea
                                                 onFocus={(e) => setNote(e.target.value)}
                                                 onChange={(e) => setNote(e.target.value)}
