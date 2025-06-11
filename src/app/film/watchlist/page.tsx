@@ -52,7 +52,7 @@ export default function FilmWatchlist() {
     const handleBlur = () => {
         setTimeout(() => {
             setIsFocused(false);
-        }, 10);
+        }, 150);
     };
 
     const [filmId, setFilmId] = useState<string>("");
