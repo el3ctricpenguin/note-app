@@ -151,7 +151,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                         <Tbody>
                             <Tr>
                                 <Td px={0} py={3}>
-                                    <RepeatClockIcon mr={2} />
+                                    <RepeatClockIcon mr={2} mb={1} />
                                     視聴日
                                 </Td>
                                 <Td px={0} pl={4} py={3}>
@@ -176,7 +176,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                             </Tr>
                             <Tr>
                                 <Td px={0} verticalAlign="top" py={3}>
-                                    <StarIcon mr={2} />
+                                    <StarIcon mr={2} mb={1} />
                                     評価
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3} pt={4}>
@@ -185,7 +185,7 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                             </Tr>
                             <Tr>
                                 <Td px={0} verticalAlign="top" py={3}>
-                                    <AttachmentIcon mr={2} />
+                                    <AttachmentIcon mr={2} mb={1} />
                                     メモ
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3} w="full">

@@ -131,7 +131,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                         <Tbody>
                             <Tr>
                                 <Td px={0} py={3} w={100}>
-                                    <RepeatClockIcon mr={2} />
+                                    <RepeatClockIcon mr={2} mb={1} />
                                     追加日
                                 </Td>
                                 <Td px={0} pl={4} py={3}>
@@ -140,7 +140,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                             </Tr>
                             <Tr>
                                 <Td px={0} verticalAlign="top" py={3} w={100}>
-                                    <InfoOutlineIcon mr={2} />
+                                    <InfoOutlineIcon mr={2} mb={1} />
                                     おすすめ元
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
@@ -164,7 +164,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                             </Tr>
                             <Tr>
                                 <Td px={0} verticalAlign="top" py={3} w={100}>
-                                    <AttachmentIcon mr={2} />
+                                    <AttachmentIcon mr={2} mb={1} />
                                     メモ
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
@@ -189,7 +189,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                             </Tr>
                             <Tr>
                                 <Td px={0} verticalAlign="top" py={3} w={100}>
-                                    <ViewIcon mr={2} />
+                                    <ViewIcon mr={2} mb={1} />
                                     視聴済み
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
