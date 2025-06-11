@@ -6,5 +6,5 @@ export const FilmRating = ({ rating }: { rating: number }) => {
     for (let i = 0; i < 5; i++) {
         stars.push(i < rating ? <StarIcon w={4} key={i} /> : <StarIcon w={4} opacity={0.5} key={i} />);
     }
-    return <HStack w="100%">{stars}</HStack>;
+    return <HStack>{stars}</HStack>;
 };

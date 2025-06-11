@@ -16,17 +16,19 @@ import {
     EditableTextarea,
     useToast,
     EditableInput,
+    IconButton,
 } from "@chakra-ui/react";
 import { BasicModal } from "./BasicModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { useCallback, useEffect, useState } from "react";
 import { WatchedFilm } from "@prisma/client";
-import { AttachmentIcon, StarIcon, RepeatClockIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { AttachmentIcon, StarIcon, RepeatClockIcon, ExternalLinkIcon, CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import dayjs from "dayjs";
 import { FilmRating } from "@/components/cards/FilmRating";
 import EditableControls from "@/components/form/EditableControls";
+import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 
 interface WatchedFilmModalProps {
     watchedFilmId: number;
@@ -64,6 +66,8 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
 
     const [note, setNote] = useState("");
     const [watchedDate, setWatchedDate] = useState("");
+    const [editRating, setEditRating] = useState(false);
+    const [rating, setRating] = useState(0);
 
     const toast = useToast();
     const updateWatchedFilm = async (
@@ -110,6 +114,12 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
             });
         }
     };
+
+    useEffect(() => {
+        if (watchedFilm) {
+            setRating(watchedFilm.rating ?? 0);
+        }
+    }, [watchedFilm]);
 
     return (
         <BasicModal title="" isOpen={isOpen} onClose={onClose}>
@@ -179,8 +189,40 @@ export const WatchedFilmModal = ({ watchedFilmId, isOpen, onClose }: WatchedFilm
                                     <StarIcon mr={2} mb={1} />
                                     評価
                                 </Td>
-                                <Td px={0} pl={4} whiteSpace="pre-line" py={3} pt={4}>
-                                    <FilmRating rating={watchedFilm?.rating} />
+                                <Td px={0} pl={4} py={1}>
+                                    {editRating ? (
+                                        <HStack>
+                                            <FilmRatingEditable rating={rating} setRating={setRating} />
+                                            <IconButton
+                                                size="sm"
+                                                icon={<CheckIcon />}
+                                                aria-label="Save"
+                                                onClick={async () => {
+                                                    await handleEditFilmSubmit(undefined, undefined, rating, undefined);
+                                                    setEditRating(false);
+                                                }}
+                                            />
+                                            <IconButton
+                                                size="sm"
+                                                icon={<CloseIcon />}
+                                                aria-label="Cancel"
+                                                onClick={() => {
+                                                    setRating(watchedFilm.rating ?? 0);
+                                                    setEditRating(false);
+                                                }}
+                                            />
+                                        </HStack>
+                                    ) : (
+                                        <HStack>
+                                            <FilmRating rating={watchedFilm?.rating} />
+                                            <IconButton
+                                                size="sm"
+                                                icon={<EditIcon />}
+                                                aria-label="Edit"
+                                                onClick={() => setEditRating(true)}
+                                            />
+                                        </HStack>
+                                    )}
                                 </Td>
                             </Tr>
                             <Tr>
