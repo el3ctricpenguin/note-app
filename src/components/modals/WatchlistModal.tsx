@@ -78,7 +78,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                     <Table variant="unstyled" colorScheme="whiteAlpha" my={4}>
                         <Tbody>
                             <Tr>
-                                <Td px={0} py={3}>
+                                <Td px={0} py={3} w={100}>
                                     <RepeatClockIcon mr={2} />
                                     追加日
                                 </Td>
@@ -87,7 +87,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                                 </Td>
                             </Tr>
                             <Tr>
-                                <Td px={0} verticalAlign="top" py={3}>
+                                <Td px={0} verticalAlign="top" py={3} w={100}>
                                     <InfoOutlineIcon mr={2} />
                                     おすすめ元
                                 </Td>
@@ -96,7 +96,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                                 </Td>
                             </Tr>
                             <Tr>
-                                <Td px={0} verticalAlign="top" py={3}>
+                                <Td px={0} verticalAlign="top" py={3} w={100}>
                                     <AttachmentIcon mr={2} />
                                     メモ
                                 </Td>
@@ -105,7 +105,7 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                                 </Td>
                             </Tr>
                             <Tr>
-                                <Td px={0} verticalAlign="top" py={3}>
+                                <Td px={0} verticalAlign="top" py={3} w={100}>
                                     <ViewIcon mr={2} />
                                     視聴済み
                                 </Td>
