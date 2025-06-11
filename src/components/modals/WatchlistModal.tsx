@@ -1,4 +1,22 @@
-import { Skeleton, Image, Table, TableContainer, Tbody, Td, Tr, Checkbox, Text, HStack, Link, VStack, Tooltip } from "@chakra-ui/react";
+import {
+    Skeleton,
+    Image,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Tr,
+    Checkbox,
+    Text,
+    HStack,
+    Link,
+    VStack,
+    Tooltip,
+    Editable,
+    EditablePreview,
+    EditableTextarea,
+    useToast,
+} from "@chakra-ui/react";
 import { BasicModal } from "./BasicModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
@@ -7,6 +25,7 @@ import { Watchlist } from "@prisma/client";
 import { AttachmentIcon, InfoOutlineIcon, RepeatClockIcon, ExternalLinkIcon, ViewIcon } from "@chakra-ui/icons";
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import dayjs from "dayjs";
+import EditableControls from "@/components/form/EditableControls";
 interface WatchlistModalProps {
     watchlistId: number;
     isOpen: boolean;
@@ -39,6 +58,39 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
         }
     }, [watchlistId, fetchWatchlist, watchlist, fetchFilmData]);
     const [isImgLoaded, setIsImgLoaded] = useState(false);
+    const [recommendedBy, setRecommendedBy] = useState("");
+    const [note, setNote] = useState("");
+    const toast = useToast();
+
+    const updateWatchlist = async (fields: { recommendedBy?: string; note?: string; isWatched?: boolean }) => {
+        const response = await fetch(`${apiUrl}/film/watchlist/${watchlistId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(fields),
+        });
+        return [await response.json(), response.status];
+    };
+
+    const handleEditSubmit = async (fields: { recommendedBy?: string; note?: string; isWatched?: boolean }) => {
+        const [response, status] = await updateWatchlist(fields);
+        if (status === 201) {
+            toast({
+                title: "watchlist updated",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+            await fetchWatchlist();
+        } else {
+            toast({
+                title: "watchlist update failed",
+                description: response.error,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
     return (
         <BasicModal title="" isOpen={isOpen} onClose={onClose}>
             <Skeleton isLoaded={!filmData || isImgLoaded}>
@@ -92,7 +144,22 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                                     おすすめ元
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                                    {watchlist?.recommendedBy}
+                                    <Editable
+                                        defaultValue={watchlist?.recommendedBy ?? ""}
+                                        onSubmit={() => handleEditSubmit({ recommendedBy })}
+                                        selectAllOnFocus={false}
+                                        submitOnBlur={false}
+                                    >
+                                        <HStack>
+                                            <EditablePreview />
+                                            <EditableTextarea
+                                                onFocus={(e) => setRecommendedBy(e.target.value)}
+                                                onChange={(e) => setRecommendedBy(e.target.value)}
+                                                h={10}
+                                            />
+                                            <EditableControls />
+                                        </HStack>
+                                    </Editable>
                                 </Td>
                             </Tr>
                             <Tr>
@@ -101,7 +168,23 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                                     メモ
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                                    {watchlist?.note}
+                                    <Editable
+                                        defaultValue={watchlist?.note ?? ""}
+                                        onSubmit={() => handleEditSubmit({ note })}
+                                        selectAllOnFocus={false}
+                                        // onBlurで一時的な値を保存 (submitしない)してチェックボタン押した時だけ送信するように変更
+                                        // Overlayクリックでのモーダル終了時に注意ダイアログ出すのもあり
+                                    >
+                                        <HStack>
+                                            <EditablePreview />
+                                            <EditableTextarea
+                                                onFocus={(e) => setNote(e.target.value)}
+                                                onChange={(e) => setNote(e.target.value)}
+                                                h={150}
+                                            />
+                                            <EditableControls />
+                                        </HStack>
+                                    </Editable>
                                 </Td>
                             </Tr>
                             <Tr>
@@ -110,7 +193,13 @@ export const WatchlistModal = ({ watchlistId, isOpen, onClose }: WatchlistModalP
                                     視聴済み
                                 </Td>
                                 <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                                    <Checkbox isChecked={watchlist?.isWatched} h={5} />
+                                    <Checkbox
+                                        isChecked={watchlist?.isWatched}
+                                        h={5}
+                                        onChange={(e) => {
+                                            handleEditSubmit({ isWatched: e.target.checked });
+                                        }}
+                                    />
                                 </Td>
                             </Tr>
                         </Tbody>
