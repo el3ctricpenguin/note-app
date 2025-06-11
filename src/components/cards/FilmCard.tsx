@@ -1,6 +1,6 @@
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
 import { EditIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link, Box, useMediaQuery } from "@chakra-ui/react";
+import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link, Box, useMediaQuery, LinkBox, LinkOverlay } from "@chakra-ui/react";
 import { FilmRating } from "@/components/cards/FilmRating";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 import { useState } from "react";
@@ -22,7 +22,8 @@ export const FilmCard = ({ filmId, rating, setRating, onClick }: FilmCardProps) 
     const { data, error, isLoading } = useSWR(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`, fetcher);
     // console.log(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`);
     return (
-        <Card overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg" onClick={onClick} cursor={onClick && "pointer"}>
+        <LinkBox as={Card} overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg" cursor={onClick && "pointer"}>
+            <LinkOverlay onClick={onClick} />
             <Skeleton isLoaded={!data || isImgLoaded}>
                 <Image
                     h="100"
@@ -89,6 +90,6 @@ export const FilmCard = ({ filmId, rating, setRating, onClick }: FilmCardProps) 
                     )}
                 </VStack>
             </CardBody>
-        </Card>
+        </LinkBox>
     );
 };
