@@ -3,8 +3,8 @@
 ## Git ワークフロー
 ```bash
 # 機能開発
-git checkout develop
-git pull
+git checkout main
+git pull origin main
 git checkout -b feat/feature-name
 # 開発作業
 git add .
@@ -12,8 +12,8 @@ git commit -m "feat: 新機能追加"
 git push origin feat/feature-name
 
 # リファクタリング
-git checkout develop
-git pull
+git checkout main
+git pull origin main
 git checkout -b refactor/refactor-name
 # リファクタリング作業
 ```
