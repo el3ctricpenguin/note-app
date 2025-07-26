@@ -61,3 +61,11 @@ export async function withErrorHandling(
     return createErrorResponse(error);
   }
 }
+
+export function parseId(id: string): number {
+  const numId = Number(id);
+  if (isNaN(numId)) {
+    throw new Error("Invalid ID format");
+  }
+  return numId;
+}

@@ -62,22 +62,22 @@
 
 #### 2.1 認証API統合
 
-- [ ] `src/app/api/(auth)/sign-in/route.ts` - 共通ユーティリティ適用
-- [ ] `src/app/api/(auth)/sign-up/route.ts` - 共通ユーティリティ適用
-- [ ] `src/app/api/(auth)/sign-out/route.ts` - 共通ユーティリティ適用
+- [x] `src/app/api/(auth)/sign-in/route.ts` - 共通ユーティリティ適用
+- [x] `src/app/api/(auth)/sign-up/route.ts` - 共通ユーティリティ適用
+- [x] `src/app/api/(auth)/sign-out/route.ts` - 共通ユーティリティ適用
 
 #### 2.2 映画API最適化
 
-- [ ] `src/app/api/film/watched/route.ts` - 共通化
-- [ ] `src/app/api/film/watched/[watchedFilmId]/route.ts` - 重複削除
-- [ ] `src/app/api/film/watched/by-date/route.ts` - SQLクエリ最適化
-- [ ] `src/app/api/film/watchlist/route.ts` - 共通化
-- [ ] `src/app/api/film/watchlist/[watchlistId]/route.ts` - 重複削除
+- [x] `src/app/api/film/watched/route.ts` - 共通化
+- [x] `src/app/api/film/watched/[watchedFilmId]/route.ts` - 重複削除
+- ~~`src/app/api/film/watched/by-date/route.ts` - SQLクエリ最適化~~ (削除扱い)
+- [x] `src/app/api/film/watchlist/route.ts` - 共通化
+- [x] `src/app/api/film/watchlist/[watchlistId]/route.ts` - 重複削除
 
 #### 2.3 TODO API最適化
 
-- [ ] `src/app/api/todo/route.ts` - 共通化
-- [ ] `src/app/api/todo/[id]/route.ts` - 2回クエリを1回に削減
+- [x] `src/app/api/todo/route.ts` - 共通化
+- ~~`src/app/api/todo/[id]/route.ts` - 2回クエリを1回に削減~~ (削除扱い)
 
 ### ✅ 3. データベース操作最適化
 

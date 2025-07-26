@@ -4,6 +4,7 @@ import {
   withErrorHandling,
   createSuccessResponse,
   validateRequest,
+  parseId,
 } from "@/lib/api";
 import { updateWatchlistSchema } from "@/lib/validation";
 
@@ -12,9 +13,9 @@ export async function GET(
   { params }: { params: { watchlistId: string } },
 ) {
   return withErrorHandling(async () => {
-    const { watchlistId } = params;
+    const watchlistId = parseId(params.watchlistId);
     const watchlistFilm = await prisma.watchlist.findUnique({
-      where: { id: Number(watchlistId) },
+      where: { id: watchlistId },
     });
     return createSuccessResponse(watchlistFilm);
   });
@@ -25,10 +26,10 @@ export async function PUT(
   { params }: { params: { watchlistId: string } },
 ) {
   return withErrorHandling(async () => {
-    const { watchlistId } = params;
+    const watchlistId = parseId(params.watchlistId);
     const updateData = await validateRequest(req, updateWatchlistSchema);
     const updated = await prisma.watchlist.update({
-      where: { id: Number(watchlistId) },
+      where: { id: watchlistId },
       data: updateData,
     });
     return createSuccessResponse(updated);

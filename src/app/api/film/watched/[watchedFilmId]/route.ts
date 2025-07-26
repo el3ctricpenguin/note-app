@@ -4,6 +4,7 @@ import {
   withErrorHandling,
   createSuccessResponse,
   validateRequest,
+  parseId,
 } from "@/lib/api";
 import { updateWatchedFilmSchema } from "@/lib/validation";
 import { WatchedFilm } from "@prisma/client";
@@ -16,9 +17,9 @@ type Params = {
 
 export async function GET(_request: NextRequest, { params }: Params) {
   return withErrorHandling(async () => {
-    const { watchedFilmId } = params;
+    const watchedFilmId = parseId(params.watchedFilmId);
     const watchedFilm: WatchedFilm | null = await prisma.watchedFilm.findUnique(
-      { where: { id: Number(watchedFilmId) } },
+      { where: { id: watchedFilmId } },
     );
     return createSuccessResponse(watchedFilm);
   });
@@ -26,11 +27,11 @@ export async function GET(_request: NextRequest, { params }: Params) {
 
 export async function PUT(request: NextRequest, { params }: Params) {
   return withErrorHandling(async () => {
-    const { watchedFilmId } = params;
+    const watchedFilmId = parseId(params.watchedFilmId);
     const updateData = await validateRequest(request, updateWatchedFilmSchema);
 
     const watchedFilm: WatchedFilm = await prisma.watchedFilm.update({
-      where: { id: Number(watchedFilmId) },
+      where: { id: watchedFilmId },
       data: updateData,
     });
     return createSuccessResponse(watchedFilm);
