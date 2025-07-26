@@ -1,6 +1,7 @@
 # 開発手順
 
 ## Git ワークフロー
+
 ```bash
 # 機能開発
 git checkout main
@@ -19,6 +20,7 @@ git checkout -b refactor/refactor-name
 ```
 
 ## テスト手順
+
 ```bash
 # 1. リント・型チェック
 npm run lint
@@ -28,7 +30,7 @@ npm run build
 npm run dev
 # ブラウザで動作確認:
 # - 認証フロー (サインイン・サインアップ・サインアウト)
-# - 映画管理 (追加・編集・削除・一覧)  
+# - 映画管理 (追加・編集・削除・一覧)
 # - TODO管理 (追加・完了切替・削除)
 # - 日付別映画表示
 
@@ -37,6 +39,7 @@ npx prisma studio
 ```
 
 ## デプロイ手順
+
 ```bash
 # 1. プロダクションビルド
 npm run build
@@ -51,7 +54,26 @@ pm2 restart note-app
 curl http://localhost:3000/api/health
 ```
 
+## コード品質管理ワークフロー (必須)
+
+### 品質管理手順
+
+```bash
+npx prettier --write [変更したファイルパス]
+```
+
+```bash
+npm run lint
+```
+
+### 実行タイミング
+
+- **ファイル編集後**: 即座にPrettier実行
+- **コミット前**: 必ずlint実行 (エラーがないことを確認してからコミット)
+- **例外なし**: どんな小さな変更でも実行
+
 ## リファクタリング手順
+
 1. **現状分析**: 行数カウント・重複確認
 2. **共通化**: ユーティリティ関数作成
 3. **統合**: API・コンポーネントの重複除去
@@ -59,6 +81,7 @@ curl http://localhost:3000/api/health
 5. **計測**: 削減効果の確認
 
 ## 緊急時対応
+
 ```bash
 # ロールバック
 git checkout main

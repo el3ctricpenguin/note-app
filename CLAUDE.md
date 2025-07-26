@@ -10,6 +10,18 @@ ls claude/notes/ | tail -1
 ls claude/tasks/in-progress/
 ```
 
+## Claude Docsフォルダ構成
+
+```
+claude/
+├── notes/          # 日付別作業記録 → 毎セッション作成・更新
+├── tasks/          # タスク管理 (todo/in-progress/done) → タスク状態変化時
+├── context.md      # プロジェクト概要 → 技術スタック・機能変更時
+├── codebase.md     # コード構造 → ディレクトリ構成・アーキテクチャ変更時
+├── commands.md     # コマンド集 → 新しいコマンド追加時
+└── workflows.md    # 開発手順 → 開発プロセス変更時
+```
+
 ## 進捗管理ルール
 
 - **すべての進捗**: `claude/notes/YYYY-MM-DD-*.md` に記録
@@ -39,18 +51,6 @@ PR出す前に claude/ 内の全ファイルを最新状態に更新する
 
 - 現在: 2,289行 → 目標: 1,375-1,602行 (30-40%削減)
 - **メインブランチ**: `main`
-
-## フォルダ構成
-
-```
-claude/
-├── notes/          # 日付別作業記録 → 毎セッション作成・更新
-├── tasks/          # タスク管理 (todo/in-progress/done) → タスク状態変化時
-├── context.md      # プロジェクト概要 → 技術スタック・機能変更時
-├── codebase.md     # コード構造 → ディレクトリ構成・アーキテクチャ変更時
-├── commands.md     # コマンド集 → 新しいコマンド追加時
-└── workflows.md    # 開発手順 → 開発プロセス変更時
-```
 
 ## コマンド
 
