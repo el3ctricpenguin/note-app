@@ -17,15 +17,15 @@
 ### ディレクトリ別内訳
 
 - **src/app/** (APIルート・ページ): 902行
-  - API routes: 298行
-  - Pages: 604行
+    - API routes: 298行
+    - Pages: 604行
 - **src/components/**: 770行
-  - Modals: 517行 (最大削減対象)
-  - Cards: 207行
-  - Layout: 73行
-  - Form/Context: 45行
+    - Modals: 517行 (最大削減対象)
+    - Cards: 207行
+    - Layout: 73行
+    - Form/Context: 45行
 - **src/config/**: 189行
-  - Theme設定: 184行 (簡素化可能)
+    - Theme設定: 184行 (簡素化可能)
 - **src/lib/**: 53行
 - **src/features/**: 15行
 - **src/types/**: 5行 (拡張予定)
@@ -83,15 +83,15 @@
 
 #### 3.1 クエリ効率化
 
-- [ ] TODO toggle: findUnique + update → updateとfindUniqueの統合
-- [ ] 映画の日付グループ化: メモリ処理 → SQL GROUP BY
-- [ ] 不要なNumber()変換の削除
+- ~~TODO toggle: findUnique + update → updateとfindUniqueの統合~~ (削除扱い)
+- ~~映画の日付グループ化: メモリ処理 → SQL GROUP BY~~ (削除扱い)
+- [x] 不要なNumber()変換の削除
 
 #### 3.2 エラーハンドリング統一
 
-- [ ] Prismaエラーの統一的処理
-- [ ] データベース接続エラーの処理
-- [ ] トランザクション処理の追加（必要に応じて）
+- [x] Prismaエラーの統一的処理
+- ~~データベース接続エラーの処理~~ (削除扱い)
+- ~~トランザクション処理の追加（必要に応じて）~~ (削除扱い)
 
 ---
 
