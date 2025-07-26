@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/session";
+import { withErrorHandling, createSuccessResponse } from "@/lib/api";
 import bcrypt from "bcryptjs";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { z } from "zod";
 
 const signUpSchema = z.object({
@@ -10,7 +11,7 @@ const signUpSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
-    try {
+    return withErrorHandling(async () => {
         const body = await request.json();
         const { username, password } = signUpSchema.parse(body);
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -19,12 +20,6 @@ export async function POST(request: NextRequest) {
         });
         console.log("User successfully created:", user);
         await createSession(user.username);
-        return NextResponse.json({}, { status: 201 });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return NextResponse.json({ error: error.errors.map((e) => e.message) }, { status: 400 });
-        }
-        console.error("Unexpected error:", error);
-        return NextResponse.json({ error: "An internal server error occurred" }, { status: 500 });
-    }
+        return createSuccessResponse({}, 201);
+    });
 }

@@ -1,18 +1,23 @@
 import { prisma } from "@/lib/prisma";
+import { withErrorHandling, createSuccessResponse } from "@/lib/api";
 import { Todo } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function GET() {
-    const todos: Todo[] = await prisma.todo.findMany({ orderBy: { id: "asc" } });
-    return NextResponse.json(todos);
+    return withErrorHandling(async () => {
+        const todos: Todo[] = await prisma.todo.findMany({ orderBy: { id: "asc" } });
+        return createSuccessResponse(todos);
+    });
 }
 
 export async function POST(request: NextRequest) {
-    const { title } = await request.json();
-    const newTodo: Todo = await prisma.todo.create({
-        data: {
-            title,
-        },
+    return withErrorHandling(async () => {
+        const { title } = await request.json();
+        const newTodo: Todo = await prisma.todo.create({
+            data: {
+                title,
+            },
+        });
+        return createSuccessResponse(newTodo, 201);
     });
-    return NextResponse.json(newTodo);
 }

@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withErrorHandling, createSuccessResponse } from "@/lib/api";
 import { WatchedFilm } from "@prisma/client";
 
 type Params = {
@@ -8,19 +9,16 @@ type Params = {
     };
 };
 
-export async function GET(request: NextRequest, { params }: Params) {
-    try {
+export async function GET(_request: NextRequest, { params }: Params) {
+    return withErrorHandling(async () => {
         const { watchedFilmId } = params;
         const watchedFilm: WatchedFilm | null = await prisma.watchedFilm.findUnique({ where: { id: Number(watchedFilmId) } });
-        return NextResponse.json(watchedFilm);
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Failed to fetch record" }, { status: 500 });
-    }
+        return createSuccessResponse(watchedFilm);
+    });
 }
 
 export async function PUT(request: NextRequest, { params }: Params) {
-    try {
+    return withErrorHandling(async () => {
         const { watchedFilmId } = params;
         const { filmId, watchedDate, rating, note } = await request.json();
 
@@ -28,9 +26,6 @@ export async function PUT(request: NextRequest, { params }: Params) {
             where: { id: Number(watchedFilmId) },
             data: { filmId, watchedDate, rating, note },
         });
-        return NextResponse.json(watchedFilm, { status: 201 });
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Failed to update record" }, { status: 500 });
-    }
+        return createSuccessResponse(watchedFilm);
+    });
 }
