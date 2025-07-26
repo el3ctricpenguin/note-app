@@ -101,10 +101,10 @@
 
 #### 4.1 開発ツール設定
 
-- [ ] `.prettierrc` 作成・設定
-- [ ] `.eslintrc.json` 設定強化
-- [ ] `tsconfig.json` 最適化
-- [ ] `next.config.mjs` 設定追加
+- [x] `.prettierrc` 作成・設定
+- [x] `.eslintrc.json` 設定強化
+- ~~[ ] `tsconfig.json` 最適化~~ (削除扱い)
+- ~~[ ] `next.config.mjs` 設定追加~~ (削除扱い)
 
 #### 4.2 型定義強化
 
