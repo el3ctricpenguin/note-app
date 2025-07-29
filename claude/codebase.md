@@ -16,6 +16,7 @@ src/
 │   ├── modals/           # モーダル (517行 - 最大削減対象)
 │   ├── layout/           # レイアウト
 │   └── form/             # フォーム
+├── hooks/                # カスタムフック
 ├── config/               # 設定 (189行)
 │   └── theme/            # Chakra UIテーマ (184行)
 ├── lib/                  # ユーティリティ (53行)
@@ -33,5 +34,7 @@ src/
 ## コーディング規約
 - TypeScript strict mode
 - ESLint (Next.js設定)
-- Prettier未設定 (追加予定)
-- 絶対パス (`@/`) 使用
+- Prettier設定済み
+- **絶対パス必須**: 全てのインポートで `@/` を使用
+- hooksは `src/hooks/` に配置
+- **作業完了後必須**: 変更ファイルにPrettier/ESLint実行

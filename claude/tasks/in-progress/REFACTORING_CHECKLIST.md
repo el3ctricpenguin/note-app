@@ -108,17 +108,23 @@
 
 #### 4.2 型定義強化
 
-- [ ] `src/types/index.ts` - API型定義追加
-- [ ] Prismaクライアント型の再利用
-- [ ] 共通インターフェースの定義
+- ~~`src/types/index.ts` - API型定義追加~~ (削除扱い - 複雑すぎるため)
+- ~~Prismaクライアント型の再利用~~ (削除扱い - 既に十分活用済み)
+- ~~共通インターフェースの定義~~ (削除扱い - FE触らない)
 
 ### ✅ 5. コンポーネント最適化
 
 #### 5.1 レイアウト・UI
 
-- [ ] `src/components/layout/` - 不要なpropsの削除
+- [x] `src/components/layout/` - 不要なpropsの削除
 - [ ] `src/components/modals/` - 共通モーダルロジック抽出
 - [ ] `src/components/cards/` - propsの型安全性向上
+
+#### 5.3 コンポーネント構造整理
+
+- [ ] コンポーネント配置場所の分析とDocs化
+- [ ] hooks・utils配置ルールの整理
+- [ ] 重複コンポーネントの整理・統合
 
 #### 5.2 テーマ・スタイル
 
