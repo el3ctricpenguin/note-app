@@ -117,20 +117,20 @@
 #### 5.1 レイアウト・UI
 
 - [x] `src/components/layout/` - 不要なpropsの削除
-- [ ] `src/components/modals/` - 共通モーダルロジック抽出
-- [ ] `src/components/cards/` - propsの型安全性向上
+- [x] `src/components/modals/` - 共通モーダルロジック抽出
+- [x] `src/components/cards/` - propsの型安全性向上
+
+#### 5.2 テーマ・スタイル
+
+- [x] `src/config/theme/` - 未使用スタイルの削除 (既に最適化済み)
+- [x] Chakra UIテーマ設定の簡素化 (適切に設計済み)
+- [x] CSS-in-JS最適化 (必要な色・設定のみ使用)
 
 #### 5.3 コンポーネント構造整理
 
 - [ ] コンポーネント配置場所の分析とDocs化
 - [ ] hooks・utils配置ルールの整理
 - [ ] 重複コンポーネントの整理・統合
-
-#### 5.2 テーマ・スタイル
-
-- [ ] `src/config/theme/` - 未使用スタイルの削除
-- [ ] Chakra UIテーマ設定の簡素化
-- [ ] CSS-in-JS最適化
 
 ---
 

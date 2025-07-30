@@ -37,12 +37,15 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
     const { filmData } = useFilmModal(filmRecord?.filmId);
     const { showSuccessToast, showErrorToast } = useToasts();
 
-    const fetchFilmRecord = useCallback(async (recordId: number) => {
-        const endpoint = type === "watched" ? "watched" : "watchlist";
-        const response = await fetch(`${apiUrl}/film/${endpoint}/${recordId}`, { method: "GET" });
-        const record = await response.json();
-        setFilmRecord(record);
-    }, [type]);
+    const fetchFilmRecord = useCallback(
+        async (recordId: number) => {
+            const endpoint = type === "watched" ? "watched" : "watchlist";
+            const response = await fetch(`${apiUrl}/film/${endpoint}/${recordId}`, { method: "GET" });
+            const record = await response.json();
+            setFilmRecord(record);
+        },
+        [type],
+    );
 
     useEffect(() => {
         if (filmRecord) {
@@ -65,7 +68,7 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
     useEffect(() => {
         if (filmRecord && type === "watched") {
             const watched = filmRecord as WatchedFilm;
-            setFormData(prev => ({ ...prev, rating: watched.rating ?? 0 }));
+            setFormData((prev) => ({ ...prev, rating: watched.rating }));
         }
     }, [filmRecord, type]);
 
@@ -120,8 +123,8 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                             <HStack>
                                 <EditablePreview wordBreak="break-all" />
                                 <EditableTextarea
-                                    onFocus={(e) => setFormData(prev => ({ ...prev, recommendedBy: e.target.value }))}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, recommendedBy: e.target.value }))}
+                                    onFocus={(e) => setFormData((prev) => ({ ...prev, recommendedBy: e.target.value }))}
+                                    onChange={(e) => setFormData((prev) => ({ ...prev, recommendedBy: e.target.value }))}
                                     h={10}
                                 />
                                 <EditableControls />
@@ -169,7 +172,7 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                                 <EditableInput
                                     type="date"
                                     onChange={(e) => {
-                                        setFormData(prev => ({ ...prev, watchedDate: e.target.value }));
+                                        setFormData((prev) => ({ ...prev, watchedDate: e.target.value }));
                                     }}
                                 />
                                 <EditableControls />
@@ -185,14 +188,17 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                     <Td px={0} pl={4} py={1}>
                         {formData.editRating ? (
                             <HStack>
-                                <FilmRatingEditable rating={formData.rating} setRating={(rating) => setFormData(prev => ({ ...prev, rating }))} />
+                                <FilmRatingEditable
+                                    rating={formData.rating}
+                                    setRating={(rating) => setFormData((prev) => ({ ...prev, rating }))}
+                                />
                                 <IconButton
                                     size="sm"
                                     icon={<CheckIcon />}
                                     aria-label="Save"
                                     onClick={async () => {
                                         await handleEditSubmit({ rating: formData.rating });
-                                        setFormData(prev => ({ ...prev, editRating: false }));
+                                        setFormData((prev) => ({ ...prev, editRating: false }));
                                     }}
                                 />
                                 <IconButton
@@ -200,7 +206,7 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                                     icon={<CloseIcon />}
                                     aria-label="Cancel"
                                     onClick={() => {
-                                        setFormData(prev => ({
+                                        setFormData((prev) => ({
                                             ...prev,
                                             rating: watched.rating ?? 0,
                                             editRating: false,
@@ -210,12 +216,12 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                             </HStack>
                         ) : (
                             <HStack>
-                                <FilmRating rating={watched?.rating} />
+                                <FilmRating rating={watched.rating} />
                                 <IconButton
                                     size="sm"
                                     icon={<EditIcon />}
                                     aria-label="Edit"
-                                    onClick={() => setFormData(prev => ({ ...prev, editRating: true }))}
+                                    onClick={() => setFormData((prev) => ({ ...prev, editRating: true }))}
                                 />
                             </HStack>
                         )}
@@ -249,8 +255,8 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                                         <HStack>
                                             <EditablePreview wordBreak="break-all" />
                                             <EditableTextarea
-                                                onFocus={(e) => setFormData(prev => ({ ...prev, note: e.target.value }))}
-                                                onChange={(e) => setFormData(prev => ({ ...prev, note: e.target.value }))}
+                                                onFocus={(e) => setFormData((prev) => ({ ...prev, note: e.target.value }))}
+                                                onChange={(e) => setFormData((prev) => ({ ...prev, note: e.target.value }))}
                                                 h={150}
                                             />
                                             <EditableControls />
