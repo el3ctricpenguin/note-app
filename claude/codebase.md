@@ -1,6 +1,7 @@
 # コード構造
 
 ## ディレクトリ構成
+
 ```
 src/
 ├── app/                    # Next.js App Router
@@ -24,14 +25,25 @@ src/
 └── features/             # 機能別ユーティリティ (15行)
 ```
 
-## 重複・削減対象コード
-1. **APIエラーハンドリング**: 10ファイルで同じパターン
-2. **認証スキーマ**: sign-in/sign-upで同一
-3. **モーダルロジック**: 3ファイルで類似処理
-4. **データベースクエリ**: CRUD操作の重複
-5. **Chakra UIテーマ**: 未使用設定多数
+## コンポーネント配置ルール
+
+### 📁 配置基準
+
+- **cards/**: 再利用可能なカード型UIコンポーネント
+- **modals/**: モーダル関連（BasicModal + 各種専用モーダル）
+- **layout/**: ページレイアウト・ヘッダー・フッター
+- **form/**: フォーム関連の共通コンポーネント
+- **context/**: React Context プロバイダー
+- **hooks/**: カスタムフック（ビジネスロジック分離）
+
+### 🎯 命名規則
+
+- コンポーネント: PascalCase (例: FilmCard.tsx)
+- hooks: useXxx形式 (例: useFilmModal.ts)
+- ディレクトリ: lowercase (例: cards/, modals/)
 
 ## コーディング規約
+
 - TypeScript strict mode
 - ESLint (Next.js設定)
 - Prettier設定済み
