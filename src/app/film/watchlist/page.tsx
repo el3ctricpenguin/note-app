@@ -40,7 +40,7 @@ export default function FilmWatchlist() {
     }, []);
 
     const [searchText, setSearchText] = useState<string>("");
-    const { data, error, isLoading } = useSWR(
+    const { data } = useSWR(
         `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
         fetcher
     );

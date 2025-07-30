@@ -1,5 +1,5 @@
 import getFlagEmoji from "@/features/utils/getFlagEmoji";
-import { EditIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link, Box, useMediaQuery, LinkBox, LinkOverlay } from "@chakra-ui/react";
 import { FilmRating } from "@/components/cards/FilmRating";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
@@ -19,7 +19,7 @@ interface FilmCardProps {
 export const FilmCard = ({ filmId, rating, setRating, onClick }: FilmCardProps) => {
     const [isDesktop] = useMediaQuery("(min-width: 480px)");
     const [isImgLoaded, setIsImgLoaded] = useState(false);
-    const { data, error, isLoading } = useSWR(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`, fetcher);
+    const { data } = useSWR(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`, fetcher);
     // console.log(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`);
     return (
         <LinkBox as={Card} overflow="hidden" w="100%" direction="row" bgColor="brand.cardBg" cursor={onClick && "pointer"}>

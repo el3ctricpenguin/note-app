@@ -1,4 +1,4 @@
-import { DeleteIcon, SmallCloseIcon, StarIcon } from "@chakra-ui/icons";
+import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
 import { HStack } from "@chakra-ui/react";
 
 export const FilmRatingEditable = ({ rating, setRating }: { rating: number; setRating: (i: number) => void }) => {
