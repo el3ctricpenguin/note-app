@@ -3,11 +3,7 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { FilmModal } from "@/components/modals/FilmModal";
-import { apiUrl, TMDB_API_KEY } from "@/config";
-import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
-import { fetcher } from "@/features/utils/fetcher";
-import { GroupedFilms } from "@/types";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
     Divider,
@@ -20,96 +16,32 @@ import {
     Textarea,
     VStack,
     Button,
-    useToast,
     useDisclosure,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import NextLink from "next/link";
-import { FormEvent, useEffect, useState } from "react";
-import useSWR from "swr";
+import { useState } from "react";
+import { useFilmSearch } from "@/hooks/useFilmSearch";
+import { useFilmData } from "@/hooks/useFilmData";
+import { TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 
 export default function FilmNote() {
-    const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
-    const fetchWatchedFilms = async () => {
-        const response = await fetch(`${apiUrl}/film/watched/by-date`, { method: "GET" });
-        const watchedFilms = await response.json();
-        console.log(watchedFilms);
-        setWatchedFilms(watchedFilms);
-    };
-    useEffect(() => {
-        fetchWatchedFilms();
-    }, []);
+    const { searchText, setSearchText, searchResults: data, isFocused, handleFocus, handleBlur } = useFilmSearch();
+    const {
+        filmData: watchedFilmsByDate,
+        filmId,
+        setFilmId,
+        rating,
+        setRating,
+        watchedDate,
+        setWatchedDate,
+        watchNote,
+        setWatchNote,
+        handleAddFilm,
+        fetchFilmData,
+    } = useFilmData("watched");
 
-    const [searchText, setSearchText] = useState<string>("");
-    const { data } = useSWR(
-        `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
-        fetcher
-    );
-
-    const [isFocused, setIsFocused] = useState(false);
-    const handleFocus = () => {
-        setIsFocused(true);
-    };
-    const handleBlur = () => {
-        setTimeout(() => {
-            setIsFocused(false);
-        }, 150);
-    };
-
-    const [filmId, setFilmId] = useState<string>("");
-    const [rating, setRating] = useState<number>(0);
-
-    const today = dayjs().format("YYYY-MM-DD");
-    const [watchedDate, setWatchedDate] = useState<string>(today);
-
-    const [watchNote, setWatchNote] = useState<string>("");
-
-    const toast = useToast();
-
-    const createWatchedFilm = async (filmId: string, watchedDate: string, rating: number, watchNote: string): Promise<[any, number]> => {
-        console.log(`create watched film: ${filmId}`);
-        const isoWatchedDate = dayjs(watchedDate).toISOString();
-
-        const response = await fetch(`${apiUrl}/film/watched`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ filmId, watchedDate: isoWatchedDate, rating, note: watchNote }),
-        });
-        return [await response.json(), response.status];
-    };
-
-    const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        const [response, status] = await createWatchedFilm(filmId, watchedDate, rating, watchNote);
-        console.log(response);
-
-        if (status == 201) {
-            toast({
-                title: "film registered",
-                // description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
-            setFilmId("");
-            setRating(0);
-            setWatchedDate(today);
-            setWatchNote("");
-            setSearchText("");
-            await fetchWatchedFilms();
-        }
-        if (status == 500) {
-            toast({
-                title: "film register failed",
-                description: `${response.error}`,
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-            });
-        }
-    };
+    const handleSubmit = handleAddFilm;
 
     const [watchedFilmId, setWatchedFilmId] = useState<number>();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -213,7 +145,7 @@ export default function FilmNote() {
                         <Heading size="md" w="100%">
                             {dayjs(date).format("MM/DD")}
                         </Heading>
-                        {films.map((film, i) => (
+                        {(films as any[]).map((film: any, i: number) => (
                             <FilmCard
                                 key={i}
                                 rating={film.rating}

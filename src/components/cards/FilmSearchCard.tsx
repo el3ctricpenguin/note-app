@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Card, CardBody, VStack, Image, Text, Skeleton, Link, LinkBox, LinkOverlay, HStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { TMDB_FILM_PAGE_URL } from "@/config/constants";
 
 interface FilmSearchCardProps {
@@ -13,7 +13,7 @@ interface FilmSearchCardProps {
     onClick?: () => void;
 }
 
-export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId, disableRadius, onClick }: FilmSearchCardProps) => {
+const FilmSearchCardComponent = ({ title, startYear, posterUrl, overview, filmId, disableRadius, onClick }: FilmSearchCardProps) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     return (
         <Card
@@ -58,3 +58,7 @@ export const FilmSearchCard = ({ title, startYear, posterUrl, overview, filmId, 
         </Card>
     );
 };
+
+FilmSearchCardComponent.displayName = "FilmSearchCard";
+
+export const FilmSearchCard = memo(FilmSearchCardComponent);

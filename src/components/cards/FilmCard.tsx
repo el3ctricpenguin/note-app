@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link, Box, useMediaQuery, LinkBox, LinkOverlay } from "@chakra-ui/react";
 import { FilmRating } from "@/components/cards/FilmRating";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
@@ -16,7 +16,7 @@ interface FilmCardProps {
     onClick?: () => void;
 }
 
-export const FilmCard = ({ filmId, rating, setRating, onClick }: FilmCardProps) => {
+const FilmCardComponent = ({ filmId, rating, setRating, onClick }: FilmCardProps) => {
     const [isDesktop] = useMediaQuery("(min-width: 480px)");
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     const { data } = useSWR(`${TMDB_API_URL}/movie/${filmId}?language=en-US&api_key=${TMDB_API_KEY}`, fetcher);
@@ -93,3 +93,7 @@ export const FilmCard = ({ filmId, rating, setRating, onClick }: FilmCardProps) 
         </LinkBox>
     );
 };
+
+FilmCardComponent.displayName = "FilmCard";
+
+export const FilmCard = memo(FilmCardComponent);

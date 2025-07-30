@@ -27,14 +27,25 @@
 ## タスク管理ルール
 
 ### タスク状態管理
-- **新規タスク**: `claude/tasks/todo/` (まだ作成されていない場合)
-- **作業中**: `claude/tasks/in-progress/`
+- **新規タスク**: `claude/tasks/todo/` (計画段階・未着手)
+- **作業中**: `claude/tasks/in-progress/` (実際に作業開始時に移動)
 - **完了**: `claude/tasks/done/` (完了時に移動)
 
-### ファイル移動
+### タスクファイル作成ルール
+- **必ずtodo/から開始**: 新規タスクは`claude/tasks/todo/`に作成
+- **作業開始時の手順**:
+  1. ブランチ作成: `git checkout -b {feat,fix,refactor}/task-name`
+  2. タスクファイル移動: `mv claude/tasks/todo/TASK.md claude/tasks/in-progress/`
+
+### ファイル移動（必ず相対パス使用）
 ```bash
+# 作業開始時
+mv claude/tasks/todo/TASK_NAME.md claude/tasks/in-progress/
+
 # 完了時の移動例
 mv claude/tasks/in-progress/TASK_NAME.md claude/tasks/done/
+
+# ❌ 絶対パスは使用禁止（長すぎて読みにくい）
 ```
 
 ## PR前の更新ルール
@@ -118,6 +129,8 @@ npm run lint
 ### チェックリスト更新ルール
 
 - **タスク完了時**: TaskのMarkdownを更新 (どんな小さなタスクでも更新)
+- **チェックボックス必須**: すべてのタスクリストは `- [ ]` 形式を使用
+- **完了マーク**: `- [x]` で完了を示す
 
 ## リファクタリング手順
 

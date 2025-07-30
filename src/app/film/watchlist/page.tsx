@@ -3,10 +3,7 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
 import { FilmModal } from "@/components/modals/FilmModal";
-import { apiUrl, TMDB_API_KEY } from "@/config";
-import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
-import { fetcher } from "@/features/utils/fetcher";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
     Button,
@@ -19,90 +16,28 @@ import {
     Link,
     Textarea,
     useDisclosure,
-    useToast,
     VStack,
 } from "@chakra-ui/react";
-import { Watchlist } from "@prisma/client";
 import NextLink from "next/link";
-import { FormEvent, useEffect, useState } from "react";
-import useSWR from "swr";
+import { useState } from "react";
+import { useFilmSearch } from "@/hooks/useFilmSearch";
+import { useFilmData } from "@/hooks/useFilmData";
+import { TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 
 export default function FilmWatchlist() {
-    const [watchlist, setWatchlist] = useState<Watchlist[]>([]);
-    const fetchWatchlist = async () => {
-        const response = await fetch(`${apiUrl}/film/watchlist`, { method: "GET" });
-        const watchlistFilms = await response.json();
-        console.log(watchlistFilms);
-        setWatchlist(watchlistFilms);
-    };
-    useEffect(() => {
-        fetchWatchlist();
-    }, []);
-
-    const [searchText, setSearchText] = useState<string>("");
-    const { data } = useSWR(
-        `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
-        fetcher
-    );
-
-    const [isFocused, setIsFocused] = useState(false);
-    const handleFocus = () => {
-        setIsFocused(true);
-    };
-    const handleBlur = () => {
-        setTimeout(() => {
-            setIsFocused(false);
-        }, 150);
-    };
-
-    const [filmId, setFilmId] = useState<string>("");
+    const { searchText, setSearchText, searchResults: data, isFocused, handleFocus, handleBlur } = useFilmSearch();
+    const {
+        filmData: watchlist,
+        filmId,
+        setFilmId,
+        watchNote,
+        setWatchNote,
+        handleAddFilm,
+        fetchFilmData,
+    } = useFilmData("watchlist");
+    
     const [recommendedBy, setRecommendedBy] = useState<string>("");
-    const [watchlistNote, setWatchlistNote] = useState<string>("");
-
-    const toast = useToast();
-
-    const createWatchlist = async (filmId: string, recommendedBy: string, note: string, isWatched: boolean): Promise<[any, number]> => {
-        console.log(`create watchlist: ${filmId}`);
-
-        const response = await fetch(`${apiUrl}/film/watchlist`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ filmId, recommendedBy, note, isWatched }),
-        });
-        return [await response.json(), response.status];
-    };
-
-    const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        const [response, status] = await createWatchlist(filmId, recommendedBy, watchlistNote, false);
-        console.log(response);
-
-        if (status == 201) {
-            toast({
-                title: "film registered",
-                // description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
-            setFilmId("");
-            setRecommendedBy("");
-            setWatchlistNote("");
-            setSearchText("");
-            await fetchWatchlist();
-        }
-        if (status == 500) {
-            toast({
-                title: "film register failed",
-                description: `${response.error}`,
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-            });
-        }
-    };
+    const handleSubmit = handleAddFilm;
 
     const [watchlistId, setWatchlistId] = useState<number>();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -180,9 +115,9 @@ export default function FilmWatchlist() {
                     <Textarea
                         placeholder="メモ"
                         variant="filled"
-                        value={watchlistNote}
+                        value={watchNote}
                         onChange={(e) => {
-                            setWatchlistNote(e.target.value);
+                            setWatchNote(e.target.value);
                         }}
                     />
                     <Button
@@ -200,7 +135,7 @@ export default function FilmWatchlist() {
                 ウォッチリスト
             </Heading>
             <VStack>
-                {watchlist.map((film, i) => (
+                {Array.isArray(watchlist) && watchlist.map((film: any, i: number) => (
                     <FilmCard
                         key={i}
                         filmId={film.filmId.toString()}
