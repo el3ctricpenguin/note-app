@@ -2,7 +2,7 @@
 
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
-import { WatchlistModal } from "@/components/modals/WatchlistModal";
+import { FilmModal } from "@/components/modals/FilmModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
@@ -40,7 +40,7 @@ export default function FilmWatchlist() {
     }, []);
 
     const [searchText, setSearchText] = useState<string>("");
-    const { data, error, isLoading } = useSWR(
+    const { data } = useSWR(
         `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
         fetcher
     );
@@ -213,7 +213,7 @@ export default function FilmWatchlist() {
                     />
                 ))}
             </VStack>
-            {watchlistId && <WatchlistModal watchlistId={watchlistId} isOpen={isOpen} onClose={onClose} />}
+            {watchlistId && <FilmModal id={watchlistId} type="watchlist" isOpen={isOpen} onClose={onClose} />}
         </>
     );
 }

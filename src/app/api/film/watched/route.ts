@@ -1,25 +1,35 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import {
+  withErrorHandling,
+  createSuccessResponse,
+  validateRequest,
+} from "@/lib/api";
+import { watchedFilmSchema } from "@/lib/validation";
+import { NextRequest } from "next/server";
 
 export async function GET() {
-    const watchedFilms = await prisma.watchedFilm.findMany({ orderBy: { watchedDate: "desc" } });
-    return NextResponse.json(watchedFilms);
+  return withErrorHandling(async () => {
+    const watchedFilms = await prisma.watchedFilm.findMany({
+      orderBy: { watchedDate: "desc" },
+    });
+    return createSuccessResponse(watchedFilms);
+  });
 }
 
 export async function POST(req: NextRequest) {
-    try {
-        const { filmId, watchedDate, rating, note } = await req.json();
-        const watchedFilm = await prisma.watchedFilm.create({
-            data: {
-                filmId,
-                watchedDate,
-                rating,
-                note,
-            },
-        });
-        return NextResponse.json(watchedFilm, { status: 201 });
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({ error: "Failed to create record" }, { status: 500 });
-    }
+  return withErrorHandling(async () => {
+    const { filmId, watchedDate, rating, note } = await validateRequest(
+      req,
+      watchedFilmSchema,
+    );
+    const watchedFilm = await prisma.watchedFilm.create({
+      data: {
+        filmId,
+        watchedDate,
+        rating,
+        note,
+      },
+    });
+    return createSuccessResponse(watchedFilm, 201);
+  });
 }

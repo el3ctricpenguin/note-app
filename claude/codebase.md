@@ -1,6 +1,7 @@
 # コード構造
 
 ## ディレクトリ構成
+
 ```
 src/
 ├── app/                    # Next.js App Router
@@ -16,6 +17,7 @@ src/
 │   ├── modals/           # モーダル (517行 - 最大削減対象)
 │   ├── layout/           # レイアウト
 │   └── form/             # フォーム
+├── hooks/                # カスタムフック
 ├── config/               # 設定 (189行)
 │   └── theme/            # Chakra UIテーマ (184行)
 ├── lib/                  # ユーティリティ (53行)
@@ -23,15 +25,28 @@ src/
 └── features/             # 機能別ユーティリティ (15行)
 ```
 
-## 重複・削減対象コード
-1. **APIエラーハンドリング**: 10ファイルで同じパターン
-2. **認証スキーマ**: sign-in/sign-upで同一
-3. **モーダルロジック**: 3ファイルで類似処理
-4. **データベースクエリ**: CRUD操作の重複
-5. **Chakra UIテーマ**: 未使用設定多数
+## コンポーネント配置ルール
+
+### 📁 配置基準
+
+- **cards/**: 再利用可能なカード型UIコンポーネント
+- **modals/**: モーダル関連（BasicModal + 各種専用モーダル）
+- **layout/**: ページレイアウト・ヘッダー・フッター
+- **form/**: フォーム関連の共通コンポーネント
+- **context/**: React Context プロバイダー
+- **hooks/**: カスタムフック（ビジネスロジック分離）
+
+### 🎯 命名規則
+
+- コンポーネント: PascalCase (例: FilmCard.tsx)
+- hooks: useXxx形式 (例: useFilmModal.ts)
+- ディレクトリ: lowercase (例: cards/, modals/)
 
 ## コーディング規約
+
 - TypeScript strict mode
 - ESLint (Next.js設定)
-- Prettier未設定 (追加予定)
-- 絶対パス (`@/`) 使用
+- Prettier設定済み
+- **絶対パス必須**: 全てのインポートで `@/` を使用
+- hooksは `src/hooks/` に配置
+- **作業完了後必須**: 変更ファイルにPrettier/ESLint実行

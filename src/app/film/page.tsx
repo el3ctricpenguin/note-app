@@ -2,7 +2,7 @@
 
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
-import { WatchedFilmModal } from "@/components/modals/WatchedFilmModal";
+import { FilmModal } from "@/components/modals/FilmModal";
 import { apiUrl, TMDB_API_KEY } from "@/config";
 import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
@@ -41,7 +41,7 @@ export default function FilmNote() {
     }, []);
 
     const [searchText, setSearchText] = useState<string>("");
-    const { data, error, isLoading } = useSWR(
+    const { data } = useSWR(
         `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
         fetcher
     );
@@ -229,7 +229,7 @@ export default function FilmNote() {
                     </>
                 ))}
             </VStack>
-            {watchedFilmId && <WatchedFilmModal watchedFilmId={watchedFilmId} isOpen={isOpen} onClose={onClose} />}
+            {watchedFilmId && <FilmModal id={watchedFilmId} type="watched" isOpen={isOpen} onClose={onClose} />}
         </>
     );
 }

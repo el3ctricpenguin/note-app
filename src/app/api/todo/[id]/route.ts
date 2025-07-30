@@ -1,43 +1,43 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withErrorHandling, createSuccessResponse, parseId } from "@/lib/api";
 
 type Params = {
-    params: {
-        id: string;
-    };
+  params: {
+    id: string;
+  };
 };
 
-export async function GET(request: NextRequest, { params }: Params) {
-    const { id } = params;
-
+export async function GET(_request: NextRequest, { params }: Params) {
+  return withErrorHandling(async () => {
+    const todoId = parseId(params.id);
     const todo = await prisma.todo.findUnique({
-        where: { id: Number(id) },
+      where: { id: todoId },
     });
-
-    return NextResponse.json(todo);
+    return createSuccessResponse(todo);
+  });
 }
 
-export async function PATCH(request: NextRequest, { params }: Params) {
-    const { id } = params;
-
+export async function PATCH(_request: NextRequest, { params }: Params) {
+  return withErrorHandling(async () => {
+    const todoId = parseId(params.id);
     const todo = await prisma.todo.findUnique({
-        where: { id: Number(id) },
+      where: { id: todoId },
     });
-
     const updatedTodo = await prisma.todo.update({
-        where: { id: Number(id) },
-        data: { completed: !todo?.completed },
+      where: { id: todoId },
+      data: { completed: !todo?.completed },
     });
-
-    return NextResponse.json(updatedTodo);
+    return createSuccessResponse(updatedTodo);
+  });
 }
 
-export async function DELETE(request: NextRequest, { params }: Params) {
-    const { id } = params;
-
+export async function DELETE(_request: NextRequest, { params }: Params) {
+  return withErrorHandling(async () => {
+    const todoId = parseId(params.id);
     const deletedTodo = await prisma.todo.delete({
-        where: { id: Number(id) },
+      where: { id: todoId },
     });
-
-    return NextResponse.json(deletedTodo);
+    return createSuccessResponse(deletedTodo);
+  });
 }

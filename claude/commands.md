@@ -8,6 +8,15 @@ npm run start        # プロダクションサーバー
 npm run lint         # ESLint実行
 ```
 
+## 分析・カウント
+```bash
+# 行数カウント
+find src -name "*.ts" -o -name "*.tsx" | xargs wc -l
+
+# ファイル数確認
+find src -name "*.ts" -o -name "*.tsx" | wc -l
+```
+
 ## データベース
 ```bash
 npx prisma studio           # DB管理画面

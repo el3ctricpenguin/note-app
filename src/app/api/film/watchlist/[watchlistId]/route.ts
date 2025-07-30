@@ -1,23 +1,26 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { withErrorHandling, createSuccessResponse, validateRequest, parseId } from "@/lib/api";
+import { updateWatchlistSchema } from "@/lib/validation";
 
-export async function GET(req: NextRequest, { params }: { params: { watchlistId: string } }) {
-    const { watchlistId } = params;
-    const watchlistFilm = await prisma.watchlist.findUnique({ where: { id: Number(watchlistId) } });
-    return NextResponse.json(watchlistFilm);
+export async function GET(_req: NextRequest, { params }: { params: { watchlistId: string } }) {
+    return withErrorHandling(async () => {
+        const watchlistId = parseId(params.watchlistId);
+        const watchlistFilm = await prisma.watchlist.findUnique({
+            where: { id: watchlistId },
+        });
+        return createSuccessResponse(watchlistFilm);
+    });
 }
 
 export async function PUT(req: NextRequest, { params }: { params: { watchlistId: string } }) {
-    const { watchlistId } = params;
-    const { recommendedBy, note, isWatched } = await req.json();
-    try {
+    return withErrorHandling(async () => {
+        const watchlistId = parseId(params.watchlistId);
+        const updateData = await validateRequest(req, updateWatchlistSchema);
         const updated = await prisma.watchlist.update({
-            where: { id: Number(watchlistId) },
-            data: { recommendedBy, note, isWatched },
+            where: { id: watchlistId },
+            data: updateData,
         });
-        return NextResponse.json(updated, { status: 201 });
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({ error: "Failed to update record" }, { status: 500 });
-    }
+        return createSuccessResponse(updated, 201);
+    });
 }

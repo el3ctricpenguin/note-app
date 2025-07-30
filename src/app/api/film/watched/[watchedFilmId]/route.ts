@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withErrorHandling, createSuccessResponse, validateRequest, parseId } from "@/lib/api";
+import { updateWatchedFilmSchema } from "@/lib/validation";
 import { WatchedFilm } from "@prisma/client";
 
 type Params = {
@@ -8,29 +10,23 @@ type Params = {
     };
 };
 
-export async function GET(request: NextRequest, { params }: Params) {
-    try {
-        const { watchedFilmId } = params;
-        const watchedFilm: WatchedFilm | null = await prisma.watchedFilm.findUnique({ where: { id: Number(watchedFilmId) } });
-        return NextResponse.json(watchedFilm);
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Failed to fetch record" }, { status: 500 });
-    }
+export async function GET(_request: NextRequest, { params }: Params) {
+    return withErrorHandling(async () => {
+        const watchedFilmId = parseId(params.watchedFilmId);
+        const watchedFilm: WatchedFilm | null = await prisma.watchedFilm.findUnique({ where: { id: watchedFilmId } });
+        return createSuccessResponse(watchedFilm);
+    });
 }
 
 export async function PUT(request: NextRequest, { params }: Params) {
-    try {
-        const { watchedFilmId } = params;
-        const { filmId, watchedDate, rating, note } = await request.json();
+    return withErrorHandling(async () => {
+        const watchedFilmId = parseId(params.watchedFilmId);
+        const updateData = await validateRequest(request, updateWatchedFilmSchema);
 
         const watchedFilm: WatchedFilm = await prisma.watchedFilm.update({
-            where: { id: Number(watchedFilmId) },
-            data: { filmId, watchedDate, rating, note },
+            where: { id: watchedFilmId },
+            data: updateData,
         });
-        return NextResponse.json(watchedFilm, { status: 201 });
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Failed to update record" }, { status: 500 });
-    }
+        return createSuccessResponse(watchedFilm, 201);
+    });
 }

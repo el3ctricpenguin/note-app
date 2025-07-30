@@ -1,4 +1,4 @@
-import { DeleteIcon, SmallCloseIcon, StarIcon } from "@chakra-ui/icons";
+import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
 import { HStack } from "@chakra-ui/react";
 
 export const FilmRatingEditable = ({ rating, setRating }: { rating: number; setRating: (i: number) => void }) => {
@@ -8,7 +8,12 @@ export const FilmRatingEditable = ({ rating, setRating }: { rating: number; setR
             i < rating ? (
                 <StarIcon
                     w={4}
+                    opacity={1}
                     key={i}
+                    cursor="pointer"
+                    position="relative"
+                    zIndex={2}
+                    _hover={{ opacity: 0.8 }}
                     onClick={() => {
                         setRating(i + 1);
                     }}
@@ -18,11 +23,15 @@ export const FilmRatingEditable = ({ rating, setRating }: { rating: number; setR
                     w={4}
                     opacity={0.5}
                     key={i}
+                    cursor="pointer"
+                    position="relative"
+                    zIndex={2}
+                    _hover={{ opacity: 0.8 }}
                     onClick={() => {
                         setRating(i + 1);
                     }}
                 />
-            )
+            ),
         );
     }
     return (
@@ -32,6 +41,10 @@ export const FilmRatingEditable = ({ rating, setRating }: { rating: number; setR
                 w={4}
                 ml={0.5}
                 mt={0.25}
+                cursor="pointer"
+                position="relative"
+                zIndex={2}
+                _hover={{ opacity: 0.8 }}
                 onClick={() => {
                     setRating(0);
                 }}
