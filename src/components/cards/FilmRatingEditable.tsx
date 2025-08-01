@@ -1,7 +1,7 @@
 import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
 import { HStack } from "@chakra-ui/react";
 
-export const FilmRatingEditable = ({ rating, setRating }: { rating: number; setRating: (i: number) => void }) => {
+export const FilmRatingEditable = ({ rating, setRating }: { rating: number; setRating: (rating: number) => void }) => { // eslint-disable-line no-unused-vars
     const stars = [];
     for (let i = 0; i < 5; i++) {
         stars.push(

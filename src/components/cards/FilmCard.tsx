@@ -12,7 +12,7 @@ import useSWR from "swr";
 interface FilmCardProps {
     filmId: string;
     rating?: number;
-    setRating?: (i: number) => void;
+    setRating?: (rating: number) => void; // eslint-disable-line no-unused-vars
     onClick?: () => void;
 }
 

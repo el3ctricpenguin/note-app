@@ -41,10 +41,7 @@ export default function FilmNote() {
     }, []);
 
     const [searchText, setSearchText] = useState<string>("");
-    const { data } = useSWR(
-        `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
-        fetcher
-    );
+    const { data } = useSWR(`${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`, fetcher);
 
     const [isFocused, setIsFocused] = useState(false);
     const handleFocus = () => {
