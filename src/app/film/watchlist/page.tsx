@@ -5,13 +5,9 @@ import { FilmRegistrationForm, WatchlistFormData } from "@/components/form/FilmR
 import { FilmModal } from "@/components/modals/FilmModal";
 import { apiUrl } from "@/config";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
+import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
-import {
-    Heading,
-    Link,
-    useDisclosure,
-    VStack,
-} from "@chakra-ui/react";
+import { Heading, Link, VStack } from "@chakra-ui/react";
 import { Watchlist } from "@prisma/client";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
@@ -38,14 +34,14 @@ export default function FilmWatchlist() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ 
-                filmId: data.filmId, 
-                recommendedBy: data.recommendedBy, 
-                note: data.watchlistNote, 
-                isWatched: false 
+            body: JSON.stringify({
+                filmId: data.filmId,
+                recommendedBy: data.recommendedBy,
+                note: data.watchlistNote,
+                isWatched: false,
             }),
         });
-        
+
         const result = await response.json();
         console.log(result);
 
@@ -59,8 +55,7 @@ export default function FilmWatchlist() {
         }
     };
 
-    const [watchlistId, setWatchlistId] = useState<number>();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { filmId: watchlistId, isOpen, onClose, openModal } = useFilmModal();
 
     return (
         <>
@@ -81,16 +76,7 @@ export default function FilmWatchlist() {
             </Heading>
             <VStack>
                 {watchlist.map((film, i) => (
-                    <FilmCard
-                        key={i}
-                        filmId={film.filmId.toString()}
-                        onClick={() => {
-                            setWatchlistId(film.id);
-                            setTimeout(() => {
-                                onOpen();
-                            }, 50);
-                        }}
-                    />
+                    <FilmCard key={i} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
                 ))}
             </VStack>
             {watchlistId && <FilmModal id={watchlistId} type="watchlist" isOpen={isOpen} onClose={onClose} />}

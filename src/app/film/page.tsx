@@ -5,9 +5,10 @@ import { FilmRegistrationForm, WatchedFormData } from "@/components/form/FilmReg
 import { FilmModal } from "@/components/modals/FilmModal";
 import { apiUrl } from "@/config";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
+import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
 import { GroupedFilms } from "@/types";
-import { Heading, Link, VStack, useDisclosure } from "@chakra-ui/react";
+import { Heading, Link, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
@@ -56,8 +57,7 @@ export default function FilmNote() {
         }
     };
 
-    const [watchedFilmId, setWatchedFilmId] = useState<number>();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { filmId: watchedFilmId, isOpen, onClose, openModal } = useFilmModal();
 
     return (
         <>
@@ -83,17 +83,7 @@ export default function FilmNote() {
                             {dayjs(date).format("MM/DD")}
                         </Heading>
                         {films.map((film, i) => (
-                            <FilmCard
-                                key={i}
-                                rating={film.rating}
-                                filmId={film.filmId.toString()}
-                                onClick={() => {
-                                    setWatchedFilmId(film.id);
-                                    setTimeout(() => {
-                                        onOpen();
-                                    }, 50);
-                                }}
-                            />
+                            <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
                         ))}
                     </>
                 ))}
