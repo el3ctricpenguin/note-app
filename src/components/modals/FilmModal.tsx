@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { BasicModal } from "./BasicModal";
 import { FilmModalHeader } from "./FilmModalHeader";
-import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
 import { apiUrl } from "@/config";
 import { useEffect, useState, useCallback } from "react";
@@ -24,6 +23,7 @@ import dayjs from "dayjs";
 import { FilmRating } from "@/components/cards/FilmRating";
 import EditableControls from "@/components/form/EditableControls";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
+import { useFilmData } from "@/hooks/useFilmData";
 
 interface FilmModalProps {
     id: number;
@@ -34,8 +34,8 @@ interface FilmModalProps {
 
 export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
     const [filmRecord, setFilmRecord] = useState<WatchedFilm | Watchlist>();
-    const { filmData } = useFilmModal(filmRecord?.filmId);
     const { showSuccessToast, showErrorToast } = useToasts();
+    const { filmData } = useFilmData(filmRecord?.filmId);
 
     const fetchFilmRecord = useCallback(
         async (recordId: number) => {
