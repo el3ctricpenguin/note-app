@@ -31,4 +31,5 @@ ls claude/tasks/in-progress/
 ## プロジェクト
 
 映画管理・TODO管理アプリ (Next.js + TypeScript)
+
 - **メインブランチ**: `main`

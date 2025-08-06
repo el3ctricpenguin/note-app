@@ -1,6 +1,7 @@
 # よく使うコマンド
 
 ## 開発
+
 ```bash
 npm run dev          # 開発サーバー (port 3005)
 npm run build        # プロダクションビルド
@@ -9,6 +10,7 @@ npm run lint         # ESLint実行
 ```
 
 ## 分析・カウント
+
 ```bash
 # 行数カウント
 find src -name "*.ts" -o -name "*.tsx" | xargs wc -l
@@ -18,6 +20,7 @@ find src -name "*.ts" -o -name "*.tsx" | wc -l
 ```
 
 ## データベース
+
 ```bash
 npx prisma studio           # DB管理画面
 npx prisma migrate dev      # 開発マイグレーション
@@ -26,6 +29,7 @@ npx prisma generate         # クライアント生成
 ```
 
 ## 分析・デバッグ
+
 ```bash
 # 行数カウント
 find src -name "*.ts" -o -name "*.tsx" | xargs wc -l
@@ -41,12 +45,14 @@ git branch -a
 ```
 
 ## テーマ関連
+
 ```bash
 # Chakra UIテーマ生成
 npm run theme
 ```
 
 ## デプロイ (サーバー)
+
 ```bash
 # プロダクション環境変数設定
 nano .env.production
