@@ -26,15 +26,15 @@ export const WatchedFields = ({
         <>
             <EditableDateField
                 label="視聴日"
-                icon={<CalendarIcon mr={2} />}
+                icon={<CalendarIcon />}
                 value={watchedDate}
                 isEditable={isEditable}
                 onSubmit={onWatchedDateChange}
             />
-            <EditableRatingField label="評価" icon={<StarIcon mr={2} />} value={rating} isEditable={isEditable} onSubmit={onRatingChange} />
+            <EditableRatingField label="評価" icon={<StarIcon />} value={rating} isEditable={isEditable} onSubmit={onRatingChange} />
             <EditableTextAreaField
                 label="メモ"
-                icon={<AttachmentIcon mr={2} />}
+                icon={<AttachmentIcon />}
                 value={note}
                 isEditable={isEditable}
                 onSubmit={onNoteChange}

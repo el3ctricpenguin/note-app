@@ -1,4 +1,4 @@
-import { Td, Tr, HStack, Editable } from "@chakra-ui/react";
+import { Td, Tr, HStack, Editable, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 import { FilmRating } from "@/components/cards/FilmRating";
@@ -31,8 +31,10 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
     return (
         <Tr>
             <Td px={0} verticalAlign="top" py={3} w={100}>
-                {icon}
-                {label}
+                <HStack spacing={2} align="center">
+                    {icon}
+                    <Text>{label}</Text>
+                </HStack>
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
                 {isEditable ? (

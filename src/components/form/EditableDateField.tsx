@@ -21,9 +21,11 @@ export const EditableDateField = ({ label, icon, value, isEditable = true, onSub
 
     return (
         <Tr>
-            <Td px={0} verticalAlign="top" py={3} w={100}>
-                {icon}
-                {label}
+            <Td px={0} verticalAlign="center" py={3} w={100}>
+                <HStack spacing={2} align="center">
+                    {icon}
+                    <Text>{label}</Text>
+                </HStack>
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
                 {isEditable ? (

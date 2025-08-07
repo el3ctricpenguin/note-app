@@ -30,29 +30,28 @@ export const WatchlistFields = ({
         <>
             <EditableDateField
                 label="追加日"
-                icon={<CalendarIcon mr={2} />}
+                icon={<CalendarIcon />}
                 value={createdAt}
                 isEditable={isEditable}
                 onSubmit={onCreatedAtChange}
             />
             <EditableTextAreaField
                 label="おすすめ元"
-                icon={<InfoOutlineIcon mr={2} />}
+                icon={<InfoOutlineIcon />}
                 value={recommendedBy}
                 isEditable={isEditable}
                 onSubmit={onRecommendedByChange}
-                height={20}
             />
             <EditableCheckboxField
                 label="視聴済み"
-                icon={<ViewIcon mr={2} />}
+                icon={<ViewIcon />}
                 value={isWatched}
                 isEditable={isEditable}
                 onSubmit={onIsWatchedChange}
             />
             <EditableTextAreaField
                 label="メモ"
-                icon={<AttachmentIcon mr={2} />}
+                icon={<AttachmentIcon />}
                 value={note}
                 isEditable={isEditable}
                 onSubmit={onNoteChange}

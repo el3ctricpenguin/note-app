@@ -1,4 +1,4 @@
-import { Checkbox, Td, Tr } from "@chakra-ui/react";
+import { Box, Checkbox, HStack, Td, Tr, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface EditableCheckboxFieldProps {
@@ -21,12 +21,14 @@ export const EditableCheckboxField = ({ label, icon, value, isEditable = true, o
 
     return (
         <Tr>
-            <Td px={0} verticalAlign="top" py={3} w={100}>
-                {icon}
-                {label}
+            <Td px={0} verticalAlign="center" py={3} w={100} align="center">
+                <HStack spacing={2} align="center">
+                    {icon}
+                    <Text>{label}</Text>
+                </HStack>
             </Td>
-            <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                <Checkbox isChecked={currentValue} isDisabled={!isEditable} onChange={(e) => handleChange(e.target.checked)} />
+            <Td px={0} pl={4} whiteSpace="pre-line" py={3} verticalAlign="center">
+                <Checkbox p={0.5} isChecked={currentValue} isDisabled={!isEditable} onChange={(e) => handleChange(e.target.checked)} />
             </Td>
         </Tr>
     );
