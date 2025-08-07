@@ -4,7 +4,6 @@ import { FilmModalHeader } from "./FilmModalHeader";
 import { WatchedFields } from "./parts/WatchedFields";
 import { WatchlistFields } from "./parts/WatchlistFields";
 import { useToasts } from "@/hooks/useToasts";
-import { apiUrl } from "@/config";
 import { useEffect, useState, useCallback } from "react";
 import { WatchedFilm, Watchlist } from "@prisma/client";
 import dayjs from "dayjs";
@@ -25,7 +24,7 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
     const fetchFilmRecord = useCallback(
         async (recordId: number) => {
             const endpoint = type === "watched" ? "watched" : "watchlist";
-            const response = await fetch(`${apiUrl}/film/${endpoint}/${recordId}`, { method: "GET" });
+            const response = await fetch(`/api/film/${endpoint}/${recordId}`, { method: "GET" });
             const record = await response.json();
             setFilmRecord(record);
         },
@@ -76,7 +75,7 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
 
     const updateFilmRecord = async (fields: Partial<WatchedFilm | Watchlist>) => {
         const endpoint = type === "watched" ? "watched" : "watchlist";
-        const response = await fetch(`${apiUrl}/film/${endpoint}/${id}`, {
+        const response = await fetch(`/api/film/${endpoint}/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(fields),

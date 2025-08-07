@@ -3,7 +3,6 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmRegistrationForm, WatchlistFormData } from "@/components/form/FilmRegistrationForm";
 import { FilmModal } from "@/components/modals/FilmModal";
-import { apiUrl } from "@/config";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
@@ -15,7 +14,7 @@ import { useEffect, useState } from "react";
 export default function FilmWatchlist() {
     const [watchlist, setWatchlist] = useState<Watchlist[]>([]);
     const fetchWatchlist = async () => {
-        const response = await fetch(`${apiUrl}/film/watchlist`, { method: "GET" });
+        const response = await fetch(`/api/film/watchlist`, { method: "GET" });
         const watchlistFilms = await response.json();
         console.log(watchlistFilms);
         setWatchlist(watchlistFilms);
@@ -29,7 +28,7 @@ export default function FilmWatchlist() {
     const handleWatchlistSubmit = async (data: WatchlistFormData): Promise<boolean> => {
         console.log(`create watchlist: ${data.filmId}`);
 
-        const response = await fetch(`${apiUrl}/film/watchlist`, {
+        const response = await fetch(`/api/film/watchlist`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
