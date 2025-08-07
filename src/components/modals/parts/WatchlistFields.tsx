@@ -56,6 +56,10 @@ export const WatchlistFields = ({
                 value={note}
                 isEditable={isEditable}
                 onSubmit={onNoteChange}
+                height={150}
+                submitOnBlur={true}
+                // onBlurで一時的な値を保存 (submitしない)してチェックボタン押した時だけ送信するように変更
+                // Overlayクリックでのモーダル終了時に注意ダイアログ出すのもあり
             />
         </>
     );

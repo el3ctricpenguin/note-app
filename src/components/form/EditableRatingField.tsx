@@ -1,23 +1,31 @@
-import { Td, Tr, HStack, Text } from "@chakra-ui/react";
+import { Td, Tr, HStack, Editable, EditablePreview } from "@chakra-ui/react";
 import { useState } from "react";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
+import { FilmRating } from "@/components/cards/FilmRating";
+import EditableControls from "./EditableControls";
 
 interface EditableRatingFieldProps {
     label: string;
     icon: React.ReactElement;
     value: number;
     isEditable?: boolean;
-    onSubmit?: (value: number) => void;
+    onSubmit?: (_i: number) => void;
 }
 
 export const EditableRatingField = ({ label, icon, value, isEditable = true, onSubmit }: EditableRatingFieldProps) => {
     const [currentValue, setCurrentValue] = useState(value);
+    const [isEditing, setIsEditing] = useState(false);
 
-    const handleChange = (rating: number) => {
-        setCurrentValue(rating);
+    const handleSubmit = () => {
         if (onSubmit) {
-            onSubmit(rating);
+            onSubmit(currentValue);
         }
+        setIsEditing(false);
+    };
+
+    const handleCancel = () => {
+        setCurrentValue(value);
+        setIsEditing(false);
     };
 
     return (
@@ -28,10 +36,26 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
                 {isEditable ? (
-                    <FilmRatingEditable rating={currentValue} setRating={handleChange} />
+                    <Editable
+                        value={value.toString()}
+                        onSubmit={handleSubmit}
+                        onCancel={handleCancel}
+                        onEdit={() => setIsEditing(true)}
+                        selectAllOnFocus={false}
+                        submitOnBlur={false}
+                    >
+                        <HStack>
+                            {isEditing ? (
+                                <FilmRatingEditable rating={currentValue} setRating={setCurrentValue} />
+                            ) : (
+                                <FilmRating rating={value} />
+                            )}
+                            <EditableControls />
+                        </HStack>
+                    </Editable>
                 ) : (
                     <HStack>
-                        <Text>{currentValue}/5</Text>
+                        <FilmRating rating={value} />
                     </HStack>
                 )}
             </Td>

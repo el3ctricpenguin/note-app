@@ -26,9 +26,7 @@ export const EditableCheckboxField = ({ label, icon, value, isEditable = true, o
                 {label}
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                <Checkbox isChecked={currentValue} isDisabled={!isEditable} onChange={(e) => handleChange(e.target.checked)}>
-                    {currentValue ? "視聴済み" : "未視聴"}
-                </Checkbox>
+                <Checkbox isChecked={currentValue} isDisabled={!isEditable} onChange={(e) => handleChange(e.target.checked)} />
             </Td>
         </Tr>
     );

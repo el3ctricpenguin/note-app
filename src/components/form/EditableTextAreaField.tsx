@@ -9,9 +9,10 @@ interface EditableTextAreaFieldProps {
     isEditable?: boolean;
     onSubmit?: (value: string) => void;
     height?: number;
+    submitOnBlur?: boolean;
 }
 
-export const EditableTextAreaField = ({ label, icon, value, isEditable = true, onSubmit, height = 40 }: EditableTextAreaFieldProps) => {
+export const EditableTextAreaField = ({ label, icon, value, isEditable = true, onSubmit, height = 40, submitOnBlur = false }: EditableTextAreaFieldProps) => {
     const [currentValue, setCurrentValue] = useState(value);
 
     const handleSubmit = () => {
@@ -28,7 +29,7 @@ export const EditableTextAreaField = ({ label, icon, value, isEditable = true, o
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
                 {isEditable ? (
-                    <Editable defaultValue={value ?? ""} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={false}>
+                    <Editable defaultValue={value ?? ""} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={submitOnBlur}>
                         <HStack>
                             <EditablePreview wordBreak="break-all" />
                             <EditableTextarea
