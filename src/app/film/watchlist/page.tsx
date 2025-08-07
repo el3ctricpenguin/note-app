@@ -1,31 +1,16 @@
 "use client";
 
 import { FilmCard } from "@/components/cards/FilmCard";
-import { FilmSearchCard } from "@/components/cards/FilmSearchCard";
+import { FilmRegistrationForm, WatchlistFormData } from "@/components/form/FilmRegistrationForm";
 import { FilmModal } from "@/components/modals/FilmModal";
-import { apiUrl, TMDB_API_KEY } from "@/config";
-import { TMDB_API_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
+import { apiUrl } from "@/config";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
-import { fetcher } from "@/features/utils/fetcher";
-import { SearchIcon } from "@chakra-ui/icons";
-import {
-    Button,
-    Divider,
-    FormControl,
-    Heading,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Link,
-    Textarea,
-    useDisclosure,
-    useToast,
-    VStack,
-} from "@chakra-ui/react";
+import { useFilmModal } from "@/hooks/useFilmModal";
+import { useToasts } from "@/hooks/useToasts";
+import { Heading, Link, VStack } from "@chakra-ui/react";
 import { Watchlist } from "@prisma/client";
 import NextLink from "next/link";
-import { FormEvent, useEffect, useState } from "react";
-import useSWR from "swr";
+import { useEffect, useState } from "react";
 
 export default function FilmWatchlist() {
     const [watchlist, setWatchlist] = useState<Watchlist[]>([]);
@@ -39,73 +24,38 @@ export default function FilmWatchlist() {
         fetchWatchlist();
     }, []);
 
-    const [searchText, setSearchText] = useState<string>("");
-    const { data } = useSWR(
-        `${TMDB_API_URL}/search/movie?query=${searchText}&language=en-US&page=1&api_key=${TMDB_API_KEY}`,
-        fetcher
-    );
+    const { showSuccessToast, showErrorToast } = useToasts();
 
-    const [isFocused, setIsFocused] = useState(false);
-    const handleFocus = () => {
-        setIsFocused(true);
-    };
-    const handleBlur = () => {
-        setTimeout(() => {
-            setIsFocused(false);
-        }, 150);
-    };
-
-    const [filmId, setFilmId] = useState<string>("");
-    const [recommendedBy, setRecommendedBy] = useState<string>("");
-    const [watchlistNote, setWatchlistNote] = useState<string>("");
-
-    const toast = useToast();
-
-    const createWatchlist = async (filmId: string, recommendedBy: string, note: string, isWatched: boolean): Promise<[any, number]> => {
-        console.log(`create watchlist: ${filmId}`);
+    const handleWatchlistSubmit = async (data: WatchlistFormData): Promise<boolean> => {
+        console.log(`create watchlist: ${data.filmId}`);
 
         const response = await fetch(`${apiUrl}/film/watchlist`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ filmId, recommendedBy, note, isWatched }),
+            body: JSON.stringify({
+                filmId: data.filmId,
+                recommendedBy: data.recommendedBy,
+                note: data.watchlistNote,
+                isWatched: false,
+            }),
         });
-        return [await response.json(), response.status];
-    };
 
-    const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        const [response, status] = await createWatchlist(filmId, recommendedBy, watchlistNote, false);
-        console.log(response);
+        const result = await response.json();
+        console.log(result);
 
-        if (status == 201) {
-            toast({
-                title: "film registered",
-                // description: `filmId: ${filmId}\nrating: ${rating}\nwatchedDate: ${watchedDate}\nwatchNote: ${watchNote}`,
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
-            setFilmId("");
-            setRecommendedBy("");
-            setWatchlistNote("");
-            setSearchText("");
+        if (response.status === 201) {
+            showSuccessToast("film registered");
             await fetchWatchlist();
-        }
-        if (status == 500) {
-            toast({
-                title: "film register failed",
-                description: `${response.error}`,
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-            });
+            return true;
+        } else {
+            showErrorToast("film register failed", result.error);
+            return false;
         }
     };
 
-    const [watchlistId, setWatchlistId] = useState<number>();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { filmId: watchlistId, isOpen, onClose, openModal } = useFilmModal();
 
     return (
         <>
@@ -120,97 +70,13 @@ export default function FilmWatchlist() {
             <Heading size="lg" my={1}>
                 ウォッチリスト登録
             </Heading>
-            <FormControl mb={4} as="form" onSubmit={handleSubmit}>
-                <VStack spacing={2}>
-                    <InputGroup>
-                        <Input
-                            placeholder="映画名"
-                            variant="filled"
-                            value={searchText}
-                            onChange={(e) => {
-                                setSearchText(e.target.value);
-                            }}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                        />
-                        <InputRightElement pointerEvents="none">
-                            <SearchIcon mr={2} />
-                        </InputRightElement>
-                    </InputGroup>
-                    {isFocused && (
-                        <VStack
-                            w="100%"
-                            spacing={0}
-                            divider={<Divider borderColor="brand.gray.400" opacity={1} />}
-                            position="absolute"
-                            top={10}
-                            zIndex={5}
-                            borderRadius="md"
-                            overflow="hidden"
-                            border="1px"
-                            borderColor="brand.gray.400"
-                        >
-                            {data?.results
-                                .filter((_: any, i: number) => i < 5)
-                                .map((film: any, i: any) => (
-                                    <FilmSearchCard
-                                        key={i}
-                                        title={film.original_title}
-                                        startYear={film.release_date.split("-")[0]}
-                                        posterUrl={TMDB_IMAGE_API_URL_MD + film.poster_path}
-                                        overview={film.overview}
-                                        filmId={film.id}
-                                        disableRadius
-                                        onClick={() => {
-                                            setFilmId(film.id);
-                                        }}
-                                    />
-                                ))}
-                        </VStack>
-                    )}
-                    <FilmCard filmId={filmId} />
-                    <Input
-                        placeholder="おすすめ元"
-                        variant="filled"
-                        value={recommendedBy}
-                        onChange={(e) => {
-                            setRecommendedBy(e.target.value);
-                        }}
-                    />
-                    <Textarea
-                        placeholder="メモ"
-                        variant="filled"
-                        value={watchlistNote}
-                        onChange={(e) => {
-                            setWatchlistNote(e.target.value);
-                        }}
-                    />
-                    <Button
-                        type="submit"
-                        w="100%"
-                        color="brand.gray.0"
-                        bgColor="brand.gray.1000"
-                        _hover={{ color: "brand.gray.0", bgColor: "brand.gray.1000", opacity: 0.75 }}
-                    >
-                        登録
-                    </Button>
-                </VStack>
-            </FormControl>
+            <FilmRegistrationForm type="watchlist" onSubmit={handleWatchlistSubmit} />
             <Heading size="lg" my={1}>
                 ウォッチリスト
             </Heading>
             <VStack>
                 {watchlist.map((film, i) => (
-                    <FilmCard
-                        key={i}
-                        filmId={film.filmId.toString()}
-                        onClick={() => {
-                            setWatchlistId(film.id);
-                            setTimeout(() => {
-                                onOpen();
-                            }, 50);
-                        }}
-                    />
+                    <FilmCard key={i} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
                 ))}
             </VStack>
             {watchlistId && <FilmModal id={watchlistId} type="watchlist" isOpen={isOpen} onClose={onClose} />}

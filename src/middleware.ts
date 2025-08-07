@@ -1,10 +1,18 @@
 import { getSession } from "@/lib/session";
+import { validateBasicAuth, createBasicAuthResponse } from "@/lib/basicAuth";
 import { NextRequest, NextResponse } from "next/server";
 
 const PUBLIC_URLS = ["/", "/sign-up", "/sign-in", "/api"];
 
 export default async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
+
+    // Basic認証チェック（最上位）
+    const authHeader = request.headers.get("authorization");
+    if (!validateBasicAuth(authHeader)) {
+        console.log("Basic auth failed for:", pathname);
+        return createBasicAuthResponse();
+    }
 
     const isPublicPath = PUBLIC_URLS.some((url) => pathname === url || pathname.startsWith(`${url}/`));
 
