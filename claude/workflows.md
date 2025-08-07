@@ -14,25 +14,10 @@
 - 実行前の確認や許可取り
 - 冗長なコメントや要約
 
-## 進捗管理・記録ルール
-
-### 記録タイミング
-
-- **すべての進捗**: `claude/notes/YYYY-MM-DD-*.md` に記録
-- **作業開始時**: 必ず記録確認・更新
-- **作業中**: 進捗やタスク状態変化を随時記録
-- **完了時**: 最終状態を記録
-
-### 「記録して」と言われた時
-
-- **CLAUDE.md** または **claude/ フォルダ内**の適切なファイルに書く
-- 内容に応じてファイルを選択（技術的内容→対応するmdファイル、進捗→notes/）
-
 ## タスク管理ルール
 
 ### タスク状態管理
-
-- **新規タスク**: `claude/tasks/todo/` (まだ作成されていない場合)
+- **新規タスク**: `claude/tasks/todo/`
 - **作業中**: `claude/tasks/in-progress/`
 - **完了**: `claude/tasks/done/` (完了時に移動)
 
@@ -43,104 +28,59 @@
 mv claude/tasks/in-progress/TASK_NAME.md claude/tasks/done/
 ```
 
-## PR前の更新ルール
-
-PR出す前に claude/ 内の全ファイルを最新状態に更新する
-
-## Git ワークフロー
-
-```bash
-# 機能開発
-git checkout main
-git pull origin main
-git checkout -b feat/feature-name
-# 開発作業
-git add .
-git commit -m "feat: 新機能追加"
-git push origin feat/feature-name
-
-# リファクタリング
-git checkout main
-git pull origin main
-git checkout -b refactor/refactor-name
-# リファクタリング作業
-```
-
-## テスト手順
-
-```bash
-# 1. リント・型チェック
-npm run lint
-npm run build
-
-# 2. 機能テスト
-npm run dev
-# ブラウザで動作確認:
-# - 認証フロー (サインイン・サインアップ・サインアウト)
-# - 映画管理 (追加・編集・削除・一覧)
-# - TODO管理 (追加・完了切替・削除)
-# - 日付別映画表示
-
-# 3. データベース確認
-npx prisma studio
-```
-
-## デプロイ手順
-
-```bash
-# 1. プロダクションビルド
-npm run build
-
-# 2. マイグレーション
-npx prisma migrate deploy
-
-# 3. サーバー起動/再起動
-pm2 restart note-app
-
-# 4. 動作確認
-curl http://localhost:3000/api/health
-```
+### チェックリスト更新ルール
+- **タスク完了時**: TaskのMarkdownを更新 (どんな小さなタスクでも更新)
+- **完了タスク**: 必ずdoneフォルダに移動してからコミット
 
 ## コード品質管理ワークフロー (必須)
 
 ### 品質管理手順
-
 ```bash
+# 1. ビルドチェック
+npm run build
+
+# 2. フォーマット
 npx prettier --write [変更したファイルパス]
-```
 
-```bash
+# 3. リント
 npm run lint
 ```
 
 ### 実行タイミング
-
-- **ファイル編集後**: 即座にPrettier実行
-- **コミット前**: 必ずlint実行 (エラーがないことを確認してからコミット)
+- **必須順序**: build → Prettier → lint → コミット
+- **TypeScript**: エラー完全解消後のみコミット許可
 - **例外なし**: どんな小さな変更でも実行
 
-## タスク管理ワークフロー (必須)
-
-### チェックリスト更新ルール
-
-- **タスク完了時**: TaskのMarkdownを更新 (どんな小さなタスクでも更新)
-
-## リファクタリング手順
-
-1. **現状分析**: 行数カウント・重複確認
-2. **共通化**: ユーティリティ関数作成
-3. **統合**: API・コンポーネントの重複除去
-4. **テスト**: 全機能の動作確認
-5. **計測**: 削減効果の確認
-
-## 緊急時対応
+## Git ワークフロー
 
 ```bash
-# ロールバック
+# 機能開発・リファクタリング
 git checkout main
-pm2 restart note-app
-
-# ログ確認
-pm2 logs note-app
-tail -f /var/log/postgresql/postgresql.log
+git pull origin main
+git checkout -b refactor/feature-name
+# 開発作業
+git add .
+git commit -m "refactor: 変更内容"
+git push origin refactor/feature-name
 ```
+
+## 記録・更新ルール
+
+### 記録タイミング
+- **すべての進捗**: `claude/notes/YYYY-MM-DD-*.md` に記録
+- **作業開始時**: 必ず記録確認・更新
+- **PR前**: claude/ 内の全ファイルを最新状態に更新
+
+### 「記録して」と言われた時
+- **CLAUDE.md** または **claude/ フォルダ内**の適切なファイルに書く
+- 内容に応じてファイルを選択（技術的内容→対応するmdファイル、進捗→notes/）
+
+## 開発時の注意点
+
+### ライブラリ・依存関係
+- **新規ライブラリ導入**: 既存(Chakra-UI)で解決できないか必ず確認
+- **一貫性保持**: 既存のアイコン・コンポーネント使用を優先
+
+### 型安全性
+- **any型発見**: 必ず厳密な型に置き換え
+- **TypeScript**: エラー0件を維持
