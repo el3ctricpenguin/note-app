@@ -4,8 +4,7 @@ import { Card, CardBody, VStack, HStack, Image, Text, Skeleton, Link, Box, useMe
 import { FilmRating } from "@/components/cards/FilmRating";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 import { useState } from "react";
-import { TMDB_API_KEY } from "@/config";
-import { TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
+import { TMDB_API_KEY, TMDB_API_URL, TMDB_FILM_PAGE_URL, TMDB_IMAGE_API_URL_MD } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
 import useSWR from "swr";
 

@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
-import { TMDB_API_KEY } from "@/config";
+import { TMDB_API_KEY } from "@/config/constants";
 import { TMDB_API_URL } from "@/config/constants";
 import { TMDBFilmData } from "@/types";
 
