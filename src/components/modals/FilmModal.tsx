@@ -144,7 +144,6 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                                     recommendedBy={formData.recommendedBy}
                                     isWatched={formData.isWatched}
                                     note={formData.note}
-                                    isEditable={true}
                                     onCreatedAtChange={handleWatchlistFieldChange.createdAt}
                                     onRecommendedByChange={handleWatchlistFieldChange.recommendedBy}
                                     onIsWatchedChange={handleWatchlistFieldChange.isWatched}
@@ -155,7 +154,6 @@ export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
                                     watchedDate={formData.watchedDate}
                                     rating={formData.rating}
                                     note={formData.note}
-                                    isEditable={true}
                                     onWatchedDateChange={handleWatchedFieldChange.watchedDate}
                                     onRatingChange={handleWatchedFieldChange.rating}
                                     onNoteChange={handleWatchedFieldChange.note}

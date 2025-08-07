@@ -1,4 +1,4 @@
-import { Box, Checkbox, HStack, Td, Tr, Text } from "@chakra-ui/react";
+import { Checkbox, HStack, Td, Tr, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface EditableCheckboxFieldProps {

@@ -8,7 +8,6 @@ interface WatchlistFieldsProps {
     recommendedBy: string;
     isWatched: boolean;
     note: string;
-    isEditable?: boolean;
     onCreatedAtChange?: (_value: string) => void;
     onRecommendedByChange?: (_value: string) => void;
     onIsWatchedChange?: (_value: boolean) => void;
@@ -20,7 +19,6 @@ export const WatchlistFields = ({
     recommendedBy,
     isWatched,
     note,
-    isEditable = true,
     onCreatedAtChange,
     onRecommendedByChange,
     onIsWatchedChange,
@@ -28,32 +26,20 @@ export const WatchlistFields = ({
 }: WatchlistFieldsProps) => {
     return (
         <>
-            <EditableDateField
-                label="追加日"
-                icon={<CalendarIcon />}
-                value={createdAt}
-                isEditable={isEditable}
-                onSubmit={onCreatedAtChange}
-            />
+            <EditableDateField label="追加日" icon={<CalendarIcon />} value={createdAt} isEditable={false} onSubmit={onCreatedAtChange} />
             <EditableTextAreaField
                 label="おすすめ元"
                 icon={<InfoOutlineIcon />}
                 value={recommendedBy}
-                isEditable={isEditable}
+                isEditable={true}
                 onSubmit={onRecommendedByChange}
             />
-            <EditableCheckboxField
-                label="視聴済み"
-                icon={<ViewIcon />}
-                value={isWatched}
-                isEditable={isEditable}
-                onSubmit={onIsWatchedChange}
-            />
+            <EditableCheckboxField label="視聴済み" icon={<ViewIcon />} value={isWatched} isEditable={true} onSubmit={onIsWatchedChange} />
             <EditableTextAreaField
                 label="メモ"
                 icon={<AttachmentIcon />}
                 value={note}
-                isEditable={isEditable}
+                isEditable={true}
                 onSubmit={onNoteChange}
                 height={150}
                 submitOnBlur={true}

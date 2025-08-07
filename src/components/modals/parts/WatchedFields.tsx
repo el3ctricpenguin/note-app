@@ -7,36 +7,27 @@ interface WatchedFieldsProps {
     watchedDate: string;
     rating: number;
     note: string;
-    isEditable?: boolean;
     onWatchedDateChange?: (_value: string) => void;
     onRatingChange?: (_value: number) => void;
     onNoteChange?: (_value: string) => void;
 }
 
-export const WatchedFields = ({
-    watchedDate,
-    rating,
-    note,
-    isEditable = true,
-    onWatchedDateChange,
-    onRatingChange,
-    onNoteChange,
-}: WatchedFieldsProps) => {
+export const WatchedFields = ({ watchedDate, rating, note, onWatchedDateChange, onRatingChange, onNoteChange }: WatchedFieldsProps) => {
     return (
         <>
             <EditableDateField
                 label="視聴日"
                 icon={<CalendarIcon />}
                 value={watchedDate}
-                isEditable={isEditable}
+                isEditable={true}
                 onSubmit={onWatchedDateChange}
             />
-            <EditableRatingField label="評価" icon={<StarIcon />} value={rating} isEditable={isEditable} onSubmit={onRatingChange} />
+            <EditableRatingField label="評価" icon={<StarIcon />} value={rating} isEditable={true} onSubmit={onRatingChange} />
             <EditableTextAreaField
                 label="メモ"
                 icon={<AttachmentIcon />}
                 value={note}
-                isEditable={isEditable}
+                isEditable={true}
                 onSubmit={onNoteChange}
                 height={150}
                 submitOnBlur={true}
