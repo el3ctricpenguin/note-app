@@ -1,4 +1,4 @@
-import { Td, Tr, HStack, Editable, EditablePreview, Text } from "@chakra-ui/react";
+import { Td, Tr, HStack, Editable, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 import { FilmRating } from "@/components/cards/FilmRating";

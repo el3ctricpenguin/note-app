@@ -7,7 +7,7 @@ interface EditableDateFieldProps {
     icon: React.ReactElement;
     value: string;
     isEditable?: boolean;
-    onSubmit?: (value: string) => void;
+    onSubmit?: (_value: string) => void;
 }
 
 export const EditableDateField = ({ label, icon, value, isEditable = true, onSubmit }: EditableDateFieldProps) => {

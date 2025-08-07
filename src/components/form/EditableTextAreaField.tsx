@@ -7,7 +7,7 @@ interface EditableTextAreaFieldProps {
     icon: React.ReactElement;
     value: string;
     isEditable?: boolean;
-    onSubmit?: (value: string) => void;
+    onSubmit?: (_value: string) => void;
     height?: number;
     submitOnBlur?: boolean;
 }

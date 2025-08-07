@@ -3,12 +3,12 @@ import { BasicModal } from "./BasicModal";
 import { FilmModalHeader } from "./FilmModalHeader";
 import { WatchedFields } from "./parts/WatchedFields";
 import { WatchlistFields } from "./parts/WatchlistFields";
-import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
 import { apiUrl } from "@/config";
 import { useEffect, useState, useCallback } from "react";
 import { WatchedFilm, Watchlist } from "@prisma/client";
 import dayjs from "dayjs";
+import { useFilmData } from "@/hooks/useFilmData";
 
 interface FilmModalProps {
     id: number;
@@ -19,8 +19,8 @@ interface FilmModalProps {
 
 export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
     const [filmRecord, setFilmRecord] = useState<WatchedFilm | Watchlist>();
-    const { filmData } = useFilmModal(filmRecord?.filmId);
     const { showSuccessToast, showErrorToast } = useToasts();
+    const { filmData } = useFilmData(filmRecord?.filmId);
 
     const fetchFilmRecord = useCallback(
         async (recordId: number) => {
