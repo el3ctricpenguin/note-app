@@ -7,12 +7,20 @@ interface EditableTextAreaFieldProps {
     icon: React.ReactElement;
     value: string;
     isEditable?: boolean;
-    onSubmit?: (value: string) => void;
+    onSubmit?: (_value: string) => void;
     height?: number;
     submitOnBlur?: boolean;
 }
 
-export const EditableTextAreaField = ({ label, icon, value, isEditable = true, onSubmit, height = 40, submitOnBlur = false }: EditableTextAreaFieldProps) => {
+export const EditableTextAreaField = ({
+    label,
+    icon,
+    value,
+    isEditable = true,
+    onSubmit,
+    height = 40,
+    submitOnBlur = false,
+}: EditableTextAreaFieldProps) => {
     const [currentValue, setCurrentValue] = useState(value);
 
     const handleSubmit = () => {

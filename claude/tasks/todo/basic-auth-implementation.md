@@ -1,13 +1,16 @@
 # Basic認証実装タスク
 
 ## 概要
+
 サイト全体にBasic認証を追加（既存のJWT認証とは別レイヤー）
+
 - 複数ユーザー対応（JSON環境変数パターン）
 - Vercelデプロイ対応
 
 ## タスクリスト
 
 ### ✅ 完了
+
 - [x] 現在の認証システムを調査する
 - [x] Basic認証の実装方針を検討する
 - [x] 実装パターンを決定（複数ユーザー + JSON環境変数）
@@ -15,36 +18,43 @@
 ### 🔄 実装タスク
 
 #### 1. lib/basicAuth.ts作成
+
 - [ ] JSON環境変数からユーザー情報読み込み
 - [ ] Basic認証ヘッダー検証ロジック
 - [ ] エラーハンドリング
 
 #### 2. middleware.ts修正
+
 - [ ] Basic認証チェックを最上位に追加
 - [ ] 401レスポンス（WWW-Authenticate header付き）
 - [ ] 既存のJWT認証ロジックとの統合
 
 #### 3. 環境変数設定
+
 - [ ] .env.exampleにBASIC_AUTH_USERS追加
 - [ ] 設定例とコメント記載
 
 #### 4. テスト・検証
+
 - [ ] 開発環境でBasic認証動作確認
 - [ ] ログイン画面へのアクセス確認
 - [ ] JWT認証との併用確認
 
 #### 5. デプロイ準備
+
 - [ ] Vercel環境変数設定手順確認
 - [ ] 本番環境でのテスト計画
 
 ## 実装詳細
 
 ### 環境変数形式
+
 ```
 BASIC_AUTH_USERS={"admin":"admin-pass","viewer":"viewer-pass","dev":"dev-pass"}
 ```
 
 ### 想定フロー
+
 1. ユーザーがサイトにアクセス
 2. Basic認証チェック → 未認証なら401
 3. Basic認証OK → 既存のJWT認証チェック
@@ -52,6 +62,7 @@ BASIC_AUTH_USERS={"admin":"admin-pass","viewer":"viewer-pass","dev":"dev-pass"}
 5. JWT認証OK → アプリケーション画面
 
 ## 注意点
+
 - Basic認証は全てのリクエストに適用
 - APIエンドポイントも含む
-- 静的ファイル（_next等）は除外
+- 静的ファイル（\_next等）は除外

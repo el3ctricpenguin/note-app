@@ -6,7 +6,7 @@ interface EditableCheckboxFieldProps {
     icon: React.ReactElement;
     value: boolean;
     isEditable?: boolean;
-    onSubmit?: (value: boolean) => void;
+    onSubmit?: (_value: boolean) => void;
 }
 
 export const EditableCheckboxField = ({ label, icon, value, isEditable = true, onSubmit }: EditableCheckboxFieldProps) => {

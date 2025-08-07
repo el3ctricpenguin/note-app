@@ -8,9 +8,9 @@ interface WatchedFieldsProps {
     rating: number;
     note: string;
     isEditable?: boolean;
-    onWatchedDateChange?: (value: string) => void;
-    onRatingChange?: (value: number) => void;
-    onNoteChange?: (value: string) => void;
+    onWatchedDateChange?: (_value: string) => void;
+    onRatingChange?: (_value: number) => void;
+    onNoteChange?: (_value: string) => void;
 }
 
 export const WatchedFields = ({

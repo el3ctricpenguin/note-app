@@ -9,10 +9,10 @@ interface WatchlistFieldsProps {
     isWatched: boolean;
     note: string;
     isEditable?: boolean;
-    onCreatedAtChange?: (value: string) => void;
-    onRecommendedByChange?: (value: string) => void;
-    onIsWatchedChange?: (value: boolean) => void;
-    onNoteChange?: (value: string) => void;
+    onCreatedAtChange?: (_value: string) => void;
+    onRecommendedByChange?: (_value: string) => void;
+    onIsWatchedChange?: (_value: boolean) => void;
+    onNoteChange?: (_value: string) => void;
 }
 
 export const WatchlistFields = ({
