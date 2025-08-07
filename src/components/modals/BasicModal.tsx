@@ -31,6 +31,7 @@ export const BasicModal = ({ children, title, isOpen, onClose, closeOnOverlayCli
             closeOnOverlayClick={closeOnOverlayClick}
             autoFocus={false}
             size={{ base: "lg", xl: "2xl", "2xl": "4xl" }}
+            allowPinchZoom
         >
             <ModalOverlay />
             <ModalContent {...modalContentProps}>
