@@ -74,11 +74,22 @@ export default function FilmWatchlist() {
                 ウォッチリスト
             </Heading>
             <VStack>
-                {watchlist.map((film, i) => (
-                    <FilmCard key={i} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
-                ))}
+                {watchlist.length === 0 ? (
+                    <Heading size="md">No watchlist</Heading>
+                ) : (
+                    watchlist.map((film, i) => <FilmCard key={i} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />)
+                )}
             </VStack>
-            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watchlist" isOpen={isOpen} onClose={onClose} onListUpdate={fetchWatchlist} />}
+            {filmRecord && (
+                <FilmModal
+                    filmRecord={filmRecord}
+                    filmData={filmData}
+                    type="watchlist"
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onListUpdate={fetchWatchlist}
+                />
+            )}
         </>
     );
 }

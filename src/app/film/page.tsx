@@ -57,7 +57,7 @@ export default function FilmNote() {
     };
 
     const { filmRecord, filmData, isOpen, onClose, openModal } = useFilmModal("watched");
-
+    console.log(watchedFilmsByDate);
     return (
         <>
             <Heading size="xl" mb={4}>
@@ -76,18 +76,31 @@ export default function FilmNote() {
                 視聴記録
             </Heading>
             <VStack>
-                {Object.entries(watchedFilmsByDate).map(([date, films]) => (
-                    <>
-                        <Heading size="md" w="100%">
-                            {dayjs(date).format("MM/DD")}
-                        </Heading>
-                        {films.map((film, i) => (
-                            <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
-                        ))}
-                    </>
-                ))}
+                {Object.keys(watchedFilmsByDate).length === 0 ? (
+                    <Heading size="md">No watched film</Heading>
+                ) : (
+                    Object.entries(watchedFilmsByDate).map(([date, films]) => (
+                        <>
+                            <Heading size="md" w="100%">
+                                {dayjs(date).format("MM/DD")}
+                            </Heading>
+                            {films.map((film, i) => (
+                                <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
+                            ))}
+                        </>
+                    ))
+                )}
             </VStack>
-            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watched" isOpen={isOpen} onClose={onClose} onListUpdate={fetchWatchedFilms} />}
+            {filmRecord && (
+                <FilmModal
+                    filmRecord={filmRecord}
+                    filmData={filmData}
+                    type="watched"
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onListUpdate={fetchWatchedFilms}
+                />
+            )}
         </>
     );
 }
