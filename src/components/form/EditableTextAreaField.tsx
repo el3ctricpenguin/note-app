@@ -29,10 +29,12 @@ export const EditableTextAreaField = ({
         }
     };
 
+    const isSetTop = height !== 7 && isEditable;
+
     return (
         <Tr>
-            <Td px={0} verticalAlign="center" py={3} w={100}>
-                <HStack spacing={2} align="center">
+            <Td px={0} verticalAlign={isSetTop ? "top" : "center"} py={3} w={100}>
+                <HStack spacing={2} align="center" mt={isSetTop ? 1.5 : 0}>
                     {icon}
                     <Text>{label}</Text>
                 </HStack>
