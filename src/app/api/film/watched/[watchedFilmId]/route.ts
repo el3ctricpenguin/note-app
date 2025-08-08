@@ -1,8 +1,15 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { withErrorHandling, createSuccessResponse, validateRequest, parseId } from "@/lib/api";
+import {
+    withErrorHandling,
+    createSuccessResponse,
+    validateRequest,
+    parseId,
+    createUnauthorizedResponse,
+    createNotFoundResponse,
+} from "@/lib/api";
+import { getAuthenticatedUser } from "@/lib/session";
 import { updateWatchedFilmSchema } from "@/lib/validation";
-import { WatchedFilm } from "@prisma/client";
 
 type Params = {
     params: {
@@ -12,21 +19,45 @@ type Params = {
 
 export async function GET(_request: NextRequest, { params }: Params) {
     return withErrorHandling(async () => {
+        const user = await getAuthenticatedUser();
+        if (!user) {
+            return createUnauthorizedResponse();
+        }
+
         const watchedFilmId = parseId(params.watchedFilmId);
-        const watchedFilm: WatchedFilm | null = await prisma.watchedFilm.findUnique({ where: { id: watchedFilmId } });
+        const watchedFilm = await prisma.watchedFilm.findFirst({
+            where: { id: watchedFilmId, userId: user.id },
+        });
+
+        if (!watchedFilm) {
+            return createNotFoundResponse("WatchedFilm");
+        }
+
         return createSuccessResponse(watchedFilm);
     });
 }
 
 export async function PUT(request: NextRequest, { params }: Params) {
     return withErrorHandling(async () => {
-        const watchedFilmId = parseId(params.watchedFilmId);
-        const updateData = await validateRequest(request, updateWatchedFilmSchema);
+        const user = await getAuthenticatedUser();
+        if (!user) {
+            return createUnauthorizedResponse();
+        }
 
-        const watchedFilm: WatchedFilm = await prisma.watchedFilm.update({
+        const watchedFilmId = parseId(params.watchedFilmId);
+        const watchedFilm = await prisma.watchedFilm.findFirst({
+            where: { id: watchedFilmId, userId: user.id },
+        });
+
+        if (!watchedFilm) {
+            return createNotFoundResponse("WatchedFilm");
+        }
+
+        const updateData = await validateRequest(request, updateWatchedFilmSchema);
+        const updatedWatchedFilm = await prisma.watchedFilm.update({
             where: { id: watchedFilmId },
             data: updateData,
         });
-        return createSuccessResponse(watchedFilm, 201);
+        return createSuccessResponse(updatedWatchedFilm, 201);
     });
 }

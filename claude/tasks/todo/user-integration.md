@@ -17,7 +17,7 @@ TODOとFilm系のレコード（WatchedFilm、Watchlist）にUser認証を統合
 
 ### 3. API層の更新
 - [x] TODO API でセッション認証とユーザーフィルタリング実装
-- [ ] Film系API（watched/watchlist）でセッション認証とユーザーフィルタリング実装
+- [x] Film系API（watched/watchlist）でセッション認証とユーザーフィルタリング実装
 - [x] 不正アクセス防止のためのユーザー権限チェック追加
 
 ### 4. フロントエンド対応
