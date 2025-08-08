@@ -3,7 +3,6 @@
 import { FilmCard } from "@/components/cards/FilmCard";
 import { FilmRegistrationForm, WatchedFormData } from "@/components/form/FilmRegistrationForm";
 import { FilmModal } from "@/components/modals/FilmModal";
-import { apiUrl } from "@/config";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
@@ -16,7 +15,7 @@ import { useEffect, useState } from "react";
 export default function FilmNote() {
     const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
     const fetchWatchedFilms = async () => {
-        const response = await fetch(`${apiUrl}/film/watched/by-date`, { method: "GET" });
+        const response = await fetch(`/api/film/watched/by-date`, { method: "GET" });
         const watchedFilms = await response.json();
         console.log(watchedFilms);
         setWatchedFilms(watchedFilms);
@@ -31,7 +30,7 @@ export default function FilmNote() {
         console.log(`create watched film: ${data.filmId}`);
         const isoWatchedDate = dayjs(data.watchedDate).toISOString();
 
-        const response = await fetch(`${apiUrl}/film/watched`, {
+        const response = await fetch(`/api/film/watched`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -57,7 +56,7 @@ export default function FilmNote() {
         }
     };
 
-    const { filmId: watchedFilmId, isOpen, onClose, openModal } = useFilmModal();
+    const { recordId: watchedFilmId, isOpen, onClose, openModal } = useFilmModal();
 
     return (
         <>
@@ -88,7 +87,7 @@ export default function FilmNote() {
                     </>
                 ))}
             </VStack>
-            {watchedFilmId && <FilmModal id={watchedFilmId} type="watched" isOpen={isOpen} onClose={onClose} />}
+            {watchedFilmId && <FilmModal recordId={watchedFilmId} type="watched" isOpen={isOpen} onClose={onClose} />}
         </>
     );
 }

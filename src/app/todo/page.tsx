@@ -1,6 +1,5 @@
 "use client";
 
-import { apiUrl } from "@/config";
 import { disabledLinkStyle } from "@/config/theme/styles";
 import { Button, Checkbox, Divider, FormControl, Heading, HStack, Input, useColorMode, VStack } from "@chakra-ui/react";
 import { Todo } from "@prisma/client";
@@ -13,7 +12,7 @@ export default function TodoPage() {
     const [todos, setTodos] = useState<Todo[]>([]);
 
     const fetchTodos = async () => {
-        const response = await fetch(`${apiUrl}/todo`, { method: "GET" });
+        const response = await fetch(`/api/todo`, { method: "GET" });
         const todos = await response.json();
         console.log(todos);
         setTodos(todos);
@@ -25,7 +24,7 @@ export default function TodoPage() {
 
     const createTodo = async (title: string) => {
         console.log(`create ${title}`);
-        const response = await fetch(`${apiUrl}/todo`, {
+        const response = await fetch(`/api/todo`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -44,7 +43,7 @@ export default function TodoPage() {
 
     const deleteTodo = async (id: Number) => {
         console.log(`delete #${id}`);
-        const response = await fetch(`${apiUrl}/todo/${id}`, {
+        const response = await fetch(`/api/todo/${id}`, {
             method: "DELETE",
         });
         return await response.json();
@@ -57,7 +56,7 @@ export default function TodoPage() {
 
     const updateTodo = async (id: Number) => {
         console.log(`update #${id}`);
-        const response = await fetch(`${apiUrl}/todo/${id}`, {
+        const response = await fetch(`/api/todo/${id}`, {
             method: "PATCH",
         });
         return await response.json();

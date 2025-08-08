@@ -1,5 +1,4 @@
-import { TMDB_API_KEY } from "@/config";
-import { TMDB_API_URL } from "@/config/constants";
+import { TMDB_API_KEY, TMDB_API_URL } from "@/config/constants";
 import { fetcher } from "@/features/utils/fetcher";
 import { useState } from "react";
 import useSWR from "swr";
