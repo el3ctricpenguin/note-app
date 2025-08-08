@@ -5,7 +5,7 @@ import EditableControls from "./EditableControls";
 interface EditableTextAreaFieldProps {
     label: string;
     icon: React.ReactElement;
-    value: string;
+    value: string | null;
     isEditable?: boolean;
     onSubmit?: (_value: string) => void;
     height?: number;
@@ -25,22 +25,24 @@ export const EditableTextAreaField = ({
 
     const handleSubmit = () => {
         if (onSubmit) {
-            onSubmit(currentValue);
+            onSubmit(currentValue || "");
         }
     };
 
+    const isSetTop = height !== 7 && isEditable;
+
     return (
         <Tr>
-            <Td px={0} verticalAlign="center" py={3} w={100}>
-                <HStack spacing={2} align="center">
+            <Td px={0} verticalAlign={isSetTop ? "top" : "center"} py={3} w={100}>
+                <HStack spacing={2} align="center" mt={isSetTop ? 1.5 : 0}>
                     {icon}
                     <Text>{label}</Text>
                 </HStack>
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                {isEditable && value.length > 0 ? (
-                    <Editable defaultValue={value ?? ""} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={submitOnBlur}>
-                        <HStack>
+                {isEditable && value !== null ? (
+                    <Editable defaultValue={value} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={submitOnBlur}>
+                        <HStack gap={value.length === 0 ? 0 : 2}>
                             <EditablePreview wordBreak="break-all" />
                             <EditableTextarea
                                 onFocus={(e) => setCurrentValue(e.target.value)}
@@ -51,7 +53,7 @@ export const EditableTextAreaField = ({
                         </HStack>
                     </Editable>
                 ) : (
-                    <Text>{value}</Text>
+                    <Text>{currentValue}</Text>
                 )}
             </Td>
         </Tr>

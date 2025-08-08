@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchJsonWithAuth, fetchWithAuth } from "@/lib/fetchWithAuth";
 import { disabledLinkStyle } from "@/config/theme/styles";
 import { Button, Checkbox, Divider, FormControl, Heading, HStack, Input, useColorMode, VStack } from "@chakra-ui/react";
 import { Todo } from "@prisma/client";
@@ -12,10 +13,12 @@ export default function TodoPage() {
     const [todos, setTodos] = useState<Todo[]>([]);
 
     const fetchTodos = async () => {
-        const response = await fetch(`/api/todo`, { method: "GET" });
-        const todos = await response.json();
-        console.log(todos);
-        setTodos(todos);
+        try {
+            const todos = await fetchJsonWithAuth<Todo[]>(`/api/todo`);
+            setTodos(todos);
+        } catch (error) {
+            console.error("Failed to fetch todos:", error);
+        }
     };
 
     useEffect(() => {
@@ -24,29 +27,43 @@ export default function TodoPage() {
 
     const createTodo = async (title: string) => {
         console.log(`create ${title}`);
-        const response = await fetch(`/api/todo`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ title }),
-        });
-        return await response.json();
+        try {
+            const result = await fetchJsonWithAuth(`/api/todo`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ title }),
+            });
+            return result;
+        } catch (error) {
+            console.error("Failed to create todo:", error);
+            throw error;
+        }
     };
 
     const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
         e.preventDefault();
-        await createTodo(inputValue);
-        await fetchTodos();
-        setInputValue("");
+        try {
+            await createTodo(inputValue);
+            await fetchTodos();
+            setInputValue("");
+        } catch (error) {
+            // エラーハンドリングは各関数内で処理済み
+        }
     };
 
     const deleteTodo = async (id: Number) => {
         console.log(`delete #${id}`);
-        const response = await fetch(`/api/todo/${id}`, {
-            method: "DELETE",
-        });
-        return await response.json();
+        try {
+            const result = await fetchJsonWithAuth(`/api/todo/${id}`, {
+                method: "DELETE",
+            });
+            return result;
+        } catch (error) {
+            console.error("Failed to delete todo:", error);
+            throw error;
+        }
     };
 
     const handleDelete = async (id: Number) => {
@@ -56,10 +73,15 @@ export default function TodoPage() {
 
     const updateTodo = async (id: Number) => {
         console.log(`update #${id}`);
-        const response = await fetch(`/api/todo/${id}`, {
-            method: "PATCH",
-        });
-        return await response.json();
+        try {
+            const result = await fetchJsonWithAuth(`/api/todo/${id}`, {
+                method: "PATCH",
+            });
+            return result;
+        } catch (error) {
+            console.error("Failed to update todo:", error);
+            throw error;
+        }
     };
 
     const handleCheck = async (id: Number) => {

@@ -6,6 +6,7 @@ import { FilmModal } from "@/components/modals/FilmModal";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
+import { fetchWithAuth, fetchJsonWithAuth } from "@/lib/fetchWithAuth";
 import { GroupedFilms } from "@/types";
 import { Heading, Link, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
@@ -15,10 +16,13 @@ import { useEffect, useState } from "react";
 export default function FilmNote() {
     const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
     const fetchWatchedFilms = async () => {
-        const response = await fetch(`/api/film/watched/by-date`, { method: "GET" });
-        const watchedFilms = await response.json();
-        console.log(watchedFilms);
-        setWatchedFilms(watchedFilms);
+        try {
+            const watchedFilms = await fetchJsonWithAuth<GroupedFilms>(`/api/film/watched/by-date`);
+            console.log(watchedFilms);
+            setWatchedFilms(watchedFilms);
+        } catch (error) {
+            console.error("Failed to fetch watched films:", error);
+        }
     };
     useEffect(() => {
         fetchWatchedFilms();
@@ -30,34 +34,40 @@ export default function FilmNote() {
         console.log(`create watched film: ${data.filmId}`);
         const isoWatchedDate = dayjs(data.watchedDate).toISOString();
 
-        const response = await fetch(`/api/film/watched`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                filmId: data.filmId,
-                watchedDate: isoWatchedDate,
-                rating: data.rating,
-                note: data.watchNote,
-            }),
-        });
+        try {
+            const response = await fetchWithAuth(`/api/film/watched`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    filmId: data.filmId,
+                    watchedDate: isoWatchedDate,
+                    rating: data.rating,
+                    note: data.watchNote,
+                }),
+            });
 
-        const result = await response.json();
-        console.log(result);
+            const result = await response.json();
+            console.log(result);
 
-        if (response.status === 201) {
-            showSuccessToast("film registered");
-            await fetchWatchedFilms();
-            return true;
-        } else {
-            showErrorToast("film register failed", result.error);
+            if (response.status === 201) {
+                showSuccessToast("film registered");
+                await fetchWatchedFilms();
+                return true;
+            } else {
+                showErrorToast("film register failed", result.error);
+                return false;
+            }
+        } catch (error) {
+            console.error("Failed to register watched film:", error);
+            showErrorToast("film register failed");
             return false;
         }
     };
 
     const { filmRecord, filmData, isOpen, onClose, openModal } = useFilmModal("watched");
-
+    console.log(watchedFilmsByDate);
     return (
         <>
             <Heading size="xl" mb={4}>
@@ -76,18 +86,31 @@ export default function FilmNote() {
                 視聴記録
             </Heading>
             <VStack>
-                {Object.entries(watchedFilmsByDate).map(([date, films]) => (
-                    <>
-                        <Heading size="md" w="100%">
-                            {dayjs(date).format("MM/DD")}
-                        </Heading>
-                        {films.map((film, i) => (
-                            <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
-                        ))}
-                    </>
-                ))}
+                {Object.keys(watchedFilmsByDate).length === 0 ? (
+                    <Heading size="md">No watched film</Heading>
+                ) : (
+                    Object.entries(watchedFilmsByDate).map(([date, films]) => (
+                        <>
+                            <Heading size="md" w="100%">
+                                {dayjs(date).format("MM/DD")}
+                            </Heading>
+                            {films.map((film, i) => (
+                                <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
+                            ))}
+                        </>
+                    ))
+                )}
             </VStack>
-            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watched" isOpen={isOpen} onClose={onClose} onListUpdate={fetchWatchedFilms} />}
+            {filmRecord && (
+                <FilmModal
+                    filmRecord={filmRecord}
+                    filmData={filmData}
+                    type="watched"
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onListUpdate={fetchWatchedFilms}
+                />
+            )}
         </>
     );
 }
