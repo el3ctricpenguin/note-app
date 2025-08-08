@@ -17,10 +17,14 @@ interface WatchedModalContentProps {
 }
 
 export const WatchedModalContent = ({ filmRecord, filmData, onListUpdate }: WatchedModalContentProps) => {
-    const [formData, setFormData] = useState({
-        watchedDate: "",
-        rating: 0,
-        note: "",
+    const [formData, setFormData] = useState<{
+        watchedDate: string | null;
+        rating: number | null;
+        note: string | null;
+    }>({
+        watchedDate: null,
+        rating: null,
+        note: null,
     });
 
     const { handleFieldChange } = useFilmRecordUpdate({

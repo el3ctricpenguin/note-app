@@ -7,7 +7,7 @@ import EditableControls from "./EditableControls";
 interface EditableRatingFieldProps {
     label: string;
     icon: React.ReactElement;
-    value: number;
+    value: number | null;
     isEditable?: boolean;
     onSubmit?: (_i: number) => void;
 }
@@ -17,7 +17,7 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
     const [isEditing, setIsEditing] = useState(false);
 
     const handleSubmit = () => {
-        if (onSubmit) {
+        if (onSubmit && currentValue !== null) {
             onSubmit(currentValue);
         }
         setIsEditing(false);
@@ -41,7 +41,7 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
                 </HStack>
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                {isEditable ? (
+                {isEditable && currentValue !== null ? (
                     <Editable
                         onSubmit={handleSubmit}
                         onCancel={handleCancel}
@@ -60,7 +60,7 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
                     </Editable>
                 ) : (
                     <HStack>
-                        <FilmRating rating={currentValue} />
+                        <FilmRating rating={currentValue ?? 0} />
                     </HStack>
                 )}
             </Td>

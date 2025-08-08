@@ -5,7 +5,7 @@ import EditableControls from "./EditableControls";
 interface EditableDateFieldProps {
     label: string;
     icon: React.ReactElement;
-    value: string;
+    value: string | null;
     isEditable?: boolean;
     onSubmit?: (_value: string) => void;
 }
@@ -15,7 +15,7 @@ export const EditableDateField = ({ label, icon, value, isEditable = true, onSub
 
     const handleSubmit = () => {
         if (onSubmit) {
-            onSubmit(currentValue);
+            onSubmit(currentValue || "");
         }
     };
 
@@ -28,8 +28,8 @@ export const EditableDateField = ({ label, icon, value, isEditable = true, onSub
                 </HStack>
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                {isEditable && value.length > 0 ? (
-                    <Editable defaultValue={value ?? ""} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={false}>
+                {isEditable && value !== null ? (
+                    <Editable defaultValue={value} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={false}>
                         <HStack>
                             <EditablePreview wordBreak="break-all" />
                             <EditableInput
@@ -41,7 +41,7 @@ export const EditableDateField = ({ label, icon, value, isEditable = true, onSub
                         </HStack>
                     </Editable>
                 ) : (
-                    <Text>{value}</Text>
+                    <Text>{value || ""}</Text>
                 )}
             </Td>
         </Tr>

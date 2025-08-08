@@ -17,11 +17,16 @@ interface WatchlistModalContentProps {
 }
 
 export const WatchlistModalContent = ({ filmRecord, filmData, onListUpdate }: WatchlistModalContentProps) => {
-    const [formData, setFormData] = useState({
-        createdAt: "",
-        recommendedBy: "",
-        isWatched: false,
-        note: "",
+    const [formData, setFormData] = useState<{
+        createdAt: string | null;
+        recommendedBy: string | null;
+        isWatched: boolean | null;
+        note: string | null;
+    }>({
+        createdAt: null,
+        recommendedBy: null,
+        isWatched: null,
+        note: null,
     });
 
     const { handleFieldChange } = useFilmRecordUpdate({

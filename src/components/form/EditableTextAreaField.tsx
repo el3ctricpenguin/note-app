@@ -5,7 +5,7 @@ import EditableControls from "./EditableControls";
 interface EditableTextAreaFieldProps {
     label: string;
     icon: React.ReactElement;
-    value: string;
+    value: string | null;
     isEditable?: boolean;
     onSubmit?: (_value: string) => void;
     height?: number;
@@ -25,7 +25,7 @@ export const EditableTextAreaField = ({
 
     const handleSubmit = () => {
         if (onSubmit) {
-            onSubmit(currentValue);
+            onSubmit(currentValue || "");
         }
     };
 
@@ -38,8 +38,8 @@ export const EditableTextAreaField = ({
                 </HStack>
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                {isEditable && value.length > 0 ? (
-                    <Editable defaultValue={value ?? ""} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={submitOnBlur}>
+                {isEditable && value !== null ? (
+                    <Editable defaultValue={value} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={submitOnBlur}>
                         <HStack>
                             <EditablePreview wordBreak="break-all" />
                             <EditableTextarea
@@ -51,7 +51,7 @@ export const EditableTextAreaField = ({
                         </HStack>
                     </Editable>
                 ) : (
-                    <Text>{value}</Text>
+                    <Text>{currentValue}</Text>
                 )}
             </Td>
         </Tr>
