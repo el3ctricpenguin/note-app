@@ -7,7 +7,7 @@ import { FilmModalHeader } from "./FilmModalHeader";
 import { useFilmRecordUpdate } from "@/hooks/useFilmRecordUpdate";
 import { Watchlist } from "@prisma/client";
 import { TMDBFilmData } from "@/types";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 interface WatchlistModalContentProps {
@@ -24,22 +24,10 @@ export const WatchlistModalContent = ({ filmRecord, filmData, onListUpdate }: Wa
         note: "",
     });
 
-    const fetchFilmRecord = useCallback(async (id: number) => {
-        const response = await fetch(`/api/film/watchlist/${id}`, { method: "GET" });
-        const record = await response.json();
-        setFormData({
-            recommendedBy: record.recommendedBy || "",
-            note: record.note || "",
-            createdAt: dayjs(record.createdAt).format("YYYY-MM-DD"),
-            isWatched: record.isWatched,
-        });
-    }, []);
-
     const { handleFieldChange } = useFilmRecordUpdate({
         recordId: filmRecord.id,
         type: "watchlist",
         onUpdate: () => {
-            fetchFilmRecord(filmRecord.id);
             onListUpdate?.();
         },
     });
