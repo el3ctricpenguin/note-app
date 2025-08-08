@@ -56,7 +56,7 @@ export default function FilmNote() {
         }
     };
 
-    const { recordId: watchedFilmId, isOpen, onClose, openModal } = useFilmModal();
+    const { filmRecord, filmData, isOpen, onClose, openModal } = useFilmModal("watched");
 
     return (
         <>
@@ -87,7 +87,7 @@ export default function FilmNote() {
                     </>
                 ))}
             </VStack>
-            {watchedFilmId && <FilmModal recordId={watchedFilmId} type="watched" isOpen={isOpen} onClose={onClose} />}
+            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watched" isOpen={isOpen} onClose={onClose} onListUpdate={fetchWatchedFilms} />}
         </>
     );
 }

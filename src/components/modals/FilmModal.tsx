@@ -1,18 +1,26 @@
 import { BasicModal } from "./BasicModal";
 import { WatchedModalContent } from "./parts/WatchedModalContent";
 import { WatchlistModalContent } from "./parts/WatchlistModalContent";
+import { WatchedFilm, Watchlist } from "@prisma/client";
+import { TMDBFilmData } from "@/types";
 
 interface FilmModalProps {
-    recordId: number;
+    filmRecord: WatchedFilm | Watchlist;
+    filmData: TMDBFilmData | null;
     type: "watched" | "watchlist";
     isOpen: boolean;
     onClose: () => void;
+    onListUpdate?: () => void;
 }
 
-export const FilmModal = ({ recordId, type, isOpen, onClose }: FilmModalProps) => {
+export const FilmModal = ({ filmRecord, filmData, type, isOpen, onClose, onListUpdate }: FilmModalProps) => {
     return (
         <BasicModal title="" isOpen={isOpen} onClose={onClose}>
-            {type === "watchlist" ? <WatchlistModalContent recordId={recordId} /> : <WatchedModalContent recordId={recordId} />}
+            {type === "watchlist" ? (
+                <WatchlistModalContent filmRecord={filmRecord as Watchlist} filmData={filmData} onListUpdate={onListUpdate} />
+            ) : (
+                <WatchedModalContent filmRecord={filmRecord as WatchedFilm} filmData={filmData} onListUpdate={onListUpdate} />
+            )}
         </BasicModal>
     );
 };

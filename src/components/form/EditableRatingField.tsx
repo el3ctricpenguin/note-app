@@ -1,5 +1,5 @@
 import { Td, Tr, HStack, Editable, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FilmRatingEditable } from "@/components/cards/FilmRatingEditable";
 import { FilmRating } from "@/components/cards/FilmRating";
 import EditableControls from "./EditableControls";
@@ -28,6 +28,10 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
         setIsEditing(false);
     };
 
+    useEffect(() => {
+        setCurrentValue(value);
+    }, [value]);
+
     return (
         <Tr>
             <Td px={0} verticalAlign="top" py={3} w={100}>
@@ -39,7 +43,6 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
                 {isEditable ? (
                     <Editable
-                        value={value.toString()}
                         onSubmit={handleSubmit}
                         onCancel={handleCancel}
                         onEdit={() => setIsEditing(true)}
@@ -50,14 +53,14 @@ export const EditableRatingField = ({ label, icon, value, isEditable = true, onS
                             {isEditing ? (
                                 <FilmRatingEditable rating={currentValue} setRating={setCurrentValue} />
                             ) : (
-                                <FilmRating rating={value} />
+                                <FilmRating rating={currentValue} />
                             )}
                             <EditableControls />
                         </HStack>
                     </Editable>
                 ) : (
                     <HStack>
-                        <FilmRating rating={value} />
+                        <FilmRating rating={currentValue} />
                     </HStack>
                 )}
             </Td>

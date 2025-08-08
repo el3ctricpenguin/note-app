@@ -4,20 +4,19 @@ import { EditableDateField } from "@/components/form/EditableDateField";
 import { EditableRatingField } from "@/components/form/EditableRatingField";
 import { EditableTextAreaField } from "@/components/form/EditableTextAreaField";
 import { FilmModalHeader } from "./FilmModalHeader";
-import { useFilmData } from "@/hooks/useFilmData";
 import { useFilmRecordUpdate } from "@/hooks/useFilmRecordUpdate";
 import { WatchedFilm } from "@prisma/client";
+import { TMDBFilmData } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 interface WatchedModalContentProps {
-    recordId: number;
+    filmRecord: WatchedFilm;
+    filmData: TMDBFilmData | null;
+    onListUpdate?: () => void;
 }
 
-export const WatchedModalContent = ({ recordId }: WatchedModalContentProps) => {
-    const [filmRecord, setFilmRecord] = useState<WatchedFilm>();
-    const { filmData } = useFilmData(filmRecord?.filmId);
-
+export const WatchedModalContent = ({ filmRecord, filmData, onListUpdate }: WatchedModalContentProps) => {
     const [formData, setFormData] = useState({
         watchedDate: "",
         rating: 0,
@@ -27,27 +26,28 @@ export const WatchedModalContent = ({ recordId }: WatchedModalContentProps) => {
     const fetchFilmRecord = useCallback(async (id: number) => {
         const response = await fetch(`/api/film/watched/${id}`, { method: "GET" });
         const record = await response.json();
-        setFilmRecord(record);
+        setFormData({
+            rating: record.rating,
+            note: record.note || "",
+            watchedDate: dayjs(record.watchedDate).format("YYYY-MM-DD"),
+        });
     }, []);
 
     const { handleFieldChange } = useFilmRecordUpdate({
-        recordId,
+        recordId: filmRecord.id,
         type: "watched",
-        onUpdate: () => fetchFilmRecord(recordId),
+        onUpdate: () => {
+            fetchFilmRecord(filmRecord.id);
+            onListUpdate?.();
+        },
     });
 
     useEffect(() => {
-        fetchFilmRecord(recordId);
-    }, [recordId, fetchFilmRecord]);
-
-    useEffect(() => {
-        if (filmRecord) {
-            setFormData({
-                rating: filmRecord.rating,
-                note: filmRecord.note || "",
-                watchedDate: dayjs(filmRecord.watchedDate).format("YYYY-MM-DD"),
-            });
-        }
+        setFormData({
+            rating: filmRecord.rating,
+            note: filmRecord.note || "",
+            watchedDate: dayjs(filmRecord.watchedDate).format("YYYY-MM-DD"),
+        });
     }, [filmRecord]);
 
     const handleWatchedFieldChange = (field: string, value: any) => {
