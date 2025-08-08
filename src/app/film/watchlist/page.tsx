@@ -6,6 +6,7 @@ import { FilmModal } from "@/components/modals/FilmModal";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
+import { fetchWithAuth, fetchJsonWithAuth } from "@/lib/fetchWithAuth";
 import { Heading, Link, VStack } from "@chakra-ui/react";
 import { Watchlist } from "@prisma/client";
 import NextLink from "next/link";
@@ -14,10 +15,14 @@ import { useEffect, useState } from "react";
 export default function FilmWatchlist() {
     const [watchlist, setWatchlist] = useState<Watchlist[]>([]);
     const fetchWatchlist = async () => {
-        const response = await fetch(`/api/film/watchlist`, { method: "GET" });
-        const watchlistFilms = await response.json();
-        console.log(watchlistFilms);
-        setWatchlist(watchlistFilms);
+        try {
+            const watchlistFilms = await fetchJsonWithAuth<Watchlist[]>(`/api/film/watchlist`);
+            console.log(watchlistFilms);
+            setWatchlist(watchlistFilms);
+        } catch (error) {
+            showErrorToast("Failed to fetch watchlist");
+            console.error("Failed to fetch watchlist:", error);
+        }
     };
     useEffect(() => {
         fetchWatchlist();
@@ -28,28 +33,34 @@ export default function FilmWatchlist() {
     const handleWatchlistSubmit = async (data: WatchlistFormData): Promise<boolean> => {
         console.log(`create watchlist: ${data.filmId}`);
 
-        const response = await fetch(`/api/film/watchlist`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                filmId: data.filmId,
-                recommendedBy: data.recommendedBy,
-                note: data.watchlistNote,
-                isWatched: false,
-            }),
-        });
+        try {
+            const response = await fetchWithAuth(`/api/film/watchlist`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    filmId: data.filmId,
+                    recommendedBy: data.recommendedBy,
+                    note: data.watchlistNote,
+                    isWatched: false,
+                }),
+            });
 
-        const result = await response.json();
-        console.log(result);
+            const result = await response.json();
+            console.log(result);
 
-        if (response.status === 201) {
-            showSuccessToast("film registered");
-            await fetchWatchlist();
-            return true;
-        } else {
-            showErrorToast("film register failed", result.error);
+            if (response.status === 201) {
+                showSuccessToast("film registered");
+                await fetchWatchlist();
+                return true;
+            } else {
+                showErrorToast("film register failed", result.error);
+                return false;
+            }
+        } catch (error) {
+            console.error("Failed to register watchlist:", error);
+            showErrorToast("film register failed");
             return false;
         }
     };
