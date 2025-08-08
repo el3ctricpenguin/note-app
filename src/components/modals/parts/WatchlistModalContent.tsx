@@ -13,9 +13,10 @@ import dayjs from "dayjs";
 interface WatchlistModalContentProps {
     filmRecord: Watchlist;
     filmData: TMDBFilmData | null;
+    onListUpdate?: () => void;
 }
 
-export const WatchlistModalContent = ({ filmRecord, filmData }: WatchlistModalContentProps) => {
+export const WatchlistModalContent = ({ filmRecord, filmData, onListUpdate }: WatchlistModalContentProps) => {
     const [formData, setFormData] = useState({
         createdAt: "",
         recommendedBy: "",
@@ -37,7 +38,10 @@ export const WatchlistModalContent = ({ filmRecord, filmData }: WatchlistModalCo
     const { handleFieldChange } = useFilmRecordUpdate({
         recordId: filmRecord.id,
         type: "watchlist",
-        onUpdate: () => fetchFilmRecord(filmRecord.id),
+        onUpdate: () => {
+            fetchFilmRecord(filmRecord.id);
+            onListUpdate?.();
+        },
     });
 
     useEffect(() => {

@@ -78,7 +78,7 @@ export default function FilmWatchlist() {
                     <FilmCard key={i} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
                 ))}
             </VStack>
-            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watchlist" isOpen={isOpen} onClose={onClose} />}
+            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watchlist" isOpen={isOpen} onClose={onClose} onListUpdate={fetchWatchlist} />}
         </>
     );
 }

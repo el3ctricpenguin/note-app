@@ -10,15 +10,16 @@ interface FilmModalProps {
     type: "watched" | "watchlist";
     isOpen: boolean;
     onClose: () => void;
+    onListUpdate?: () => void;
 }
 
-export const FilmModal = ({ filmRecord, filmData, type, isOpen, onClose }: FilmModalProps) => {
+export const FilmModal = ({ filmRecord, filmData, type, isOpen, onClose, onListUpdate }: FilmModalProps) => {
     return (
         <BasicModal title="" isOpen={isOpen} onClose={onClose}>
             {type === "watchlist" ? (
-                <WatchlistModalContent filmRecord={filmRecord as Watchlist} filmData={filmData} />
+                <WatchlistModalContent filmRecord={filmRecord as Watchlist} filmData={filmData} onListUpdate={onListUpdate} />
             ) : (
-                <WatchedModalContent filmRecord={filmRecord as WatchedFilm} filmData={filmData} />
+                <WatchedModalContent filmRecord={filmRecord as WatchedFilm} filmData={filmData} onListUpdate={onListUpdate} />
             )}
         </BasicModal>
     );

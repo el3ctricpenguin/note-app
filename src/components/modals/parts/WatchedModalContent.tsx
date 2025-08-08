@@ -13,9 +13,10 @@ import dayjs from "dayjs";
 interface WatchedModalContentProps {
     filmRecord: WatchedFilm;
     filmData: TMDBFilmData | null;
+    onListUpdate?: () => void;
 }
 
-export const WatchedModalContent = ({ filmRecord, filmData }: WatchedModalContentProps) => {
+export const WatchedModalContent = ({ filmRecord, filmData, onListUpdate }: WatchedModalContentProps) => {
     const [formData, setFormData] = useState({
         watchedDate: "",
         rating: 0,
@@ -35,7 +36,10 @@ export const WatchedModalContent = ({ filmRecord, filmData }: WatchedModalConten
     const { handleFieldChange } = useFilmRecordUpdate({
         recordId: filmRecord.id,
         type: "watched",
-        onUpdate: () => fetchFilmRecord(filmRecord.id),
+        onUpdate: () => {
+            fetchFilmRecord(filmRecord.id);
+            onListUpdate?.();
+        },
     });
 
     useEffect(() => {

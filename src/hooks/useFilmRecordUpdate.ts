@@ -31,11 +31,11 @@ export const useFilmRecordUpdate = ({ recordId, type, onUpdate }: UseFilmRecordU
             if (status === 201) {
                 showSuccessToast(`${type} updated`);
                 onUpdate?.();
-            }
-            if (status === 500) {
+            } else if (status === 500) {
                 showErrorToast(`${type} update failed`, response.error);
+            } else {
+                console.error("Unexpected response:", response);
             }
-            console.error("Unexpected response:", response);
         },
         [updateFilmRecord, type, showSuccessToast, showErrorToast, onUpdate],
     );

@@ -87,7 +87,7 @@ export default function FilmNote() {
                     </>
                 ))}
             </VStack>
-            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watched" isOpen={isOpen} onClose={onClose} />}
+            {filmRecord && <FilmModal filmRecord={filmRecord} filmData={filmData} type="watched" isOpen={isOpen} onClose={onClose} onListUpdate={fetchWatchedFilms} />}
         </>
     );
 }
