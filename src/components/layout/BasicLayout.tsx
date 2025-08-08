@@ -28,7 +28,7 @@ export default function BasicLayout({ children }: { children: React.ReactNode })
             <VStack mt={4}>
                 <Divider borderColor="brand.gray.900" />
                 <HStack w="100%">
-                    <Text>{session && `logged in: ${session.username}`}</Text>
+                    <Text>{session && `logged in as: ${session.username}`}</Text>
                     <Spacer />
                     <HStack spacing={0.5}>
                         <StarIcon w={3} />

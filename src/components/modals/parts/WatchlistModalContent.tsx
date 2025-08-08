@@ -4,20 +4,18 @@ import { EditableDateField } from "@/components/form/EditableDateField";
 import { EditableCheckboxField } from "@/components/form/EditableCheckboxField";
 import { EditableTextAreaField } from "@/components/form/EditableTextAreaField";
 import { FilmModalHeader } from "./FilmModalHeader";
-import { useFilmData } from "@/hooks/useFilmData";
 import { useFilmRecordUpdate } from "@/hooks/useFilmRecordUpdate";
 import { Watchlist } from "@prisma/client";
+import { TMDBFilmData } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 interface WatchlistModalContentProps {
-    recordId: number;
+    filmRecord: Watchlist;
+    filmData: TMDBFilmData | null;
 }
 
-export const WatchlistModalContent = ({ recordId }: WatchlistModalContentProps) => {
-    const [filmRecord, setFilmRecord] = useState<Watchlist>();
-    const { filmData } = useFilmData(filmRecord?.filmId);
-
+export const WatchlistModalContent = ({ filmRecord, filmData }: WatchlistModalContentProps) => {
     const [formData, setFormData] = useState({
         createdAt: "",
         recommendedBy: "",
@@ -28,28 +26,27 @@ export const WatchlistModalContent = ({ recordId }: WatchlistModalContentProps) 
     const fetchFilmRecord = useCallback(async (id: number) => {
         const response = await fetch(`/api/film/watchlist/${id}`, { method: "GET" });
         const record = await response.json();
-        setFilmRecord(record);
+        setFormData({
+            recommendedBy: record.recommendedBy || "",
+            note: record.note || "",
+            createdAt: dayjs(record.createdAt).format("YYYY-MM-DD"),
+            isWatched: record.isWatched,
+        });
     }, []);
 
     const { handleFieldChange } = useFilmRecordUpdate({
-        recordId,
+        recordId: filmRecord.id,
         type: "watchlist",
-        onUpdate: () => fetchFilmRecord(recordId),
+        onUpdate: () => fetchFilmRecord(filmRecord.id),
     });
 
     useEffect(() => {
-        fetchFilmRecord(recordId);
-    }, [recordId, fetchFilmRecord]);
-
-    useEffect(() => {
-        if (filmRecord) {
-            setFormData({
-                recommendedBy: filmRecord.recommendedBy || "",
-                note: filmRecord.note || "",
-                createdAt: dayjs(filmRecord.createdAt).format("YYYY-MM-DD"),
-                isWatched: filmRecord.isWatched,
-            });
-        }
+        setFormData({
+            recommendedBy: filmRecord.recommendedBy || "",
+            note: filmRecord.note || "",
+            createdAt: dayjs(filmRecord.createdAt).format("YYYY-MM-DD"),
+            isWatched: filmRecord.isWatched,
+        });
     }, [filmRecord]);
 
     const handleWatchlistFieldChange = (field: string, value: any) => {
