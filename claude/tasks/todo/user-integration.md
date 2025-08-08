@@ -6,19 +6,19 @@ TODOとFilm系のレコード（WatchedFilm、Watchlist）にUser認証を統合
 ## タスク一覧
 
 ### 1. データベース設計
-- [ ] Prisma schemaでUser、Todo、WatchedFilm、Watchlistの関連付け設計
-- [ ] 既存テーブルにuserId外部キー追加
+- [x] Prisma schemaでUser、Todo、WatchedFilm、Watchlistの関連付け設計
+- [x] 既存テーブルにuserId外部キー追加
 
 ### 2. データベースマイグレーション
-- [ ] TODOテーブルにuserId追加
-- [ ] WatchedFilmテーブルにuserId追加  
-- [ ] WatchlistテーブルにuserId追加
-- [ ] 既存データにデフォルトユーザーID割り当て
+- [x] TODOテーブルにuserId追加
+- [x] WatchedFilmテーブルにuserId追加  
+- [x] WatchlistテーブルにuserId追加
+- [x] 既存データにデフォルトユーザーID割り当て
 
 ### 3. API層の更新
-- [ ] TODO API でセッション認証とユーザーフィルタリング実装
+- [x] TODO API でセッション認証とユーザーフィルタリング実装
 - [ ] Film系API（watched/watchlist）でセッション認証とユーザーフィルタリング実装
-- [ ] 不正アクセス防止のためのユーザー権限チェック追加
+- [x] 不正アクセス防止のためのユーザー権限チェック追加
 
 ### 4. フロントエンド対応
 - [ ] 未ログイン時のリダイレクト処理

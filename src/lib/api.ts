@@ -30,18 +30,17 @@ export function createSuccessResponse<T>(data: T, status: number = 200): NextRes
     return NextResponse.json(data, { status });
 }
 
+export function createUnauthorizedResponse() {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+}
+
+export function createNotFoundResponse(data: string) {
+    return NextResponse.json({ error: `${data} not found` }, { status: 404 });
+}
+
 export async function validateRequest<T>(request: NextRequest, schema: z.ZodSchema<T>): Promise<T> {
     const body = await request.json();
     return schema.parse(body);
-}
-
-export async function requireAuth(request: NextRequest): Promise<string | null> {
-    // TODO: セッション管理の実装に応じて調整
-    const sessionCookie = request.cookies.get("session");
-    if (!sessionCookie) {
-        throw new Error("Authentication required");
-    }
-    return sessionCookie.value;
 }
 
 export async function withErrorHandling(handler: () => Promise<NextResponse>): Promise<NextResponse> {
