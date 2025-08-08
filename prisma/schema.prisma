@@ -18,6 +18,8 @@ model Todo {
   createdAt DateTime @default(now())
   title     String
   completed Boolean  @default(false)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model WatchedFilm {
@@ -27,6 +29,8 @@ model WatchedFilm {
   watchedDate DateTime
   rating      Int // 0 means none
   note        String?
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Watchlist {
@@ -36,6 +40,8 @@ model Watchlist {
   recommendedBy String?
   note          String?
   isWatched     Boolean
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -44,4 +50,8 @@ model User {
   hashedPassword String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  todos        Todo[]
+  watchedFilms WatchedFilm[]
+  watchlists   Watchlist[]
 }
