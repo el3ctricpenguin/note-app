@@ -7,7 +7,6 @@ const PUBLIC_URLS = ["/", "/sign-up", "/sign-in", "/api/sign-in", "/api/sign-up"
 export default async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // Basic認証チェック（最上位）
     const authHeader = request.headers.get("authorization");
     if (!validateBasicAuth(authHeader)) {
         console.log("Basic auth failed for:", pathname);

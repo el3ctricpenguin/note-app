@@ -8,7 +8,7 @@ const SECRET = new TextEncoder().encode(process.env.SESSION_SECRET);
 const cookiesPath = "token";
 
 export async function createSession(username: string) {
-    const sessionHours = 2;
+    const sessionHours = 24 * 7; // 1週間
     const token = await new SignJWT({ username })
         .setProtectedHeader({ alg: "HS256", typ: "JWT" })
         .setExpirationTime(`${sessionHours}h`)
