@@ -3,21 +3,16 @@ import { WatchedModalContent } from "./parts/WatchedModalContent";
 import { WatchlistModalContent } from "./parts/WatchlistModalContent";
 
 interface FilmModalProps {
-    id: number;
+    recordId: number;
     type: "watched" | "watchlist";
     isOpen: boolean;
     onClose: () => void;
 }
 
-export const FilmModal = ({ id, type, isOpen, onClose }: FilmModalProps) => {
-
+export const FilmModal = ({ recordId, type, isOpen, onClose }: FilmModalProps) => {
     return (
         <BasicModal title="" isOpen={isOpen} onClose={onClose}>
-            {type === "watchlist" ? (
-                <WatchlistModalContent recordId={id} />
-            ) : (
-                <WatchedModalContent recordId={id} />
-            )}
+            {type === "watchlist" ? <WatchlistModalContent recordId={recordId} /> : <WatchedModalContent recordId={recordId} />}
         </BasicModal>
     );
 };

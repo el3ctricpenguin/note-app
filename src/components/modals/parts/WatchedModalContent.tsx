@@ -17,11 +17,6 @@ interface WatchedModalContentProps {
 export const WatchedModalContent = ({ recordId }: WatchedModalContentProps) => {
     const [filmRecord, setFilmRecord] = useState<WatchedFilm>();
     const { filmData } = useFilmData(filmRecord?.filmId);
-    const { handleFieldChange } = useFilmRecordUpdate({ 
-        recordId, 
-        type: "watched", 
-        onUpdate: () => fetchFilmRecord(recordId) 
-    });
 
     const [formData, setFormData] = useState({
         watchedDate: "",
@@ -34,6 +29,12 @@ export const WatchedModalContent = ({ recordId }: WatchedModalContentProps) => {
         const record = await response.json();
         setFilmRecord(record);
     }, []);
+
+    const { handleFieldChange } = useFilmRecordUpdate({
+        recordId,
+        type: "watched",
+        onUpdate: () => fetchFilmRecord(recordId),
+    });
 
     useEffect(() => {
         fetchFilmRecord(recordId);
@@ -50,7 +51,7 @@ export const WatchedModalContent = ({ recordId }: WatchedModalContentProps) => {
     }, [filmRecord]);
 
     const handleWatchedFieldChange = (field: string, value: any) => {
-        handleFieldChange(field, value, setFormData, ['watchedDate']);
+        handleFieldChange(field, value, setFormData, ["watchedDate"]);
     };
     return (
         <>
@@ -63,21 +64,21 @@ export const WatchedModalContent = ({ recordId }: WatchedModalContentProps) => {
                             icon={<CalendarIcon />}
                             value={formData.watchedDate}
                             isEditable={true}
-                            onSubmit={(value) => handleWatchedFieldChange('watchedDate', value)}
+                            onSubmit={(value) => handleWatchedFieldChange("watchedDate", value)}
                         />
                         <EditableRatingField
                             label="評価"
                             icon={<StarIcon />}
                             value={formData.rating}
                             isEditable={true}
-                            onSubmit={(value) => handleWatchedFieldChange('rating', value)}
+                            onSubmit={(value) => handleWatchedFieldChange("rating", value)}
                         />
                         <EditableTextAreaField
                             label="メモ"
                             icon={<AttachmentIcon />}
                             value={formData.note}
                             isEditable={true}
-                            onSubmit={(value) => handleWatchedFieldChange('note', value)}
+                            onSubmit={(value) => handleWatchedFieldChange("note", value)}
                             height={150}
                             submitOnBlur={true}
                         />

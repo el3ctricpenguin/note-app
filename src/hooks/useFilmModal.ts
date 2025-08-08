@@ -2,25 +2,25 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface UseFilmModalReturn {
-    filmId: number | undefined;
+    recordId: number | undefined;
     isOpen: boolean;
     onClose: () => void;
-    openModal: (_filmId: number) => void;
+    openModal: (_recordId: number) => void;
 }
 
 export const useFilmModal = (): UseFilmModalReturn => {
-    const [filmId, setFilmId] = useState<number | undefined>();
+    const [recordId, setRecordId] = useState<number | undefined>();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const openModal = (id: number) => {
-        setFilmId(id);
+        setRecordId(id);
         setTimeout(() => {
             onOpen();
-        }, 50);
+        }, 0);
     };
 
     return {
-        filmId,
+        recordId,
         isOpen,
         onClose,
         openModal,

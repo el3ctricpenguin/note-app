@@ -28,7 +28,7 @@ export const EditableDateField = ({ label, icon, value, isEditable = true, onSub
                 </HStack>
             </Td>
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
-                {isEditable ? (
+                {isEditable && value.length > 0 ? (
                     <Editable defaultValue={value ?? ""} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={false}>
                         <HStack>
                             <EditablePreview wordBreak="break-all" />

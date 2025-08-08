@@ -17,11 +17,6 @@ interface WatchlistModalContentProps {
 export const WatchlistModalContent = ({ recordId }: WatchlistModalContentProps) => {
     const [filmRecord, setFilmRecord] = useState<Watchlist>();
     const { filmData } = useFilmData(filmRecord?.filmId);
-    const { handleFieldChange } = useFilmRecordUpdate({ 
-        recordId, 
-        type: "watchlist", 
-        onUpdate: () => fetchFilmRecord(recordId) 
-    });
 
     const [formData, setFormData] = useState({
         createdAt: "",
@@ -35,6 +30,12 @@ export const WatchlistModalContent = ({ recordId }: WatchlistModalContentProps) 
         const record = await response.json();
         setFilmRecord(record);
     }, []);
+
+    const { handleFieldChange } = useFilmRecordUpdate({
+        recordId,
+        type: "watchlist",
+        onUpdate: () => fetchFilmRecord(recordId),
+    });
 
     useEffect(() => {
         fetchFilmRecord(recordId);
@@ -52,7 +53,7 @@ export const WatchlistModalContent = ({ recordId }: WatchlistModalContentProps) 
     }, [filmRecord]);
 
     const handleWatchlistFieldChange = (field: string, value: any) => {
-        handleFieldChange(field, value, setFormData, ['createdAt']);
+        handleFieldChange(field, value, setFormData, ["createdAt"]);
     };
     return (
         <>
@@ -60,32 +61,27 @@ export const WatchlistModalContent = ({ recordId }: WatchlistModalContentProps) 
             <TableContainer>
                 <Table variant="unstyled" colorScheme="whiteAlpha" my={4}>
                     <Tbody>
-                        <EditableDateField 
-                            label="追加日" 
-                            icon={<CalendarIcon />} 
-                            value={formData.createdAt} 
-                            isEditable={false} 
-                        />
+                        <EditableDateField label="追加日" icon={<CalendarIcon />} value={formData.createdAt} isEditable={false} />
                         <EditableTextAreaField
                             label="おすすめ元"
                             icon={<InfoOutlineIcon />}
                             value={formData.recommendedBy}
                             isEditable={true}
-                            onSubmit={(value) => handleWatchlistFieldChange('recommendedBy', value)}
+                            onSubmit={(value) => handleWatchlistFieldChange("recommendedBy", value)}
                         />
-                        <EditableCheckboxField 
-                            label="視聴済み" 
-                            icon={<ViewIcon />} 
-                            value={formData.isWatched} 
-                            isEditable={true} 
-                            onSubmit={(value) => handleWatchlistFieldChange('isWatched', value)} 
+                        <EditableCheckboxField
+                            label="視聴済み"
+                            icon={<ViewIcon />}
+                            value={formData.isWatched}
+                            isEditable={true}
+                            onSubmit={(value) => handleWatchlistFieldChange("isWatched", value)}
                         />
                         <EditableTextAreaField
                             label="メモ"
                             icon={<AttachmentIcon />}
                             value={formData.note}
                             isEditable={true}
-                            onSubmit={(value) => handleWatchlistFieldChange('note', value)}
+                            onSubmit={(value) => handleWatchlistFieldChange("note", value)}
                             height={150}
                             submitOnBlur={true}
                         />
