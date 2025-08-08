@@ -40,7 +40,7 @@ export const EditableTextAreaField = ({
             <Td px={0} pl={4} whiteSpace="pre-line" py={3}>
                 {isEditable && value !== null ? (
                     <Editable defaultValue={value} onSubmit={handleSubmit} selectAllOnFocus={false} submitOnBlur={submitOnBlur}>
-                        <HStack>
+                        <HStack gap={value.length === 0 ? 0 : 2}>
                             <EditablePreview wordBreak="break-all" />
                             <EditableTextarea
                                 onFocus={(e) => setCurrentValue(e.target.value)}
