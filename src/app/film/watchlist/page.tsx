@@ -6,27 +6,13 @@ import { FilmModal } from "@/components/modals/FilmModal";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
-import { fetchWithAuth, fetchJsonWithAuth } from "@/lib/fetchWithAuth";
-import { Heading, Link, VStack } from "@chakra-ui/react";
-import { Watchlist } from "@prisma/client";
+import { useWatchlistFilms } from "@/hooks/useWatchlistFilms";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
+import { Heading, Link, VStack, Spinner } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
 
 export default function FilmWatchlist() {
-    const [watchlist, setWatchlist] = useState<Watchlist[]>([]);
-    const fetchWatchlist = async () => {
-        try {
-            const watchlistFilms = await fetchJsonWithAuth<Watchlist[]>(`/api/film/watchlist`);
-            console.log(watchlistFilms);
-            setWatchlist(watchlistFilms);
-        } catch (error) {
-            showErrorToast("Failed to fetch watchlist");
-            console.error("Failed to fetch watchlist:", error);
-        }
-    };
-    useEffect(() => {
-        fetchWatchlist();
-    }, []);
+    const { watchlistFilms, isLoading, refetch } = useWatchlistFilms();
 
     const { showSuccessToast, showErrorToast } = useToasts();
 
@@ -52,7 +38,7 @@ export default function FilmWatchlist() {
 
             if (response.status === 201) {
                 showSuccessToast("film registered");
-                await fetchWatchlist();
+                await refetch();
                 return true;
             } else {
                 showErrorToast("film register failed", result.error);
@@ -84,11 +70,13 @@ export default function FilmWatchlist() {
             <Heading size="lg" my={1}>
                 ウォッチリスト
             </Heading>
-            <VStack>
-                {watchlist.length === 0 ? (
+            <VStack spacing={4}>
+                {isLoading ? (
+                    <Spinner size="lg" />
+                ) : watchlistFilms.length === 0 ? (
                     <Heading size="md">No watchlist</Heading>
                 ) : (
-                    watchlist.map((film, i) => <FilmCard key={i} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />)
+                    watchlistFilms.map((film, i) => <FilmCard key={i} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />)
                 )}
             </VStack>
             {filmRecord && (
@@ -98,7 +86,7 @@ export default function FilmWatchlist() {
                     type="watchlist"
                     isOpen={isOpen}
                     onClose={onClose}
-                    onListUpdate={fetchWatchlist}
+                    onListUpdate={refetch}
                 />
             )}
         </>

@@ -57,6 +57,12 @@ npm run lint
 
 ## Git ワークフロー
 
+### 言語使い分けルール
+
+- **コミットメッセージ**: 英語
+- **PRタイトル・説明**: 日本語
+- **ブランチ名**: 英語
+
 ```bash
 # 機能開発・リファクタリング
 git checkout main
@@ -64,8 +70,9 @@ git pull origin main
 git checkout -b refactor/feature-name
 # 開発作業
 git add .
-git commit -m "refactor: 変更内容"
+git commit -m "refactor: change description in English"
 git push origin refactor/feature-name
+# PR作成時は日本語でタイトル・説明を記述
 ```
 
 ## 記録・更新ルール

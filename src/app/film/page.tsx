@@ -8,12 +8,12 @@ import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
 import { useWatchedFilms } from "@/hooks/useWatchedFilms";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
-import { Heading, Link, VStack } from "@chakra-ui/react";
+import { Heading, Link, VStack, Spinner } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import NextLink from "next/link";
 
 export default function FilmNote() {
-    const { watchedFilmsByYear, refetch: fetchWatchedFilms } = useWatchedFilms();
+    const { watchedFilmsByYear, isLoading, refetch } = useWatchedFilms();
 
     const { showSuccessToast, showErrorToast } = useToasts();
 
@@ -40,7 +40,7 @@ export default function FilmNote() {
 
             if (response.status === 201) {
                 showSuccessToast("film registered");
-                await fetchWatchedFilms();
+                await refetch();
                 return true;
             } else {
                 showErrorToast("film register failed", result.error);
@@ -72,7 +72,9 @@ export default function FilmNote() {
                 視聴記録
             </Heading>
             <VStack spacing={4}>
-                {watchedFilmsByYear.length === 0 ? (
+                {isLoading ? (
+                    <Spinner size="lg" />
+                ) : watchedFilmsByYear.length === 0 ? (
                     <Heading size="md">No watched film</Heading>
                 ) : (
                     watchedFilmsByYear.map(({ year, dateGroups }) => (
@@ -110,7 +112,7 @@ export default function FilmNote() {
                     type="watched"
                     isOpen={isOpen}
                     onClose={onClose}
-                    onListUpdate={fetchWatchedFilms}
+                    onListUpdate={refetch}
                 />
             )}
         </>
