@@ -26,7 +26,7 @@ model WatchedFilm {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   filmId      Int
-  watchedDate DateTime
+  watchedDate DateTime @db.Date
   rating      Int // 0 means none
   note        String?
   userId      Int

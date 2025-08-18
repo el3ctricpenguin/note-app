@@ -44,7 +44,7 @@ export const WatchedModalContent = ({ filmRecord, filmData, onListUpdate }: Watc
     }, [filmRecord]);
 
     const handleWatchedFieldChange = (field: string, value: any) => {
-        handleFieldChange(field, value, setFormData, ["watchedDate"]);
+        handleFieldChange(field, value, setFormData);
     };
     return (
         <>

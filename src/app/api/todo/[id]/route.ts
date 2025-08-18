@@ -2,7 +2,6 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { withErrorHandling, createSuccessResponse, parseId, createUnauthorizedResponse, createNotFoundResponse } from "@/lib/api";
 import { getAuthenticatedUser } from "@/lib/session";
-import { create } from "domain";
 
 type Params = {
     params: {

@@ -54,6 +54,12 @@ export async function PUT(request: NextRequest, { params }: Params) {
         }
 
         const updateData = await validateRequest(request, updateWatchedFilmSchema);
+
+        // watchedDateがある場合は正規化
+        if (updateData.watchedDate) {
+            updateData.watchedDate = new Date(updateData.watchedDate + "T00:00:00Z").toISOString();
+        }
+
         const updatedWatchedFilm = await prisma.watchedFilm.update({
             where: { id: watchedFilmId },
             data: updateData,

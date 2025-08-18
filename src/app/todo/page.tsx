@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchJsonWithAuth, fetchWithAuth } from "@/lib/fetchWithAuth";
+import { fetchJsonWithAuth } from "@/lib/fetchWithAuth";
 import { disabledLinkStyle } from "@/config/theme/styles";
 import { Button, Checkbox, Divider, FormControl, Heading, HStack, Input, useColorMode, VStack } from "@chakra-ui/react";
 import { Todo } from "@prisma/client";

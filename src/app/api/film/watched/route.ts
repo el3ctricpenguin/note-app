@@ -27,10 +27,11 @@ export async function POST(req: NextRequest) {
         }
 
         const { filmId, watchedDate, rating, note } = await validateRequest(req, watchedFilmSchema);
+        const normalizedWatchedDate = new Date(watchedDate + 'T00:00:00Z').toISOString();
         const watchedFilm = await prisma.watchedFilm.create({
             data: {
                 filmId,
-                watchedDate,
+                watchedDate: normalizedWatchedDate,
                 rating,
                 note,
                 userId: user.id,

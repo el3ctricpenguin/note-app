@@ -19,7 +19,6 @@ export default function FilmNote() {
 
     const handleWatchedSubmit = async (data: WatchedFormData): Promise<boolean> => {
         console.log(`create watched film: ${data.filmId}`);
-        const isoWatchedDate = dayjs(data.watchedDate).toISOString();
 
         try {
             const response = await fetchWithAuth(`/api/film/watched`, {
@@ -29,7 +28,7 @@ export default function FilmNote() {
                 },
                 body: JSON.stringify({
                     filmId: data.filmId,
-                    watchedDate: isoWatchedDate,
+                    watchedDate: data.watchedDate,
                     rating: data.rating,
                     note: data.watchNote,
                 }),

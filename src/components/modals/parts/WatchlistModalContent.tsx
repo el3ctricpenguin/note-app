@@ -47,7 +47,7 @@ export const WatchlistModalContent = ({ filmRecord, filmData, onListUpdate }: Wa
     }, [filmRecord]);
 
     const handleWatchlistFieldChange = (field: string, value: any) => {
-        handleFieldChange(field, value, setFormData, ["createdAt"]);
+        handleFieldChange(field, value, setFormData);
     };
     return (
         <>
