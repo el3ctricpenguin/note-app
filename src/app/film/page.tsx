@@ -86,14 +86,16 @@ export default function FilmNote() {
                                         <Heading size="md" w="100%" mb={2}>
                                             {dayjs(date).format("MM/DD")}
                                         </Heading>
-                                        {films.map((film, i) => (
-                                            <FilmCard
-                                                key={i}
-                                                rating={film.rating}
-                                                filmId={film.filmId.toString()}
-                                                onClick={() => openModal(film.id)}
-                                            />
-                                        ))}
+                                        <VStack spacing={2}>
+                                            {films.map((film, i) => (
+                                                <FilmCard
+                                                    key={i}
+                                                    rating={film.rating}
+                                                    filmId={film.filmId.toString()}
+                                                    onClick={() => openModal(film.id)}
+                                                />
+                                            ))}
+                                        </VStack>
                                     </div>
                                 ))}
                             </VStack>

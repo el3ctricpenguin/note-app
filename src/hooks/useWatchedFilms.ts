@@ -32,10 +32,14 @@ export const useWatchedFilms = () => {
     );
 
     // {"2024": {...}} → [{year: "2024", dateGroups: [{date: "2024-01-01", films: [...]}]}]
-    const watchedFilmsByYear = Object.entries(filmsByYearAndDate).map(([year, dateGroups]) => ({
-        year,
-        dateGroups: Object.entries(dateGroups).map(([date, films]) => ({ date, films })),
-    }));
+    const watchedFilmsByYear = Object.entries(filmsByYearAndDate)
+        .sort(([a], [b]) => parseInt(b) - parseInt(a)) // 年を降順ソート
+        .map(([year, dateGroups]) => ({
+            year,
+            dateGroups: Object.entries(dateGroups)
+                .sort(([a], [b]) => dayjs(b).valueOf() - dayjs(a).valueOf()) // 日付を降順ソート
+                .map(([date, films]) => ({ date, films })),
+        }));
 
     return {
         watchedFilmsByYear,
