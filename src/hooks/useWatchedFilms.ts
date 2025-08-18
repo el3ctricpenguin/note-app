@@ -5,13 +5,17 @@ import dayjs from "dayjs";
 
 export const useWatchedFilms = () => {
     const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
+    const [isLoading, setIsLoading] = useState(true);
 
     const fetchWatchedFilms = async () => {
         try {
+            setIsLoading(true);
             const watchedFilms = await fetchJsonWithAuth<GroupedFilms>(`/api/film/watched/by-date`);
             setWatchedFilms(watchedFilms);
         } catch (error) {
             console.error("Failed to fetch watched films:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -43,6 +47,7 @@ export const useWatchedFilms = () => {
 
     return {
         watchedFilmsByYear,
+        isLoading,
         refetch: fetchWatchedFilms,
     };
 };
