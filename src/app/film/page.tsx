@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import NextLink from "next/link";
 
 export default function FilmNote() {
-    const { watchedFilmsByYear, isLoading, refetch: fetchWatchedFilms } = useWatchedFilms();
+    const { watchedFilmsByYear, isLoading, refetch } = useWatchedFilms();
 
     const { showSuccessToast, showErrorToast } = useToasts();
 
@@ -40,7 +40,7 @@ export default function FilmNote() {
 
             if (response.status === 201) {
                 showSuccessToast("film registered");
-                await fetchWatchedFilms();
+                await refetch();
                 return true;
             } else {
                 showErrorToast("film register failed", result.error);
@@ -112,7 +112,7 @@ export default function FilmNote() {
                     type="watched"
                     isOpen={isOpen}
                     onClose={onClose}
-                    onListUpdate={fetchWatchedFilms}
+                    onListUpdate={refetch}
                 />
             )}
         </>

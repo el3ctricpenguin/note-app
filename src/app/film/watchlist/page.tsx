@@ -12,7 +12,7 @@ import { Heading, Link, VStack, Spinner } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 export default function FilmWatchlist() {
-    const { watchlistFilms, isLoading, refetch: fetchWatchlist } = useWatchlistFilms();
+    const { watchlistFilms, isLoading, refetch } = useWatchlistFilms();
 
     const { showSuccessToast, showErrorToast } = useToasts();
 
@@ -38,7 +38,7 @@ export default function FilmWatchlist() {
 
             if (response.status === 201) {
                 showSuccessToast("film registered");
-                await fetchWatchlist();
+                await refetch();
                 return true;
             } else {
                 showErrorToast("film register failed", result.error);
@@ -86,7 +86,7 @@ export default function FilmWatchlist() {
                     type="watchlist"
                     isOpen={isOpen}
                     onClose={onClose}
-                    onListUpdate={fetchWatchlist}
+                    onListUpdate={refetch}
                 />
             )}
         </>
