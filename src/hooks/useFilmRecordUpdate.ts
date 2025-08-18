@@ -1,7 +1,6 @@
 import { useToasts } from "@/hooks/useToasts";
 import { WatchedFilm, Watchlist } from "@prisma/client";
 import { useCallback } from "react";
-import dayjs from "dayjs";
 
 interface UseFilmRecordUpdateProps {
     recordId: number;
@@ -41,10 +40,10 @@ export const useFilmRecordUpdate = ({ recordId, type, onUpdate }: UseFilmRecordU
     );
 
     const handleFieldChange = useCallback(
-        (field: string, value: any, setFormData: (_updater: (_prev: any) => any) => void, dateFields: string[] = []) => {
+        (field: string, value: any, setFormData: (_updater: (_prev: any) => any) => void) => {
             setFormData((prev) => ({ ...prev, [field]: value }));
 
-            const submitValue = dateFields.includes(field) ? new Date(dayjs(value).toISOString()) : value;
+            const submitValue = value;
 
             handleEditSubmit({ [field]: submitValue });
         },
