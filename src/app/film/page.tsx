@@ -6,27 +6,14 @@ import { FilmModal } from "@/components/modals/FilmModal";
 import { disabledLinkStyle, enabledLinkStyle } from "@/config/theme/styles";
 import { useFilmModal } from "@/hooks/useFilmModal";
 import { useToasts } from "@/hooks/useToasts";
-import { fetchWithAuth, fetchJsonWithAuth } from "@/lib/fetchWithAuth";
-import { GroupedFilms } from "@/types";
+import { useWatchedFilms } from "@/hooks/useWatchedFilms";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { Heading, Link, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
 
 export default function FilmNote() {
-    const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
-    const fetchWatchedFilms = async () => {
-        try {
-            const watchedFilms = await fetchJsonWithAuth<GroupedFilms>(`/api/film/watched/by-date`);
-            console.log(watchedFilms);
-            setWatchedFilms(watchedFilms);
-        } catch (error) {
-            console.error("Failed to fetch watched films:", error);
-        }
-    };
-    useEffect(() => {
-        fetchWatchedFilms();
-    }, []);
+    const { watchedFilmsByYear, refetch: fetchWatchedFilms } = useWatchedFilms();
 
     const { showSuccessToast, showErrorToast } = useToasts();
 
@@ -67,7 +54,6 @@ export default function FilmNote() {
     };
 
     const { filmRecord, filmData, isOpen, onClose, openModal } = useFilmModal("watched");
-    console.log(watchedFilmsByDate);
     return (
         <>
             <Heading size="xl" mb={4}>
@@ -85,19 +71,35 @@ export default function FilmNote() {
             <Heading size="lg" my={1}>
                 視聴記録
             </Heading>
-            <VStack>
-                {Object.keys(watchedFilmsByDate).length === 0 ? (
+            <VStack spacing={4}>
+                {watchedFilmsByYear.length === 0 ? (
                     <Heading size="md">No watched film</Heading>
                 ) : (
-                    Object.entries(watchedFilmsByDate).map(([date, films]) => (
-                        <>
-                            <Heading size="md" w="100%">
-                                {dayjs(date).format("MM/DD")}
+                    watchedFilmsByYear.map(({ year, dateGroups }) => (
+                        <div key={year} style={{ width: "100%" }}>
+                            <Heading size="lg" w="100%" mb={2}>
+                                {year}
                             </Heading>
-                            {films.map((film, i) => (
-                                <FilmCard key={i} rating={film.rating} filmId={film.filmId.toString()} onClick={() => openModal(film.id)} />
-                            ))}
-                        </>
+                            <VStack spacing={4}>
+                                {dateGroups.map(({ date, films }) => (
+                                    <div key={date} style={{ width: "100%" }}>
+                                        <Heading size="md" w="100%" mb={2}>
+                                            {dayjs(date).format("MM/DD")}
+                                        </Heading>
+                                        <VStack spacing={2}>
+                                            {films.map((film, i) => (
+                                                <FilmCard
+                                                    key={i}
+                                                    rating={film.rating}
+                                                    filmId={film.filmId.toString()}
+                                                    onClick={() => openModal(film.id)}
+                                                />
+                                            ))}
+                                        </VStack>
+                                    </div>
+                                ))}
+                            </VStack>
+                        </div>
                     ))
                 )}
             </VStack>
