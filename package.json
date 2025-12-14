@@ -21,12 +21,15 @@
         "dayjs": "^1.11.12",
         "framer-motion": "^11.3.12",
         "jose": "^6.0.11",
-        "next": "^14.2.30",
+        "next": "^14.2.31",
         "react": "^18",
         "react-dom": "^18",
         "react-hook-form": "^7.56.0",
         "swr": "^2.2.5",
         "zod": "^3.24.3"
+    },
+    "overrides": {
+        "glob": "^10.5.0"
     },
     "devDependencies": {
         "@chakra-ui/cli": "^2.4.1",
@@ -35,7 +38,7 @@
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "eslint": "^8",
-        "eslint-config-next": "14.2.5",
+        "eslint-config-next": "^14.2.31",
         "prettier": "^3.3.3",
         "prisma": "^6.13.0",
         "typescript": "^5"
