@@ -37,6 +37,30 @@ export async function GET(_request: NextRequest, { params }: Params) {
     });
 }
 
+export async function DELETE(_request: NextRequest, { params }: Params) {
+    return withErrorHandling(async () => {
+        const user = await getAuthenticatedUser();
+        if (!user) {
+            return createUnauthorizedResponse();
+        }
+
+        const watchedFilmId = parseId(params.watchedFilmId);
+        const watchedFilm = await prisma.watchedFilm.findFirst({
+            where: { id: watchedFilmId, userId: user.id },
+        });
+
+        if (!watchedFilm) {
+            return createNotFoundResponse("WatchedFilm");
+        }
+
+        await prisma.watchedFilm.delete({
+            where: { id: watchedFilmId },
+        });
+
+        return createSuccessResponse({ message: "Deleted successfully" });
+    });
+}
+
 export async function PUT(request: NextRequest, { params }: Params) {
     return withErrorHandling(async () => {
         const user = await getAuthenticatedUser();

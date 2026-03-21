@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import NextLink from "next/link";
 
 export default function FilmNote() {
-    const { watchedFilmsByYear, isLoading, refetch } = useWatchedFilms();
+    const { watchedFilmsByYear, isLoading, refetch, deleteWatchedFilm } = useWatchedFilms();
 
     const { showSuccessToast, showErrorToast } = useToasts();
 
@@ -112,6 +112,7 @@ export default function FilmNote() {
                     isOpen={isOpen}
                     onClose={onClose}
                     onListUpdate={refetch}
+                    onDelete={deleteWatchedFilm}
                 />
             )}
         </>
