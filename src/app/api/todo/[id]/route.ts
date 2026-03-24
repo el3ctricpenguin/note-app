@@ -4,9 +4,9 @@ import { withErrorHandling, createSuccessResponse, parseId, createUnauthorizedRe
 import { getAuthenticatedUser } from "@/lib/session";
 
 type Params = {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 };
 
 export async function GET(_request: NextRequest, { params }: Params) {
@@ -16,7 +16,8 @@ export async function GET(_request: NextRequest, { params }: Params) {
             return createUnauthorizedResponse();
         }
 
-        const todoId = parseId(params.id);
+        const { id } = await params;
+        const todoId = parseId(id);
         const todo = await prisma.todo.findFirst({
             where: { id: todoId, userId: user.id },
         });
@@ -36,7 +37,8 @@ export async function PATCH(_request: NextRequest, { params }: Params) {
             return createUnauthorizedResponse();
         }
 
-        const todoId = parseId(params.id);
+        const { id } = await params;
+        const todoId = parseId(id);
         const todo = await prisma.todo.findFirst({
             where: { id: todoId, userId: user.id },
         });
@@ -60,7 +62,8 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
             return createUnauthorizedResponse();
         }
 
-        const todoId = parseId(params.id);
+        const { id } = await params;
+        const todoId = parseId(id);
         const todo = await prisma.todo.findFirst({
             where: { id: todoId, userId: user.id },
         });

@@ -21,7 +21,7 @@
         "dayjs": "^1.11.12",
         "framer-motion": "^11.3.12",
         "jose": "^6.0.11",
-        "next": "^14.2.31",
+        "next": "^15.5.14",
         "react": "^18",
         "react-dom": "^18",
         "react-hook-form": "^7.56.0",
@@ -38,7 +38,7 @@
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "eslint": "^8",
-        "eslint-config-next": "^14.2.31",
+        "eslint-config-next": "^15.5.14",
         "prettier": "^3.3.3",
         "prisma": "^6.13.0",
         "typescript": "^5"
