@@ -45,9 +45,10 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
             return createUnauthorizedResponse();
         }
 
-        const watchedFilmId = parseId(params.watchedFilmId);
+        const { watchedFilmId } = await params;
+        const watchedFilmIdNum = parseId(watchedFilmId);
         const watchedFilm = await prisma.watchedFilm.findFirst({
-            where: { id: watchedFilmId, userId: user.id },
+            where: { id: watchedFilmIdNum, userId: user.id },
         });
 
         if (!watchedFilm) {
@@ -55,7 +56,7 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
         }
 
         await prisma.watchedFilm.delete({
-            where: { id: watchedFilmId },
+            where: { id: watchedFilmIdNum },
         });
 
         return createSuccessResponse({ message: "Deleted successfully" });
