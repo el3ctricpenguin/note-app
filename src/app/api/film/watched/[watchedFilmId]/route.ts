@@ -12,9 +12,9 @@ import { getAuthenticatedUser } from "@/lib/session";
 import { updateWatchedFilmSchema } from "@/lib/validation";
 
 type Params = {
-    params: {
+    params: Promise<{
         watchedFilmId: string;
-    };
+    }>;
 };
 
 export async function GET(_request: NextRequest, { params }: Params) {
@@ -24,9 +24,10 @@ export async function GET(_request: NextRequest, { params }: Params) {
             return createUnauthorizedResponse();
         }
 
-        const watchedFilmId = parseId(params.watchedFilmId);
+        const { watchedFilmId } = await params;
+        const watchedFilmIdNum = parseId(watchedFilmId);
         const watchedFilm = await prisma.watchedFilm.findFirst({
-            where: { id: watchedFilmId, userId: user.id },
+            where: { id: watchedFilmIdNum, userId: user.id },
         });
 
         if (!watchedFilm) {
@@ -44,9 +45,10 @@ export async function PUT(request: NextRequest, { params }: Params) {
             return createUnauthorizedResponse();
         }
 
-        const watchedFilmId = parseId(params.watchedFilmId);
+        const { watchedFilmId } = await params;
+        const watchedFilmIdNum = parseId(watchedFilmId);
         const watchedFilm = await prisma.watchedFilm.findFirst({
-            where: { id: watchedFilmId, userId: user.id },
+            where: { id: watchedFilmIdNum, userId: user.id },
         });
 
         if (!watchedFilm) {
@@ -61,7 +63,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
         }
 
         const updatedWatchedFilm = await prisma.watchedFilm.update({
-            where: { id: watchedFilmId },
+            where: { id: watchedFilmIdNum },
             data: updateData,
         });
         return createSuccessResponse(updatedWatchedFilm, 201);
