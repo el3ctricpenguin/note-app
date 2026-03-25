@@ -12,7 +12,7 @@ import { Heading, Link, VStack, Spinner } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 export default function FilmWatchlist() {
-    const { watchlistFilms, isLoading, refetch } = useWatchlistFilms();
+    const { watchlistFilms, isLoading, refetch, deleteWatchlistFilm } = useWatchlistFilms();
 
     const { showSuccessToast, showErrorToast } = useToasts();
 
@@ -87,6 +87,7 @@ export default function FilmWatchlist() {
                     isOpen={isOpen}
                     onClose={onClose}
                     onListUpdate={refetch}
+                    onDelete={deleteWatchlistFilm}
                 />
             )}
         </>

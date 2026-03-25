@@ -32,6 +32,31 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ wat
     });
 }
 
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ watchlistId: string }> }) {
+    return withErrorHandling(async () => {
+        const user = await getAuthenticatedUser();
+        if (!user) {
+            return createUnauthorizedResponse();
+        }
+
+        const { watchlistId } = await params;
+        const watchlistIdNum = parseId(watchlistId);
+        const watchlistFilm = await prisma.watchlist.findFirst({
+            where: { id: watchlistIdNum, userId: user.id },
+        });
+
+        if (!watchlistFilm) {
+            return createNotFoundResponse("Watchlist");
+        }
+
+        await prisma.watchlist.delete({
+            where: { id: watchlistIdNum },
+        });
+
+        return createSuccessResponse({ message: "Deleted successfully" });
+    });
+}
+
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ watchlistId: string }> }) {
     return withErrorHandling(async () => {
         const user = await getAuthenticatedUser();

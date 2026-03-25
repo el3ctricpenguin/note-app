@@ -38,6 +38,31 @@ export async function GET(_request: NextRequest, { params }: Params) {
     });
 }
 
+export async function DELETE(_request: NextRequest, { params }: Params) {
+    return withErrorHandling(async () => {
+        const user = await getAuthenticatedUser();
+        if (!user) {
+            return createUnauthorizedResponse();
+        }
+
+        const { watchedFilmId } = await params;
+        const watchedFilmIdNum = parseId(watchedFilmId);
+        const watchedFilm = await prisma.watchedFilm.findFirst({
+            where: { id: watchedFilmIdNum, userId: user.id },
+        });
+
+        if (!watchedFilm) {
+            return createNotFoundResponse("WatchedFilm");
+        }
+
+        await prisma.watchedFilm.delete({
+            where: { id: watchedFilmIdNum },
+        });
+
+        return createSuccessResponse({ message: "Deleted successfully" });
+    });
+}
+
 export async function PUT(request: NextRequest, { params }: Params) {
     return withErrorHandling(async () => {
         const user = await getAuthenticatedUser();

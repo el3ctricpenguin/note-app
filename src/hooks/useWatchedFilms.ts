@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { fetchJsonWithAuth } from "@/lib/fetchWithAuth";
+import { fetchWithAuth, fetchJsonWithAuth } from "@/lib/fetchWithAuth";
 import { GroupedFilms } from "@/types";
+import { useToasts } from "@/hooks/useToasts";
 import dayjs from "dayjs";
 
 export const useWatchedFilms = () => {
     const [watchedFilmsByDate, setWatchedFilms] = useState<GroupedFilms>({});
     const [isLoading, setIsLoading] = useState(true);
+    const { showSuccessToast, showErrorToast } = useToasts();
 
     const fetchWatchedFilms = async () => {
         try {
@@ -45,9 +47,22 @@ export const useWatchedFilms = () => {
                 .map(([date, films]) => ({ date, films })),
         }));
 
+    const deleteWatchedFilm = async (id: number) => {
+        try {
+            const response = await fetchWithAuth(`/api/film/watched/${id}`, { method: "DELETE" });
+            if (!response.ok) throw new Error("Failed to delete");
+            showSuccessToast("映画を削除しました");
+            await fetchWatchedFilms();
+        } catch (error) {
+            console.error("Failed to delete watched film:", error);
+            showErrorToast("削除に失敗しました");
+        }
+    };
+
     return {
         watchedFilmsByYear,
         isLoading,
         refetch: fetchWatchedFilms,
+        deleteWatchedFilm,
     };
 };
